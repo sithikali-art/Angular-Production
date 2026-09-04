@@ -1,0 +1,128 @@
+<app-drawer
+  title="Wallet details"
+  subtitle="View wallet information and funding bank details for this currency."
+  icon="wallet-draft"
+  (closed)="layoutUi.close('wallet-details')"
+>
+  @if (wallet.selectedWallet(); as selected) {
+    <!-- Wallet information card -->
+    <div class="detail-card card">
+      <div class="d-flex align-items-center gap-2 wallet-head">
+        <app-flag-icon [countryCode]="selected.countryCode" [size]="34" />
+        <div class="d-flex flex-column flex-grow-1 wallet-head-meta">
+          <span class="wallet-name">{{ selected.currency }} • {{ selected.name }}</span>
+          <span class="wallet-id">
+            Wallet ID {{ selected.walletId }}
+            <button type="button" class="copy-btn" aria-label="Copy wallet ID" (click)="copy('' + selected.walletId)">
+              <app-icon name="copy" [size]="13" />
+            </button>
+          </span>
+        </div>
+        <span class="active-badge">{{ selected.status === 'Active' ? 'Active' : selected.status }}</span>
+      </div>
+
+      <div class="field">
+        <span class="overline field-label">Balance</span>
+        <span class="field-value balance">{{ selected.balance | money: selected.currency : 'symbol' }}</span>
+      </div>
+      <div class="field">
+        <span class="overline field-label">Currency</span>
+        <span class="field-value">{{ selected.currency }}</span>
+      </div>
+      <div class="field">
+        <span class="overline field-label">Entity</span>
+        <span class="field-value">{{ selected.entity }}</span>
+      </div>
+      <div class="field">
+        <span class="overline field-label">Wallet type</span>
+        <span class="field-value">{{ selected.walletType }}</span>
+      </div>
+    </div>
+
+    <!-- Fund bank summary card -->
+    <div class="detail-card card">
+      <div class="d-flex align-items-start justify-content-between">
+        <div class="d-flex flex-column">
+          <span class="bank-title">Fund bank summary</span>
+          <span class="bank-subtitle">
+            {{ selected.fundBank.bankName }} · {{ selected.fundBank.accountNo }}
+          </span>
+        </div>
+        <button type="button" class="copy-btn" aria-label="Copy fund bank summary" (click)="copyBankSummary()">
+          <app-icon name="copy" [size]="14" />
+        </button>
+      </div>
+
+      <div class="field with-copy">
+        <div class="d-flex flex-column">
+          <span class="overline field-label">Bank name</span>
+          <span class="field-value">{{ selected.fundBank.bankName }}</span>
+        </div>
+        <button type="button" class="copy-btn" aria-label="Copy bank name" (click)="copy(selected.fundBank.bankName)">
+          <app-icon name="copy" [size]="14" />
+        </button>
+      </div>
+      <div class="field with-copy">
+        <div class="d-flex flex-column">
+          <span class="overline field-label">Account no.</span>
+          <span class="field-value">{{ selected.fundBank.accountNo }}</span>
+        </div>
+        <button type="button" class="copy-btn" aria-label="Copy account number" (click)="copy(selected.fundBank.accountNo)">
+          <app-icon name="copy" [size]="14" />
+        </button>
+      </div>
+      <div class="field with-copy">
+        <div class="d-flex flex-column">
+          <span class="overline field-label">Swift</span>
+          <span class="field-value">{{ selected.fundBank.swift }}</span>
+        </div>
+        <button type="button" class="copy-btn" aria-label="Copy SWIFT" (click)="copy(selected.fundBank.swift)">
+          <app-icon name="copy" [size]="14" />
+        </button>
+      </div>
+      <div class="field with-copy">
+        <div class="d-flex flex-column">
+          <span class="overline field-label">Wire ABA</span>
+          <span class="field-value">{{ selected.fundBank.wireAba }}</span>
+        </div>
+        <button type="button" class="copy-btn" aria-label="Copy wire ABA" (click)="copy(selected.fundBank.wireAba)">
+          <app-icon name="copy" [size]="14" />
+        </button>
+      </div>
+      <div class="field with-copy">
+        <div class="d-flex flex-column">
+          <span class="overline field-label">Beneficiary</span>
+          <span class="field-value">{{ selected.fundBank.beneficiary }}</span>
+        </div>
+        <button type="button" class="copy-btn" aria-label="Copy beneficiary" (click)="copy(selected.fundBank.beneficiary)">
+          <app-icon name="copy" [size]="14" />
+        </button>
+      </div>
+    </div>
+  }
+  <!-- Info Banner -->
+<div class="d-flex align-items-start gap-2 p-3 mb-3 rounded-4 wallet-detail-info">
+  <app-icon name="info-circle" [size]="15" class="text-primary"/>
+  <!-- <i class="bi bi-info-circle-fill flex-shrink-0 mt-1" style="color: #5B5FDE;"></i> -->
+  <p class="mb-0 text-dark small">
+    These bank details are specific to your company and wallet currency.
+    Use them to transfer money into this wallet.
+  </p>
+</div>
+
+<!-- Link with arrow -->
+<a href="#" class="text-decoration-none fw-medium d-inline-flex align-items-center gap-1 text-primary wallet-fund">
+  Go to Funding Options
+  <app-icon name="arrow-right" [size]="14" />
+</a>
+
+  <div drawer-footer class="d-flex align-items-center justify-content-between">
+    <button type="button" class="btn btn-ghost" (click)="layoutUi.close('wallet-details')">
+      Close
+    </button>
+    <button type="button" class="btn btn-primary copy-all" (click)="copyAllDetails()">
+      <app-icon name="copy" [size]="15" />
+      Copy all details
+    </button>
+  </div>
+</app-drawer>

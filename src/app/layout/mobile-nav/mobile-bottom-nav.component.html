@@ -1,0 +1,28 @@
+    <nav class="bottom-nav" aria-label="Primary">
+      <a
+        routerLink="/"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+        class="nav-item"
+      >
+        <app-icon name="home" [size]="19" />
+        <span>Home</span>
+      </a>
+      <a routerLink="/wallets" routerLinkActive="active" class="nav-item">
+        <app-icon name="wallet" [size]="19" />
+        <span>Wallets</span>
+      </a>
+      <a routerLink="/pay/simple" class="nav-item" [class.active]="isPayActive()">
+        <app-icon name="arrow-right" [size]="19" />
+        <span>Pay</span>
+      </a>
+      <button
+        type="button"
+        class="nav-item"
+        [class.active]="layoutUi.mobileNavOpen()"
+        (click)="toggleMore()"
+      >
+        <app-icon name="menu" [size]="19" />
+        <span>More</span>
+      </button>
+    </nav>

@@ -1,0 +1,94 @@
+    :host {
+      position: fixed;
+      inset: 0;
+      z-index: 80;
+      display: block;
+    }
+    .backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(10, 12, 24, 0.32);
+      backdrop-filter: blur(2px);
+      animation: fade-in 0.18s ease;
+    }
+    .panel {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      // width: 520px;
+      width: 460px;
+      max-width: min(94vw, 100%);
+      // background: var(--surface);
+      background: #fafbfc;
+      border-left: 1px solid var(--border);
+      box-shadow: var(--shadow-drawer);
+      display: flex;
+      flex-direction: column;
+      animation: slide-in 0.22s cubic-bezier(0.32, 0.72, 0.24, 1);
+    }
+    .panel-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 20px 24px 12px;
+      border-bottom: 1px solid #f2f3f7;
+    }
+    .panel-title {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      h2 {
+        margin: 0;
+        font-size: 18px;
+        font-weight: 700;
+        letter-spacing: -0.01em;
+      }
+      p {
+        margin: 4px 0 0;
+        font-size: 13px;
+        color: var(--muted);
+      }
+    }
+    .panel-icon {
+      display: inline-flex;
+      color: var(--primary);
+      margin-top: 3px;
+    }
+    .panel-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 8px 24px 16px;
+    }
+    .panel-foot:empty {
+      display: none;
+    }
+    .panel-foot {
+      border-top: 1px solid var(--border);
+      padding: 14px 24px;
+    }
+    @media (max-width: 600px) {
+      .panel {
+        width: 100vw;
+        max-width: 100vw;
+        border-left: none;
+      }
+      .panel-head {
+        padding: 16px 16px 10px;
+      }
+      .panel-body {
+        padding: 8px 16px 16px;
+      }
+      .panel-foot {
+        padding: 12px 16px calc(env(safe-area-inset-bottom, 0px) + 12px);
+      }
+    }
+    @keyframes fade-in {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    @keyframes slide-in {
+      from { transform: translateX(48px); opacity: 0.4; }
+      to { transform: translateX(0); opacity: 1; }
+    }

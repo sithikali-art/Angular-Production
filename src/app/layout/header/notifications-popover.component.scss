@@ -1,0 +1,97 @@
+    .alerts {
+      top: calc(100% + 10px);
+      right: 0;
+      // width: 420px;
+      width: 360px;
+      padding: 6px 0;
+    }
+    /* Mobile: anchored popover becomes a fixed sheet above the bottom nav */
+    @media (max-width: 1024px) {
+      .alerts {
+        position: fixed;
+        top: auto;
+        left: 12px;
+        right: 12px;
+        bottom: calc(env(safe-area-inset-bottom, 0px) + 84px);
+        width: auto;
+        max-height: 74vh;
+        overflow-y: auto;
+        z-index: 90;
+      }
+    }
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 18px 10px;
+      h3 {
+        margin: 0;
+        font-size: 15px;
+        font-weight: 700;
+      }
+      .view-all {
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--primary);
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+    ul {
+      list-style: none;
+      margin: 0;
+      padding: 0 6px 8px;
+      max-height: 420px;
+      overflow-y: auto;
+    }
+    li {
+      display: flex;
+      gap: 12px;
+      padding: 11px 12px;
+      border-radius: var(--radius-md);
+      transition: background-color 0.14s ease;
+      &:hover {
+        background: var(--surface-muted);
+      }
+    }
+    li.empty {
+      justify-content: center;
+      color: var(--muted);
+      padding: 24px;
+    }
+    .alert-icon {
+      width: 38px;
+      height: 38px;
+      flex: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 999px;
+      background: var(--primary-soft);
+      color: var(--primary);
+    }
+    .alert-body {
+      flex: 1;
+      min-width: 0;
+    }
+    .alert-top {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .alert-title {
+      font-size: 13.5px;
+      font-weight: 700;
+    }
+    .alert-date {
+      font-size: 12px;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+    .alert-msg {
+      margin: 2px 0 0;
+      font-size: 13px;
+      color: var(--muted);
+    }

@@ -1,0 +1,27 @@
+<div class="shell d-flex">
+  <app-sidebar />
+
+  <div class="main d-flex flex-column flex-grow-1">
+    <app-header />
+
+    <main class="content flex-grow-1">
+      <router-outlet />
+    </main>
+
+    <app-footer />
+  </div>
+</div>
+
+<!-- Mobile/tablet bottom navigation (hidden ≥1025px) -->
+<app-mobile-bottom-nav />
+
+<!-- Global slide-over drawers -->
+@if (layoutUi.overlay() === 'drafts') {
+  <app-drafts-drawer />
+}
+@if (layoutUi.overlay() === 'approvals') {
+  <app-approvals-drawer />
+}
+@if (layoutUi.overlay() === 'wallet-details') {
+  <app-wallet-details-drawer />
+}

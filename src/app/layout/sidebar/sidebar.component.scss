@@ -1,0 +1,227 @@
+:host {
+  display: block;
+  width: 248px;
+  flex: none;
+}
+
+.sidebar {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 20px 14px;
+  gap: 20px;
+}
+
+.backdrop {
+  display: none;
+}
+
+.mobile-utils {
+  display: none;
+}
+
+/* ≤1024px: the sidebar becomes a slide-in overlay opened via the
+   bottom-nav "More" button. */
+@media (max-width: 1023.98px) {
+  :host {
+    width: 0;
+  }
+  .backdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 65;
+    background: rgba(10, 12, 24, 0.4);
+    backdrop-filter: blur(2px);
+    animation: backdrop-in 0.18s ease;
+  }
+  .sidebar {
+    position: fixed;
+    inset: 0 auto 0 0;
+    z-index: 70;
+    width: 290px;
+    max-width: 86vw;
+    height: 100dvh;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    box-shadow: 24px 0 48px -12px rgba(15, 23, 42, 0.18);
+    transform: translateX(-100%);
+    transition: transform 0.22s cubic-bezier(0.32, 0.72, 0.24, 1);
+    visibility: hidden;
+
+    &.open {
+      transform: translateX(0);
+      visibility: visible;
+    }
+  }
+  .mobile-utils {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    border-top: 1px solid var(--border-soft);
+    padding-top: 12px;
+    padding-bottom: calc(env(safe-area-inset-bottom, 0px));
+  }
+  .profile-mini {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+  }
+  .profile-mini-name {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .anchor {
+    position: relative;
+  }
+}
+
+@keyframes backdrop-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 2px 10px;
+  color: var(--foreground);
+
+  .logo-mark {
+    display: inline-flex;
+    color: var(--foreground);
+  }
+  .logo-word {
+    font-size: 21px;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+  }
+}
+
+.nav {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  overflow-y: auto;
+  flex: 1;
+  padding-right: 2px;
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: 40px;
+  padding: 0 12px;
+  border-radius: var(--radius-md);
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--foreground-soft);
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease;
+  width: 100%;
+  text-align: left;
+
+  app-icon {
+    color: var(--muted);
+    transition: color 0.15s ease;
+  }
+
+  &:hover {
+    background: var(--surface-muted);
+    color: var(--foreground);
+  }
+
+  /* routerLinkActive="active" lands here */
+  &.active {
+    background: var(--primary-soft);
+    color: var(--primary);
+    font-weight: 600;
+    box-shadow: inset 0 0 0 1px var(--primary-ring);
+
+    app-icon {
+      color: var(--primary);
+    }
+  }
+}
+
+.nav-parent {
+  .nav-label {
+    flex: 1;
+  }
+  .chevron {
+    color: var(--muted-soft);
+    transition: transform 0.2s ease;
+    &.rotated {
+      transform: rotate(180deg);
+    }
+  }
+  &.child-active {
+    color: var(--primary);
+    box-shadow: inset 0 0 0 1.5px var(--primary);
+    border-radius: var(--radius-md);
+
+    app-icon {
+      color: var(--primary);
+    }
+  }
+}
+
+.subnav {
+  margin: 2px 0 4px 26px;
+  padding-left: 12px;
+  border-left: 1px solid var(--border-soft);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  animation: subnav-in 0.18s ease;
+}
+
+.subnav-link {
+  display: flex;
+  align-items: center;
+  height: 32px;
+  padding: 0 12px;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  color: var(--muted);
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease;
+
+  &:hover {
+    color: var(--foreground);
+    background: var(--surface-muted);
+  }
+
+  &.active {
+    background: var(--primary-soft);
+    color: var(--primary);
+    font-weight: 600;
+  }
+}
+
+@keyframes subnav-in {
+  from {
+    opacity: 0;
+    transform: translateY(-3px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

@@ -1,0 +1,12 @@
+.modal-popup {
+    .modal-content {
+        background: #fafbfc;
+        border-radius: 1rem;
+        .modal-header {
+            border-bottom: none;
+        }
+        .modal-footer {
+            border-top: none;
+        }
+    }
+}

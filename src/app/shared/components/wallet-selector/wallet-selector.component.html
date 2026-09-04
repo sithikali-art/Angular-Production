@@ -1,0 +1,55 @@
+    <div class="selector" (appClickOutside)="layoutUi.close('wallet-selector')">
+      <button
+        type="button"
+        class="trigger"
+        [attr.aria-expanded]="layoutUi.overlay() === 'wallet-selector'"
+        (click)="layoutUi.toggle('wallet-selector')"
+      >
+        @if (wallet.selectedWallet(); as selected) {
+          <app-flag-icon [countryCode]="selected.countryCode" [size]="20" />
+          <span class="trigger-meta">
+            <span class="trigger-name text-truncate">{{ selected.currency }} • {{ selected.name }}</span>
+            <span class="trigger-id">
+              Wallet ID {{ selected.walletId }}
+              <app-icon name="copy" [size]="12" />
+            </span>
+          </span>
+          <app-icon
+            name="chevron-down"
+            [size]="16"
+            class="caret"
+            [class.rotated]="layoutUi.overlay() === 'wallet-selector'"
+          />
+        }
+      </button>
+
+      @if (layoutUi.overlay() === 'wallet-selector') {
+        <div class="pop-panel menu">
+          <div class="menu-label overline">Switch wallet</div>
+          <!-- Options list, closed off by a bottom border -->
+          <div class="option-list">
+            @for (w of wallet.wallets(); track w.id) {
+              <button type="button" class="option" (click)="select(w.walletId)">
+                <app-flag-icon [countryCode]="w.countryCode" [size]="26" />
+                <span class="option-meta">
+                  <span class="option-name text-truncate">{{ w.currency }} • {{ w.name }}</span>
+                  <span class="option-id">Wallet ID {{ w.walletId }}</span>
+                </span>
+                <span class="option-balance">
+                  {{ w.balance | money: w.currency }} <span class="option-code">{{ w.currency }}</span>
+                </span>
+                <!-- @if (wallet.selectedWallet()?.walletId === w.walletId) {
+                  <app-icon name="check" [size]="15" class="check" />
+                } -->
+              </button>
+            }
+          </div>
+
+          <!-- View details for the selected wallet (border-top + eye icon) -->
+          <button type="button" class="menu-details" (click)="openDetails()">
+            <app-icon name="eye" [size]="15" class="text-primary"/>
+            View details
+          </button>
+        </div>
+      }
+    </div>

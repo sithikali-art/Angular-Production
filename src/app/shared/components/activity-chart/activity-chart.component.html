@@ -1,0 +1,154 @@
+    <section class="chart-block">
+      <div class="stats-row">
+        @if (wallet.activitySummary(); as summary) {
+          <div class="stat primary-stat">
+            <span class="stat-value">{{ summary.balance | money: summary.currency : 'symbol' }}</span>
+            <span class="stat-label">{{ summary.walletName }}</span>
+          </div>
+          <div class="stat">
+            <span class="stat-value">{{ summary.totalCredits | money: summary.currency : 'symbol' }}</span>
+            <span class="stat-label">Credits</span>
+          </div>
+          <div class="stat">
+            <span class="stat-value">{{ summary.totalDebits | money: summary.currency : 'symbol' }}</span>
+            <span class="stat-label">Debits</span>
+          </div>
+        }
+
+        <div class="controls">
+          <button type="button" class="chip active activity-chip">
+            <app-icon name="history" [size]="14" /> Activity
+          </button>
+          <div class="segment">
+            @for (kind of kinds; track kind) {
+              <button
+                type="button"
+                class="segment-btn"
+                [class.selected]="wallet.chartKind() === kind"
+                (click)="wallet.chartKind.set(kind)"
+              >
+                {{ kind === 'line' ? 'Line' : 'Bar' }}
+              </button>
+            }
+          </div>
+          <div class="segment">
+            @for (range of ranges; track range) {
+              <button
+                type="button"
+                class="segment-btn"
+                [class.selected]="wallet.chartRange() === range"
+                (click)="wallet.chartRange.set(range)"
+              >
+                {{ range | titlecase }}
+              </button>
+            }
+          </div>
+        </div>
+      </div>
+
+      <div class="legend">
+        <span class="legend-item"><span class="dot credit"></span> Credits</span>
+        <span class="legend-item"><span class="dot debit"></span> Debits</span>
+      </div>
+
+      <div class="chart-scroll scrollbar-soft">
+      <div class="chart-stage">
+      <svg class="chart" [attr.viewBox]="'0 0 ' + w + ' ' + h" preserveAspectRatio="xMidYMid meet">
+        <defs>
+          <linearGradient id="creditGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" [attr.stop-color]="'var(--chart-credit-top)'" />
+            <stop offset="100%" [attr.stop-color]="'var(--chart-credit-bottom)'" />
+          </linearGradient>
+        </defs>
+
+        <!-- gridlines + y labels -->
+        @for (tick of ticks; track tick) {
+          <line
+            [attr.x1]="padLeft"
+            [attr.x2]="w - 6"
+            [attr.y1]="yFor(tick)"
+            [attr.y2]="yFor(tick)"
+            stroke="var(--border-soft)"
+            stroke-dasharray="3 5"
+          />
+          <text [attr.x]="padLeft - 10" [attr.y]="yFor(tick) + 4" class="tick" text-anchor="end">
+            {{ symbol() + tick.toLocaleString() }}
+          </text>
+        }
+
+        @if (wallet.chartKind() === 'bar') {
+          @for (bar of bars(); track bar.month) {
+           <path
+      [attr.d]="barPath(bar.creditX, bar.creditY, barW, bar.creditH)"
+      fill="url(#creditGrad)"
+    >
+      <title>{{ bar.month }} credits</title>
+    </path>
+    <path
+      [attr.d]="barPath(bar.debitX, bar.debitY, barW, bar.debitH)"
+      fill="var(--chart-debit)"
+    >
+      <title>{{ bar.month }} debits</title>
+    </path>
+          }
+        } @else {
+          <!-- Smooth Catmull-Rom splines, matching the reference line chart -->
+          <path
+            [attr.d]="debitPath()"
+            fill="none"
+            stroke="var(--chart-debit-line)"
+            stroke-width="2"
+            stroke-linejoin="round"
+            stroke-linecap="round"
+          />
+          <path
+            [attr.d]="creditPath()"
+            fill="none"
+            stroke="var(--chart-credit-top)"
+            stroke-width="2"
+            stroke-linejoin="round"
+            stroke-linecap="round"
+          />
+        }
+
+        <!-- x labels -->
+        @for (bar of bars(); track bar.month) {
+          <text [attr.x]="bar.labelX" [attr.y]="h - 6" class="tick" text-anchor="middle">
+            {{ bar.month }}
+          </text>
+        }
+
+        <!-- Invisible hover bands: reveal the credits/debits tooltip -->
+        @for (band of hoverBands(); track band.index) {
+          <rect
+            class="hover-band"
+            [attr.x]="band.x"
+            y="0"
+            [attr.width]="band.width"
+            [attr.height]="h - 24"
+            fill="transparent"
+            (mouseenter)="hoveredIndex.set(band.index)"
+            (mouseleave)="hoveredIndex.set(null)"
+          />
+        }
+      </svg>
+
+      <!-- Tooltip -->
+      @if (hovered(); as tip) {
+        <div class="chart-tooltip" [style.left.%]="tip.leftPct">
+          <span class="tooltip-month">{{ tip.point.month }}</span>
+          <span class="tooltip-row credit">
+            <!-- <span class="dot credit"></span>  -->
+            Credits
+            {{ tip.point.credits | money: currency() : 'symbol' }}
+          </span>
+          <span class="tooltip-row">
+            <!-- <span class="dot debit"></span>  -->
+            Debits
+            {{ tip.point.debits | money: currency() : 'symbol' }}
+          </span>
+        </div>
+      }
+      </div>
+      </div>
+    </section>

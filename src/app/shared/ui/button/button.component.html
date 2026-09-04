@@ -1,0 +1,9 @@
+<button [class]="'btn btn-'+btnVariant">
+     @if (icon && iconPosition === 'left') {
+    <app-icon [name]="icon" [size]="15" />
+  }
+    {{btnText}}
+     @if (icon && iconPosition === 'right') {
+    <app-icon [name]="icon" [size]="15" />
+  }
+</button>

@@ -1,0 +1,293 @@
+.tabs {
+  gap: 8px;
+  padding: 4px 0 14px;
+}
+
+.mine-row {
+  gap: 12px;
+  font-size: 13.5px;
+  font-weight: 500;
+  padding: 2px 2px 16px;
+}
+
+.approval-list {
+  gap: 14px;
+}
+
+.approval-card {
+  padding: 16px 18px;
+    background: #f3f4f7;
+    border: none;
+
+  h3 {
+    margin: 12px 0 10px;
+    font-size: 15px;
+    font-weight: 700;
+  }
+}
+
+.approval-head {
+  gap: 8px;
+}
+
+.type-badge {
+  padding: 3px 10px;
+  border-radius: 999px;
+  // background: var(--muted);
+  background: #eff1f5;
+  // color: var(--primary);
+  color: #0e6616;
+  font-size: 11.5px;
+  // font-weight: 700;
+}
+
+.pending-badge {
+  padding: 3px 10px;
+  border-radius: 999px;
+  // background: var(--warning-bg);
+  background: #f0e2d3;
+  // color: var(--warning-fg);
+  color: #db821b;
+  font-size: 10.5px;
+  font-weight: 600;
+  // text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.status-badge {
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1;
+  color: #959ba5;
+  background-color: #f2f4f7;
+  border-radius: 50px;
+  padding: 8px 12px;
+  white-space: nowrap;
+}
+
+.date {
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.summary-grid {
+  margin: 0 0 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+
+  div {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  dt {
+    font-size: 13px;
+    color: var(--muted);
+    font-weight: 400;
+  }
+  dd {
+    margin: 0;
+    font-size: 13px;
+    // font-weight: 600;
+    text-align: right;
+  }
+}
+
+.totals {
+  // border-top: 1px solid var(--border-soft);
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  background: #f2f2f6;
+  border-radius: 20px;
+}
+
+.totals-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: baseline;
+}
+
+.totals-label {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.totals-amount {
+  font-size: 15px;
+  font-weight: 700;
+
+  small {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--muted);
+  }
+}
+
+.totals-value {
+  font-size: 13px;
+  // font-weight: 600;
+}
+
+.details-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--muted);
+
+  &:hover {
+    color: var(--foreground);
+  }
+}
+
+.approval-details {
+  margin-top: 12px;
+  padding: 12px 14px;
+  border-radius: var(--radius-sm);
+  background: var(--surface-muted);
+  font-size: 12.5px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.notes {
+  margin: 0 0 6px;
+  color: var(--foreground-soft);
+}
+
+.approvers {
+  margin: 0 0 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  li {
+    // font-weight: 600;
+  }
+}
+
+.approver-status {
+  font-size: 12px;
+  // font-weight: 700;
+  color: var(--muted);
+
+  &.approved {
+    color: var(--primary);
+  }
+}
+
+.timeline {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  li {
+    position: relative;
+    padding-left: 14px;
+    display: flex;
+    flex-direction: column;
+
+    &::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 6px;
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: var(--primary);
+    }
+  }
+}
+
+.timeline-label {
+  // font-weight: 600;
+}
+
+.timeline-date {
+  font-size: 11.5px;
+  color: var(--muted);
+}
+
+.actions {
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.confirm-strip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 14px;
+  padding: 10px 14px;
+  border-radius: var(--radius-md);
+  background: var(--primary-softer);
+  border: 1px dashed var(--primary-ring);
+  font-size: 13.5px;
+  font-weight: 600;
+  animation: strip-in 0.16s ease;
+}
+
+.confirm-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.btn.confirm[disabled] {
+  opacity: 0.7;
+  cursor: default;
+}
+
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  color: var(--muted);
+  padding: 44px 0;
+
+  app-icon {
+    color: var(--positive);
+  }
+  p {
+    margin: 0;
+  }
+}
+
+.foot {
+  font-size: 13px;
+}
+
+.view-all {
+  color: var(--primary);
+  font-weight: 600;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+@keyframes strip-in {
+  from {
+    opacity: 0;
+    transform: translateY(3px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.currency-code {
+  color: #6b7280;
+  font-weight: normal;
+}
+
+

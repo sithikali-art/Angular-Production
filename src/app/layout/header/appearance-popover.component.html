@@ -1,0 +1,56 @@
+    <div class="pop-panel appearance">
+      <header>
+        <h3>Appearance</h3>
+        <p>Palette and mode apply instantly.</p>
+      </header>
+
+      <div class="section-label overline">Palette</div>
+      <ul class="palette-list">
+        @for (palette of theme.palettes; track palette.id) {
+          <li>
+            <button
+              type="button"
+              class="palette-row"
+              [class.selected]="theme.palette() === palette.id"
+              (click)="theme.setPalette(palette.id)"
+            >
+              <span
+                class="swatch"
+                [style.background]="
+                  'linear-gradient(160deg,' + palette.preview[0] + ',' + palette.preview[1] + ' 60%,' + palette.preview[2] + ')'
+                "
+              ></span>
+              <span class="palette-meta">
+                <span class="palette-name">{{ palette.label }}</span>
+                <span class="palette-desc">
+                  · {{ palette.swatchLabels[0] }} &nbsp;· {{ palette.swatchLabels[1] }}
+                </span>
+              </span>
+              @if (theme.palette() === palette.id) {
+                <app-icon name="check" [size]="16" class="check" />
+              }
+            </button>
+          </li>
+        }
+      </ul>
+
+      <div class="section-label overline">Mode</div>
+      <div class="mode-row">
+        <button
+          type="button"
+          class="mode-btn"
+          [class.selected]="theme.mode() === 'light'"
+          (click)="theme.setMode('light')"
+        >
+          <app-icon name="sun" [size]="15" /> Light
+        </button>
+        <button
+          type="button"
+          class="mode-btn"
+          [class.selected]="theme.mode() === 'dark'"
+          (click)="theme.setMode('dark')"
+        >
+          <app-icon name="moon" [size]="15" /> Dark
+        </button>
+      </div>
+    </div>

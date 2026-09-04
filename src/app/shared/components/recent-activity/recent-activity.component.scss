@@ -1,0 +1,171 @@
+.recent {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-top: 4px;
+}
+
+header {
+  h2 {
+    margin: 0;
+    font-size: 14.5px;
+    font-weight: 600;
+  }
+  a {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--primary);
+    &:hover {
+      text-decoration: none;
+    }
+  }
+}
+
+ul {
+  margin-top: 6px;
+}
+
+li {
+  gap: 14px;
+  padding: 13px 12px;
+  margin: 0 -12px;
+  border-radius: 20px;
+  transition: background-color 0.15s ease;
+
+  &:not(:last-child) {
+    // border-bottom: 1px solid var(--border-soft);
+  }
+}
+
+/* Hover the whole list item (desktop pointers only) */
+@media (hover: hover) {
+  li:hover {
+    background-color: #f3f5f8;
+    border-radius: 20px;
+  }
+  :host-context(html.dark) li:hover {
+    background-color: var(--surface-muted);
+  }
+}
+
+li.empty {
+  color: var(--muted);
+  padding: 24px;
+  margin: 0;
+}
+
+.txn-badge {
+  position: relative;
+  flex: none;
+  display: inline-flex;
+}
+
+.txn-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+}
+
+.txn-direction {
+  position: absolute;
+  bottom: -2px;
+  right: -2px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--foreground);
+  color: var(--surface);
+  box-shadow: 0 0 0 2px var(--surface);
+  &.credit {
+background: var(--primary);
+  }
+}
+
+/* 40×40 rounded badge with a centered Tabler transfer arrow */
+.txn-tile {
+  width: 40px;
+  height: 40px;
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-md);
+  background: var(--gradient-hero);
+  color: #fff;
+
+  &.credit {
+    filter: saturate(1.1);
+  }
+}
+
+.txn-meta {
+  min-width: 0;
+  line-height: 1.35;
+}
+
+.txn-name {
+  font-size: 13.5px;
+  font-weight: 500;
+}
+
+.txn-desc {
+  font-size: 12.5px;
+  color: var(--muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.txn-amounts {
+  line-height: 1.35;
+  flex: none;
+  white-space: nowrap;
+}
+
+.txn-amount {
+  font-size: 13.5px;
+  font-weight: 600;
+
+  &.credit {
+    color: var(--primary);
+    .currency-code {
+    color: var(--primary);
+    font-weight: normal;
+  }
+  .currency-code {
+    font-weight: normal;
+  }
+  }
+  
+}
+
+.txn-balance {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+/* Phone: tighten the row so amounts never clip */
+@media (max-width: 480px) {
+  li {
+    gap: 10px;
+    padding: 13px 10px;
+    margin: 0 -10px;
+  }
+  .txn-name {
+    font-size: 13px;
+  }
+  .txn-desc {
+    font-size: 11.5px;
+  }
+  .txn-amount {
+    font-size: 12.5px;
+  }
+  .txn-balance {
+    font-size: 11px;
+  }
+}

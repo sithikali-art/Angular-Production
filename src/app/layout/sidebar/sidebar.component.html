@@ -1,0 +1,118 @@
+@if (layoutUi.mobileNavOpen()) {
+  <div class="backdrop" (click)="closeMobile()" aria-hidden="true"></div>
+}
+
+<aside class="sidebar" [class.open]="layoutUi.mobileNavOpen()">
+  <a class="logo" routerLink="/" (click)="closeMobile()">
+    <!-- <span class="logo-mark">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+        <rect x="3" y="6" width="13" height="12" rx="3" />
+        <path d="M16 9h3.5a1.5 1.5 0 0 1 0 6H16" />
+      </svg>
+    </span>
+    <span class="logo-word">xtrm</span> -->
+    <img src="images/xtrm-logo-updated.svg" alt="image" width="120">
+  </a>
+
+  <nav class="nav scrollbar-soft">
+    @for (item of items; track item.label) {
+      @if (item.children) {
+        <!-- Expandable group (Fund / Pay) -->
+        <div class="nav-group">
+          <button
+            type="button"
+            class="nav-link nav-parent"
+            [class.child-active]="isGroupActive(item)"
+            [attr.aria-expanded]="openGroup() === item.label"
+            (click)="toggleGroup(item.label)"
+          >
+            <app-icon [name]="item.icon" [size]="16" />
+            <span class="nav-label">{{ item.label }}</span>
+            <app-icon
+              name="chevron-down"
+              [size]="15"
+              class="chevron"
+              [class.rotated]="openGroup() === item.label"
+            />
+          </button>
+
+          @if (openGroup() === item.label) {
+            <div class="subnav">
+              @for (child of item.children; track child.path) {
+                <a
+                  class="subnav-link"
+                  [routerLink]="child.path"
+                  routerLinkActive="active"
+                  [routerLinkActiveOptions]="{ exact: true }"
+                  (click)="closeMobile()"
+                >
+                  {{ child.label }}
+                </a>
+              }
+            </div>
+          }
+        </div>
+      } @else {
+        <!-- Leaf link with dynamic active highlighting -->
+        <a
+          class="nav-link"
+          [routerLink]="item.path"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: item.exact ?? false }"
+          (click)="closeMobile()"
+        >
+          <app-icon [name]="item.icon" [size]="16" />
+          <span class="nav-label">{{ item.label }}</span>
+        </a>
+      }
+    }
+  </nav>
+
+  <!-- Mobile-only footer: surfaces the topbar utilities inside the overlay -->
+  <div class="mobile-utils">
+    <div class="profile-mini">
+      <app-avatar name="Jegan Raghavan" [size]="30" />
+      <span class="profile-mini-name">Jegan Raghavan</span>
+    </div>
+
+    <div class="anchor" (appClickOutside)="layoutUi.close('appearance')">
+      <button
+        type="button"
+        class="icon-btn"
+        aria-label="Appearance"
+        [class.open]="layoutUi.overlay() === 'appearance'"
+        (click)="layoutUi.toggle('appearance')"
+      >
+        <app-icon name="palette" [size]="17" />
+      </button>
+      @if (layoutUi.overlay() === 'appearance') {
+        <app-appearance-popover />
+      }
+    </div>
+
+    <button type="button" class="icon-btn" aria-label="Draft payments" (click)="openDrafts()">
+      <app-icon name="file-invoice" [size]="17" />
+      @if (drafts.count() > 0) {
+        <span class="badge-dot">{{ drafts.count() }}</span>
+      }
+    </button>
+
+    <div class="anchor" (appClickOutside)="layoutUi.close('notifications')">
+      <button
+        type="button"
+        class="icon-btn"
+        aria-label="Notifications"
+        [class.open]="layoutUi.overlay() === 'notifications'"
+        (click)="layoutUi.toggle('notifications')"
+      >
+        <app-icon name="bell" [size]="17" />
+        @if (notifications.unreadCount() > 0) {
+          <span class="badge-dot">{{ notifications.unreadCount() }}</span>
+        }
+      </button>
+      @if (layoutUi.overlay() === 'notifications') {
+        <app-notifications-popover />
+      }
+    </div>
+  </div>
+</aside>

@@ -1,0 +1,56 @@
+<!-- Opens on hover or click; closes on mouse-leave, outside click or re-click -->
+<div
+  class="anchor"
+  (appClickOutside)="close()"
+  (click)="open()"
+  (mouseenter)="open()"
+  (mouseleave)="close()"
+>
+  <button
+    type="button"
+    class="status-badge"
+    [class.open]="layoutUi.overlay() === 'status'"
+    (click)="layoutUi.toggle('status')"
+  >
+    <span class="pulse"></span>
+    Status
+    <app-icon
+      [name]="layoutUi.overlay() === 'status' ? 'chevron-up' : 'chevron-down'"
+      [size]="13"
+    />
+  </button>
+
+  @if (layoutUi.overlay() === 'status') {
+    <div class="pop-panel status-panel">
+      <header class="d-flex align-items-center justify-content-between">
+        <h3>Company status</h3>
+        <span class="pending-pill">
+          <span class="pending-dot"></span>
+          {{ company.statusLabel }}
+        </span>
+      </header>
+
+      <ul class="list-unstyled mb-0">
+        @for (item of company.statusItems; track item.key) {
+          <li class="d-flex align-items-center gap-3">
+            <span class="row-icon">
+              <app-icon [name]="item.icon" [size]="16" />
+            </span>
+            <span class="row-label flex-grow-1 text-truncate">{{ item.label }}</span>
+            @if (item.state === 'ok') {
+              <span class="row-value ok ">
+                {{ item.value }}
+                <app-icon name="check" [size]="14" class="value-check" />
+              </span>
+            } @else {
+              <button type="button" class="row-value action text-nowrap">
+                {{ item.value }}
+                <app-icon name="arrow-right" [size]="13" />
+              </button>
+            }
+          </li>
+        }
+      </ul>
+    </div>
+  }
+</div>

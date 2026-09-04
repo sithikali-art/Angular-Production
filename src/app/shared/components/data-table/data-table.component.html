@@ -1,0 +1,96 @@
+<div class="table-scroll scrollbar-soft">
+  <table class="data-table">
+    <thead>
+      <tr>
+        @for (col of columns(); track col.key) {
+          <th
+            class="overline"
+            [style.width]="col.width ?? null"
+            [class.align-right]="col.align === 'right'"
+            [class.align-center]="col.align === 'center'"
+          >
+            {{ col.label }}
+          </th>
+        }
+        @if (showRowMenu() || expandable()) {
+          <th class="actions-col" aria-label="Row actions"></th>
+        }
+      </tr>
+    </thead>
+
+    <tbody>
+      @for (row of rows(); track keyOf(row)) {
+        <tr
+          class="data-row"
+          [class.expanded]="isExpanded(row)"
+          [class.clickable]="expandable()"
+          (click)="toggle(row)"
+        >
+          @for (col of columns(); track col.key) {
+            <td
+              [class.align-right]="col.align === 'right'"
+              [class.align-center]="col.align === 'center'"
+            >
+              @if (cellTemplate(col.key); as tpl) {
+                <ng-container *ngTemplateOutlet="tpl; context: { $implicit: row }" />
+              } @else {
+                {{ cellValue(row, col.key) }}
+              }
+            </td>
+          }
+
+          @if (showRowMenu() || expandable()) {
+            <td class="actions-cell">
+              <span class="d-inline-flex align-items-center gap-1">
+                @if (showRowMenu()) {
+                  <button
+                    type="button"
+                    class="row-btn"
+                    aria-label="Row actions"
+                    (click)="rowMenu.emit(row); $event.stopPropagation()"
+                  >
+                    <app-icon name="dots-vertical" [size]="16" />
+                  </button>
+                }
+                @if (expandable()) {
+                  <button
+                    type="button"
+                    class="row-btn"
+                    [attr.aria-expanded]="isExpanded(row)"
+                    aria-label="Toggle details"
+                    (click)="toggle(row); $event.stopPropagation()"
+                  >
+                    <app-icon
+                      name="chevron-down"
+                      [size]="16"
+                      class="chevron"
+                      [class.rotated]="isExpanded(row)"
+                    />
+                  </button>
+                }
+              </span>
+            </td>
+          }
+        </tr>
+
+        @if (expandable() && isExpanded(row)) {
+          <tr class="detail-row">
+            <td [attr.colspan]="columns().length + 1">
+              <div class="detail-panel">
+                <ng-container
+                  *ngTemplateOutlet="expandedTemplate(); context: { $implicit: row }"
+                />
+              </div>
+            </td>
+          </tr>
+        }
+      } @empty {
+        <tr>
+          <td class="empty-cell" [attr.colspan]="columns().length + 1">
+            {{ emptyMessage() }}
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>

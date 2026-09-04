@@ -1,0 +1,33 @@
+<div class="page-head">
+  <div class="company">
+    <div class="company-row">
+      <h1>{{ company.name }}</h1>
+      <!-- Image 6: status popover -->
+      <app-status-popover />
+    </div>
+    <div class="spn">
+      {{ company.spn }}
+      <app-icon name="copy" [size]="13" />
+    </div>
+  </div>
+
+  <!-- Images 7 & 8: opens the approvals slide-over -->
+  <button type="button" class="approvals-cta rounded-pill" (click)="openApprovals()">
+    <app-icon name="clipboard-check" [size]="15" />
+    Approvals Outstanding
+    <span class="count">{{ approvals.pendingCount() }}</span>
+    <app-icon name="arrow-right" [size]="14" />
+  </button>
+</div>
+
+<div class="hero-grid">
+  <!-- Images 1 & 9: balance card + wallet switcher -->
+  <app-wallet-balance-card />
+  <app-recent-activity />
+</div>
+
+<!-- Image 10: funding bank account bar -->
+<app-funding-bar />
+
+<!-- Image 1: stats + credits/debits chart -->
+<app-activity-chart />

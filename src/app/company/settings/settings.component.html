@@ -1,0 +1,283 @@
+<a routerLink="/settings" class="back-link d-inline-flex align-items-center gap-1">
+  <app-icon name="chevron-left" [size]="15" />
+  Back to settings
+</a>
+
+<header class="page-head">
+  <h1>Organization</h1>
+  <p class="page-sub">Manage company information, entities, users, and organization structure.</p>
+</header>
+
+<nav class="tabs d-flex align-items-center" role="tablist" aria-label="Organization sections">
+  @for (tab of tabs; track tab.id) {
+    <button
+      type="button"
+      role="tab"
+      class="tab"
+      [class.active]="activeTab() === tab.id"
+      [attr.aria-selected]="activeTab() === tab.id"
+      (click)="setTab(tab.id)"
+    >
+      <app-icon [name]="tab.icon" [size]="15" />
+      {{ tab.label }}
+    </button>
+  }
+</nav>
+
+@switch (activeTab()) {
+  <!-- ============================ Entities ============================ -->
+  @case ('entities') {
+    <section class="tab-body">
+      <h2 class="section-title">Entities</h2>
+      <p class="section-sub">
+        Manage headquarters, regional offices, subsidiaries, and assigned users.
+      </p>
+
+      <!-- Add entity (collapsible) -->
+      <app-accordion [icon]="'plus'" [title]="'Add entity'" [subtitle]="'Add a regional office, subsidiary, or additional business entity.'">
+        
+          <form class="add-form row g-3" (ngSubmit)="addEntity()">
+            <div class="col-12 col-md-6 col-xl-3">
+              <label class="overline" for="ent-name">Entity name</label>
+              <input id="ent-name" name="name" class="field" [(ngModel)]="newName" placeholder="e.g. Xtrm Singapore" required />
+            </div>
+            <div class="col-12 col-md-6 col-xl-3">
+              <label class="overline" for="ent-type">Entity type</label>
+              <select id="ent-type" name="type" class="field" [(ngModel)]="newType">
+                <option>Subsidiary</option>
+                <option>Regional Office</option>
+                <option>Headquarters</option>
+              </select>
+            </div>
+            <div class="col-12 col-md-6 col-xl-3">
+              <label class="overline" for="ent-location">Location</label>
+              <input id="ent-location" name="location" class="field" [(ngModel)]="newLocation" placeholder="City, Country" />
+            </div>
+            <div class="col-12 col-md-6 col-xl-3">
+              <label class="overline" for="ent-function">Business function</label>
+              <input id="ent-function" name="function" class="field" [(ngModel)]="newFunction" placeholder="e.g. Marketing" />
+            </div>
+            <div class="col-12 d-flex justify-content-end gap-2">
+              <button type="button" class="btn btn-cancel" (click)="cancelAdd()">Cancel</button>
+              <button type="submit" class="btn btn-primary" [disabled]="!newName.trim()">
+                <app-icon name="plus" [size]="15" />
+                Add entity
+              </button>
+            </div>
+          </form>
+        
+      </app-accordion>
+
+      <div class="add-entity card-flat d-none">
+        <button
+          type="button"
+          class="add-entity-head d-flex align-items-center gap-3 w-100"
+          [attr.aria-expanded]="addOpen()"
+          (click)="toggleAdd()"
+        >
+          <span class="add-plus">
+            <app-icon name="plus" [size]="16" />
+          </span>
+          <span class="d-flex flex-column text-start">
+            <span class="add-title">Add entity</span>
+            <span class="add-sub">Add a regional office, subsidiary, or additional business entity.</span>
+          </span>
+          <app-icon
+            name="chevron-down"
+            [size]="16"
+            class="ms-auto add-caret"
+            [class.rotated]="addOpen()"
+          />
+        </button>
+
+        @if (addOpen()) {
+          <form class="add-form row g-3" (ngSubmit)="addEntity()">
+            <div class="col-12 col-md-6 col-xl-3">
+              <label class="overline" for="ent-name">Entity name</label>
+              <input id="ent-name" name="name" class="field" [(ngModel)]="newName" placeholder="e.g. Xtrm Singapore" required />
+            </div>
+            <div class="col-12 col-md-6 col-xl-3">
+              <label class="overline" for="ent-type">Entity type</label>
+              <select id="ent-type" name="type" class="field" [(ngModel)]="newType">
+                <option>Subsidiary</option>
+                <option>Regional Office</option>
+                <option>Headquarters</option>
+              </select>
+            </div>
+            <div class="col-12 col-md-6 col-xl-3">
+              <label class="overline" for="ent-location">Location</label>
+              <input id="ent-location" name="location" class="field" [(ngModel)]="newLocation" placeholder="City, Country" />
+            </div>
+            <div class="col-12 col-md-6 col-xl-3">
+              <label class="overline" for="ent-function">Business function</label>
+              <input id="ent-function" name="function" class="field" [(ngModel)]="newFunction" placeholder="e.g. Marketing" />
+            </div>
+            <div class="col-12 d-flex justify-content-end gap-2">
+              <button type="button" class="btn btn-cancel" (click)="cancelAdd()">Cancel</button>
+              <button type="submit" class="btn btn-primary" [disabled]="!newName.trim()">
+                <app-icon name="plus" [size]="15" />
+                Add entity
+              </button>
+            </div>
+          </form>
+        }
+      </div>
+
+      <app-data-table [columns]="entityColumns" [rows]="entities()" rowKey="entityId" [showRowMenu]="true">
+        <!-- ENTITY -->
+        <ng-template appTableCell="name" let-row>
+          <span class="d-flex align-items-center gap-3">
+            <span class="entity-icon">
+              <app-icon name="building" [size]="17" />
+            </span>
+            <span class="d-flex flex-column">
+              <span class="cell-title d-inline-flex align-items-center gap-2">
+                {{ row.name }}
+                @if (row.prime) {
+                  <span class="prime-badge">Prime</span>
+                }
+              </span>
+              <span class="cell-sub">{{ row.entityType }}</span>
+            </span>
+          </span>
+        </ng-template>
+
+        <!-- LOCATION / FUNCTION -->
+        <ng-template appTableCell="location" let-row>
+          <span class="d-flex flex-column">
+            <span class="cell-title">{{ row.location }}</span>
+            <span class="cell-sub">{{ row.businessFunction }}</span>
+          </span>
+        </ng-template>
+
+        <!-- USERS -->
+        <ng-template appTableCell="assignedUsers" let-row>
+          <span class="d-flex flex-column">
+            <span class="cell-title">{{ row.assignedUsers }}</span>
+            <span class="cell-sub">users</span>
+          </span>
+        </ng-template>
+
+        <!-- STATUS -->
+        <ng-template appTableCell="status" let-row>
+          <span class="status-pill" [class.inactive]="row.status !== 'Active'">
+            <span class="dot"></span>
+            {{ row.status }}
+          </span>
+        </ng-template>
+
+        <!-- Expanded detail panel -->
+        <ng-template appTableExpanded let-row>
+          <div class="row g-4 detail-grid">
+            <div class="col-12 col-sm-6 col-lg-4">
+              <span class="overline">Entity name</span>
+              <span class="detail-value">{{ row.name }}</span>
+            </div>
+            <div class="col-12 col-sm-6 col-lg-4">
+              <span class="overline">Entity type</span>
+              <span class="detail-value">{{ row.entityType }}</span>
+            </div>
+            <div class="col-12 col-sm-6 col-lg-4">
+              <span class="overline">Business function</span>
+              <span class="detail-value">{{ row.businessFunction }}</span>
+            </div>
+            <div class="col-12 col-sm-6 col-lg-4">
+              <span class="overline">Location</span>
+              <span class="detail-value">{{ row.location }}</span>
+            </div>
+            <div class="col-12 col-sm-6 col-lg-4">
+              <span class="overline">Assigned users</span>
+              <span class="detail-value">{{ row.assignedUsers }} users</span>
+            </div>
+            <div class="col-12 col-sm-6 col-lg-4">
+              <span class="overline">Entity admin</span>
+              <span class="detail-value">{{ row.entityAdmin.name }}</span>
+              <a class="detail-link" href="mailto:{{ row.entityAdmin.email }}">{{ row.entityAdmin.email }}</a>
+            </div>
+            <div class="col-12 col-sm-6 col-lg-4">
+              <span class="overline">Created</span>
+              <span class="detail-value">{{ row.createdOn }}</span>
+            </div>
+            <div class="col-12 col-sm-6 col-lg-4">
+              <span class="overline">Last updated</span>
+              <span class="detail-value">{{ row.lastUpdated }}</span>
+            </div>
+            <div class="col-12 col-sm-6 col-lg-4">
+              <span class="overline">Notes</span>
+              <span class="detail-value">{{ row.notes || '—' }}</span>
+            </div>
+          </div>
+          <div class="d-flex justify-content-end mt-3">
+            <button type="button" class="btn btn-primary">
+              <app-icon name="pencil" [size]="15" />
+              Edit entity
+            </button>
+          </div>
+        </ng-template>
+      </app-data-table>
+    </section>
+  }
+
+  <!-- ============================= Users ============================= -->
+  @case ('users') {
+    <section class="tab-body">
+      <h2 class="section-title">Users</h2>
+      <p class="section-sub">People with access to this organization and their entity assignments.</p>
+
+      <app-data-table [columns]="userColumns" [rows]="users()" rowKey="userId" [showRowMenu]="true">
+        <ng-template appTableCell="name" let-row>
+          <span class="d-flex align-items-center gap-3">
+            <app-avatar [name]="row.name" [size]="34" />
+            <span class="d-flex flex-column">
+              <span class="cell-title">{{ row.name }}</span>
+              <span class="cell-sub">{{ row.email }}</span>
+            </span>
+          </span>
+        </ng-template>
+
+        <ng-template appTableCell="status" let-row>
+          <span class="status-pill" [class.inactive]="row.status !== 'Active'">
+            <span class="dot"></span>
+            {{ row.status }}
+          </span>
+        </ng-template>
+      </app-data-table>
+    </section>
+  }
+
+  <!-- ============================ Profile ============================ -->
+  @case ('profile') {
+    <section class="tab-body">
+      <h2 class="section-title">Profile</h2>
+      <p class="section-sub">Core company information registered with Xtrm.</p>
+
+      <div class="card profile-card">
+        <div class="row g-4">
+          <div class="col-12 col-sm-6 col-lg-4">
+            <span class="overline">Company name</span>
+            <span class="detail-value">{{ company.name }}</span>
+          </div>
+          <div class="col-12 col-sm-6 col-lg-4">
+            <span class="overline">SPN</span>
+            <span class="detail-value">{{ company.spn }}</span>
+          </div>
+          <div class="col-12 col-sm-6 col-lg-4">
+            <span class="overline">Identity level</span>
+            <span class="detail-value">
+              Level {{ company.identityLevel.level }}
+              @if (company.identityLevel.verified) {
+                <span class="text-positive">· Verified</span>
+              }
+            </span>
+          </div>
+          @for (item of company.statusItems; track item.key) {
+            <div class="col-12 col-sm-6 col-lg-4">
+              <span class="overline">{{ item.label }}</span>
+              <span class="detail-value">{{ item.value }}</span>
+            </div>
+          }
+        </div>
+      </div>
+    </section>
+  }
+}

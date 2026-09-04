@@ -1,0 +1,10 @@
+<span
+  [class]="'badge bg-'+badgeVariant+'-light text-'+badgeVariant"
+  [class.badge-number]="badgeType === 'number'"
+>
+  @if (badgeType === 'icon-text' && icon) {
+    <app-icon [name]="icon" [size]="12" />
+  }
+
+  <span>{{ badgeText }}</span>
+</span>

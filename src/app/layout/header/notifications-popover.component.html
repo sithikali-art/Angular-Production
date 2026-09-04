@@ -1,0 +1,26 @@
+    <div class="pop-panel alerts">
+      <header>
+        <h3>New Alerts</h3>
+        <button type="button" class="view-all" (click)="notifications.markAllRead()">
+          View All
+        </button>
+      </header>
+      <ul class="scrollbar-soft">
+        @for (alert of notifications.alerts(); track alert.id) {
+          <li>
+            <span class="alert-icon">
+              <app-icon [name]="iconFor(alert.kind)" [size]="16" />
+            </span>
+            <div class="alert-body">
+              <div class="alert-top">
+                <span class="alert-title">{{ alert.title }}</span>
+                <span class="alert-date">{{ alert.createdUtc | date: 'MMM dd, yyyy' }}</span>
+              </div>
+              <p class="alert-msg">{{ alert.message }}</p>
+            </div>
+          </li>
+        } @empty {
+          <li class="empty">You're all caught up 🎉</li>
+        }
+      </ul>
+    </div>

@@ -1,0 +1,180 @@
+<app-drawer
+  title="Approvals outstanding"
+  subtitle="Review items waiting for your approval."
+  icon="clipboard-check"
+  (closed)="layoutUi.close('approvals')"
+  class="approval-drawer"
+>
+
+
+<div class="d-flex align-items-center gap-2 mb-3 approval-x">
+  <span class="badge status-badge pending-badge">
+    4 pending
+  </span>
+
+  <span class="badge status-badge">
+    1 mass pay
+  </span>
+
+  <span class="badge status-badge">
+    1 bank transfer
+  </span>
+</div>
+  <div class="tabs d-flex flex-wrap border-top approval-border-top approval-x pt-3">
+    @for (tab of approvals.tabs(); track tab) {
+      <button
+        type="button"
+        class="chip"
+        [class.active]="approvals.activeTab() === tab"
+        (click)="approvals.setTab(tab)"
+      >
+        {{ tab }}
+      </button>
+    }
+  </div>
+
+  <label class="mine-row d-flex align-items-center justify-content-between approval-x">
+    <span>Show only items assigned to me</span>
+    <app-toggle-switch [checked]="approvals.onlyMine()" (toggled)="approvals.toggleOnlyMine()" />
+  </label>
+
+  <div class="approval-list d-flex flex-column approval-x">
+    @for (item of approvals.filtered(); track item.id) {
+      <article class="approval-card card">
+        <div class="approval-head d-flex align-items-center">
+          <span class="type-badge">{{ item.type }}</span>
+          <span class="pending-badge text-uppercase">Pending approval</span>
+          <span class="date ms-auto">{{ item.requestedUtc | date: 'MMM dd, yyyy · HH:mm' }}</span>
+        </div>
+
+        <h3>{{ item.title }}</h3>
+
+        <!-- Summary table matching the React screen -->
+        <dl class="summary-grid">
+          <div><dt>Submission ID</dt><dd>{{ item.submissionId }}</dd></div>
+          <div><dt>Requested by</dt><dd>{{ item.requester }}</dd></div>
+          <div><dt>Entity</dt><dd>{{ item.entity }}</dd></div>
+          <div><dt>Policy</dt><dd>{{ item.policy }}</dd></div>
+          <div><dt>Required approvals</dt><dd>{{ item.requiredApprovals }}</dd></div>
+        </dl>
+
+        <div class="totals">
+          @if (item.amount !== null) {
+            <div class="totals-row">
+              <span class="totals-label">Total amount</span>
+              <span class="totals-amount">
+                {{ item.amount | money: item.currency ?? 'USD' }} <span class="currency-code">{{ item.currency }}</span>
+              </span>
+            </div>
+          }
+          @if (item.recipients !== null) {
+            <div class="totals-row">
+              <span class="totals-label">Recipients</span>
+              <span class="totals-value">{{ item.recipients }}</span>
+            </div>
+          }
+          @if (item.fundingWallet) {
+            <div class="totals-row">
+              <span class="totals-label">Funding wallet</span>
+              <span class="totals-value">{{ item.fundingWallet }}</span>
+            </div>
+          }
+        </div>
+
+        @if (approvals.expandedId() === item.id) {
+          <!-- View details: notes, approvers and timeline for this item -->
+          <div class="approval-details">
+            <span class="overline">Notes</span>
+            <p class="notes">{{ item.notes }}</p>
+
+            <span class="overline">Current approvers</span>
+            <ul class="approvers list-unstyled">
+              @for (approver of item.approvers; track approver.name) {
+                <li class="d-flex align-items-center justify-content-between">
+                  <span>{{ approver.name }}</span>
+                  <span class="approver-status" [class.approved]="approver.status === 'Approved'">
+                    {{ approver.status }}
+                  </span>
+                </li>
+              }
+            </ul>
+
+            <span class="overline">Timeline</span>
+            <ul class="timeline list-unstyled">
+              @for (entry of item.timeline; track entry.label) {
+                <li>
+                  <span class="timeline-label">{{ entry.label }}</span>
+                  <span class="timeline-date">{{ entry.occurredUtc | date: 'MMM d, yyyy · HH:mm' }}</span>
+                </li>
+              }
+            </ul>
+          </div>
+        }
+
+        @if (approvals.confirmingId() === item.id) {
+          <!-- Inline confirmation replaces the action row -->
+          <div class="confirm-strip">
+            <span>Approve this request?</span>
+            <div class="confirm-actions">
+              <button
+                type="button"
+                class="btn btn-primary confirm"
+                [disabled]="approvals.busyId() === item.id"
+                (click)="approvals.confirmApprove(item.id)"
+              >
+                <app-icon name="check" [size]="14" />
+                {{ approvals.busyId() === item.id ? 'Approving…' : 'Confirm' }}
+              </button>
+              <button type="button" class="btn btn-ghost" (click)="approvals.cancelConfirm()">
+                Cancel
+              </button>
+            </div>
+          </div>
+        } @else {
+          <div class="actions d-flex align-items-center">
+            <button type="button" class="details-toggle" (click)="approvals.toggleDetails(item.id)">
+              <app-icon name="eye" [size]="15" />
+              View details
+              <app-icon
+                [name]="approvals.expandedId() === item.id ? 'chevron-up' : 'chevron-down'"
+                [size]="14"
+              />
+            </button>
+            <span class="ms-auto d-flex gap-2">
+              <button type="button" class="btn btn-ghost" (click)="approvals.decline(item.id)">
+                Reject
+              </button>
+              <button
+                type="button"
+                class="btn btn-primary"
+                (click)="approvals.requestApprove(item.id)"
+              >
+                Approve
+              </button>
+            </span>
+            
+          </div>
+        }
+        <div class="d-none">
+              <app-button [btnVariant]="'primary'" [btnText]="'Approve'" [icon]="'check'" [iconPosition]="'right'"></app-button>
+              <app-badge [badgeType]="'icon-text'" [badgeText]="'4 Pending'" [badgeVariant]="'primary'">
+              </app-badge>
+              <app-badge [badgeType]="'icon-text'" [badgeText]="'Active'" [badgeVariant]="'warning'" [icon]="'check'">
+              </app-badge>
+              <app-badge [badgeType]="'number'" [badgeText]="'45'" [badgeVariant]="'danger'" [icon]="'check'">
+              </app-badge>
+            </div>
+      </article>
+    } @empty {
+      <div class="empty">
+        <app-icon name="check" [size]="28" />
+        <p>Nothing waiting on you. Nice work.</p>
+      </div>
+    }
+  </div>
+
+  <div drawer-footer class="foot d-flex align-items-center justify-content-between">
+    <span class="text-muted">{{ approvals.pendingCount() }} pending</span>
+    <a href="#" (click)="$event.preventDefault()" class="view-all">View all approvals</a>
+  </div>
+</app-drawer>
