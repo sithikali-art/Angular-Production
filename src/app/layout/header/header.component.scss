@@ -1,0 +1,340 @@
+.topbar {
+  gap: 12px 16px;
+  padding: 18px 0 10px;
+  /* Let the search drop to its own full-width row instead of being
+     crushed when the actions cluster needs the space. */
+  flex-wrap: wrap;
+}
+
+.search-anchor {
+  position: relative;
+  /* Never shrink below a usable width; wrap instead. */
+  flex: 1 1 260px;
+  min-width: min(240px, 100%);
+  max-width: 400px;
+}
+
+.search {
+  gap: 10px;
+  height: 42px;
+  padding: 0 16px;
+  border-radius: var(--radius-md);
+  background: var(--surface-muted);
+  color: var(--muted-soft);
+  cursor: text;
+  transition: box-shadow 0.15s ease;
+
+  /* Focus keeps the same background — only the focus ring is added. */
+  &:focus-within {
+    box-shadow: 0 0 0 2px var(--primary-ring);
+  }
+
+  input {
+    flex: 1;
+    min-width: 0;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-size: 13.5px;
+    color: var(--foreground);
+    text-overflow: ellipsis;
+    &::placeholder {
+      color: var(--muted-soft);
+    }
+  }
+}
+
+/* Search results dropdown — at least a readable width even when the
+   input itself is narrow, and never wider than the viewport. */
+.search-menu {
+  top: calc(100% + 8px);
+  left: 0;
+  width: max(100%, min(360px, calc(100vw - 32px)));
+  max-width: calc(100vw - 32px);
+  padding: 10px 8px;
+  transform-origin: top left;
+}
+
+.search-item {
+  padding: 8px 10px;
+  border-radius: var(--radius-sm);
+  text-align: left;
+  transition: background-color 0.13s ease;
+
+  &:hover {
+    background: var(--surface-muted);
+  }
+}
+
+.search-item-icon {
+  width: 32px;
+  height: 32px;
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: var(--primary-soft);
+  color: var(--primary);
+}
+
+.search-item-meta {
+  min-width: 0;
+  line-height: 1.3;
+}
+
+.search-item-name {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.search-item-detail {
+  font-size: 11.5px;
+  color: var(--muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.search-item-type {
+  font-size: 10.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--muted-soft);
+}
+
+.search-empty {
+  padding: 18px 12px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.topbar-actions {
+  gap: 14px;
+  /* The actions never squeeze — the search wraps instead. */
+  flex: 0 0 auto;
+}
+
+.upgrade {
+  height: 40px;
+  flex: none;
+  white-space: nowrap;
+}
+
+.utility-cluster {
+  gap: 2px;
+  padding: 2px;
+  border-radius: var(--radius-xl);
+  background: var(--surface-muted);
+}
+
+.anchor {
+  position: relative;
+}
+
+.profile {
+  gap: 10px;
+  padding: 4px 10px 4px 5px;
+  border-radius: 999px;
+  background: var(--surface-muted);
+  transition: background-color 0.15s ease;
+
+  &:hover {
+    background: var(--surface-inset);
+  }
+}
+
+.profile-meta {
+  align-items: flex-start;
+  line-height: 1.25;
+}
+
+.profile-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.profile-email {
+  font-size: 11.5px;
+  color: var(--muted);
+}
+
+.profile-caret {
+  color: var(--muted-soft);
+}
+
+.upgrade-compact {
+  display: none;
+  background: var(--primary-soft);
+  color: var(--primary);
+  border-radius: 999px;
+}
+
+/* ≤1024px: sidebar is hidden, header collapses to search + upgrade + avatar.
+   The palette/drafts/bell utilities move into the "More" overlay's footer. */
+@media (max-width: 1023.98px) {
+  .topbar {
+    gap: 10px;
+    padding-top: 14px;
+  }
+  .search-anchor {
+    max-width: none;
+  }
+  .upgrade,
+  .utility-cluster,
+  .profile-meta,
+  .profile-caret {
+    display: none !important;
+  }
+  .upgrade-compact {
+    display: inline-flex;
+  }
+  .profile {
+    padding: 3px;
+  }
+}
+@media (max-width: 767.98px) {
+.search {
+  gap: 4px;
+  padding: 0 15px;
+  i {
+    font-size: 14px;
+  }
+  input {
+    font-size: 12.5px;
+  }
+}
+
+}
+@media (max-width: 1279.98px) {
+  .upgrade-option {
+    display: none;
+  }
+  .profile-name {
+    font-size: 12px;
+  }
+  /* Mid widths: allow the search to use whatever row space it gets. */
+  .search-anchor {
+    max-width: none;
+  }
+}
+
+/* Suggested searches (empty-query state) */
+.suggested-chips {
+  gap: 8px;
+  padding-bottom: 4px;
+}
+
+.suggested-chip {
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--foreground-soft);
+  background: var(--surface-muted);
+  border-radius: 999px;
+  padding: 6px 14px;
+  transition: background-color 0.14s ease, color 0.14s ease;
+
+  &:hover {
+    background: var(--primary-soft);
+    color: var(--primary);
+  }
+}
+
+.previous-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.previous-item {
+  font-size: 13.5px;
+  color: var(--foreground);
+  padding: 9px 10px;
+  border-radius: var(--radius-sm);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: background-color 0.13s ease;
+
+  &:hover {
+    background: var(--surface-muted);
+  }
+}
+@media (min-width: 1024px) and (max-width: 1199.98px) {
+.profile {
+  padding: 0px;
+  .profile-meta, .profile-caret {
+    display: none !important;
+  }
+}
+}
+@media (min-width: 1024px) and (max-width: 1100.98px) {
+  .topbar {
+    gap: 7px;
+    .search-anchor {
+      min-width: 260px;
+      max-width: 360px;
+      .search {
+        padding: 0 10px;
+        gap: 5px;
+        .search-icon {
+          ::ng-deep i.ti-search {
+            font-size: 15px !important;
+          }
+        }
+        input {
+          font-size: 12px;
+        }
+      }
+    }
+    .topbar-actions {
+      gap: 10px;
+    }
+  }
+  .upgrade-option {
+    display: none;
+  }
+}
+
+@media (min-width: 1101px) and (max-width: 1199.98px) {
+  .topbar {
+    gap: 9px;
+    .search-anchor {
+      
+       .search {
+        
+         input {
+          font-size: 12.5px;
+        }
+       }
+    }
+    .topbar-actions {
+      gap: 8px;
+    }
+  }
+}
+@media (min-width: 1200px) and (max-width: 1307.98px) {
+  .topbar {
+    gap: 9px;
+    .search-anchor {
+      //  min-width: 290px;
+      max-width: 360px;
+       .search {
+        gap: 6px;
+        padding: 0 13px;
+        .search-icon {
+          ::ng-deep i.ti-search {
+            font-size: 15px !important;
+          }
+        }
+         input {
+          font-size: 12.5px;
+        }
+       }
+    }
+    .topbar-actions {
+      gap: 8px;
+    }
+  }
+}

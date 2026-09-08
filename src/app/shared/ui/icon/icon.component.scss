@@ -1,0 +1,22 @@
+:host {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  line-height: 1;
+}
+
+i {
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (min-width: 1024px) and (max-width: 1199.98px) {
+  .search-icon {
+         i.ti-search {
+        font-size: 14px !important;
+      }
+    }
+}

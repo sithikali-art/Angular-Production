@@ -1,0 +1,49 @@
+.shell {
+  min-height: 100vh;
+  // max-width: 1440px;
+  max-width: 1360px;
+  margin: 0 auto;
+  gap: 2.25rem;
+}
+
+.main {
+  min-width: 0;
+  padding: 0 28px;
+}
+
+.content {
+  // padding: 12px 0 32px;
+    padding: 3rem 0 3rem;
+}
+
+@media (max-width: 1023.98px) {
+  .main {
+    padding: 0px;
+  }
+  .shell {
+        gap: 0rem;
+        padding: 0 1.25rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .shell {
+        gap: 0rem;
+    }
+}
+@media (min-width: 1024px) {
+    .shell {
+        padding: 0 4rem;
+    }
+}
+@media (min-width: 1024px) and (max-width: 1199.98px) {
+  .shell {
+       gap: 1.25rem;
+}
+}
+@media (min-width: 1201px) and (max-width: 1307.98px) {
+  .shell {
+       gap: 1.25rem;
+}
+}
+

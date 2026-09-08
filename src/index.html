@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en" data-palette="aurora">
+  <head>
+    <meta charset="utf-8" />
+    <title>Xtrm — Fintech Dashboard</title>
+    <base href="/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/svg+xml" href="images/favicon.ico" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      // Apply persisted theme before first paint to avoid a flash.
+      (function () {
+        try {
+          var p = localStorage.getItem('xtrm-palette') || 'aurora';
+          var m = localStorage.getItem('xtrm-mode');
+          document.documentElement.dataset.palette = p;
+          if (m === 'dark') document.documentElement.classList.add('dark');
+        } catch (e) {}
+      })();
+    </script>
+  </head>
+  <body>
+    <app-root></app-root>
+  </body>
+</html>

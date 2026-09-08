@@ -1,0 +1,145 @@
+:host {
+  display: block;
+}
+
+.back-link {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--primary);
+  margin-bottom: 14px;
+
+  &:hover {
+    color: var(--primary-strong);
+  }
+}
+
+.page-head {
+  h1 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+}
+
+.page-sub {
+  margin: 8px 0 0;
+  font-size: 13px;
+  color: var(--muted);
+  max-width: 720px;
+}
+
+.lib-category {
+  font-size: 10.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--primary);
+  background: var(--primary-soft);
+  border-radius: 999px;
+  padding: 3px 9px;
+}
+
+.lib-selector {
+  font-size: 12.5px;
+  color: var(--primary);
+  background: var(--primary-softer, var(--surface-muted));
+  border-radius: 6px;
+  padding: 2px 8px;
+}
+
+.detail-section {
+  margin-top: 26px;
+}
+
+.section-title {
+  margin: 0 0 12px;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.preview-stage {
+  padding: 26px;
+  border-radius: var(--radius-lg);
+  background: var(--surface-muted);
+  border: 1px solid var(--border-soft, var(--border));
+  overflow: auto;
+  min-height: 160px;
+
+  > * {
+    max-width: 100%;
+  }
+}
+
+.preview-stage-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.demo-body-text {
+  margin: 0;
+  font-size: 13.5px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.api-card {
+  padding: 18px;
+  height: 100%;
+}
+
+.api-heading {
+  margin: 0 0 10px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.api-chip {
+  font-size: 12.5px;
+  color: var(--primary);
+  background: var(--primary-soft);
+  border-radius: 8px;
+  padding: 4px 10px;
+}
+
+.api-chip-out {
+  color: var(--positive);
+  background: rgba(22, 163, 74, 0.1);
+}
+
+.api-none {
+  margin: 0;
+  font-size: 12.5px;
+  color: var(--muted);
+}
+
+.code-block {
+  margin: 0;
+  padding: 18px;
+  border-radius: var(--radius-lg);
+  background: #0f172a;
+  color: #e2e8f0;
+  font-size: 12.5px;
+  line-height: 1.65;
+  overflow: auto;
+
+  code {
+    font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
+    white-space: pre;
+  }
+}
+
+.not-found {
+  padding: 60px 0;
+  text-align: center;
+  color: var(--muted);
+}
+
+.detail-link {
+  color: var(--primary);
+  font-weight: 600;
+}

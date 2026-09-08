@@ -1,0 +1,14 @@
+<button
+  [class]="'btn btn-' + btnVariant + (btnClass ? ' ' + btnClass : '')"
+  [attr.type]="btnType"
+  [disabled]="disabled"
+>
+  @if (icon && iconPosition === 'left') {
+    <app-icon [name]="icon" [size]="15" />
+  }
+  {{ btnText }}
+  <ng-content></ng-content>
+  @if (icon && iconPosition === 'right') {
+    <app-icon [name]="icon" [size]="15" />
+  }
+</button>

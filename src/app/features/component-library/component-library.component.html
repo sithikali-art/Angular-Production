@@ -1,0 +1,60 @@
+<header class="page-head">
+  <h1>Component Library</h1>
+  <p class="page-sub">
+    Live showcase of the shared components under <code>src/app/shared</code>. Add an entry to
+    <code>component-registry.ts</code> and a new component appears here automatically.
+  </p>
+</header>
+
+<div class="lib-search d-flex align-items-center gap-2">
+  <app-icon name="search" [size]="16" />
+  <input
+    type="text"
+    placeholder="Search components by name, selector or description…"
+    [value]="query()"
+    (input)="onQuery($event)"
+  />
+</div>
+
+<div class="row g-4 lib-grid">
+  @for (item of entries(); track item.entry.id) {
+    <div class="col-12 col-md-6 col-xxl-4">
+      <article class="card lib-card d-flex flex-column">
+        <div class="lib-preview scrollbar-soft" [class.lib-preview-empty]="item.entry.overlay">
+          @if (item.entry.overlay) {
+            <span class="overlay-note d-inline-flex align-items-center gap-2">
+              <app-icon name="click" [size]="16" />
+              Interactive preview on the details page
+            </span>
+          } @else {
+            <ng-container
+              *ngComponentOutlet="item.entry.component; inputs: item.entry.sampleInputs ?? {}"
+            />
+          }
+        </div>
+
+        <div class="lib-meta d-flex flex-column gap-2 flex-grow-1">
+          <div class="d-flex align-items-center gap-2 flex-wrap">
+            <h2 class="lib-name">{{ item.name }}</h2>
+            <span class="lib-category">{{ item.entry.category }}</span>
+          </div>
+          <code class="lib-selector">&lt;{{ item.selector }}&gt;</code>
+          <p class="lib-desc">{{ item.entry.description }}</p>
+          <div class="mt-auto pt-2">
+            <app-button
+              btnVariant="soft"
+              btnText="View Details"
+              icon="arrow-right"
+              iconPosition="right"
+              (click)="open(item.entry)"
+            />
+          </div>
+        </div>
+      </article>
+    </div>
+  } @empty {
+    <div class="col-12">
+      <div class="lib-empty">No components match “{{ query() }}”.</div>
+    </div>
+  }
+</div>

@@ -1,0 +1,131 @@
+<header class="topbar d-flex align-items-center">
+  <!-- Global search with companies & individuals dropdown -->
+  <div class="search-anchor flex-grow-1" (appClickOutside)="layoutUi.close('search')">
+    <label class="search d-flex align-items-center">
+      <app-icon name="search" [size]="16" class="search-icon"/>
+      <input
+        type="text"
+        placeholder="Search for companies and individuals"
+        [value]="searchQuery()"
+        (input)="onSearchInput($any($event.target).value)"
+        (focus)="onSearchFocus()"
+      />
+    </label>
+
+    @if (layoutUi.overlay() === 'search') {
+      <div class="pop-panel search-menu">
+        @if (searchQuery().trim() === '') {
+          <!-- Empty query: suggested + previous searches -->
+          <div class="overline px-2 pt-1 pb-2">Suggested searches</div>
+          <div class="suggested-chips d-flex flex-wrap px-2">
+            @for (term of suggestedSearches; track term) {
+              <button type="button" class="suggested-chip" (click)="applySearch(term)">
+                {{ term }}
+              </button>
+            }
+          </div>
+
+          <div class="overline px-2 pt-3 pb-1">Previous searches</div>
+          <div class="previous-list">
+            @for (term of previousSearches; track term) {
+              <button type="button" class="previous-item w-100 text-start" (click)="applySearch(term)">
+                {{ term }}
+              </button>
+            }
+          </div>
+        } @else {
+        <div class="overline px-2 pt-1 pb-2">Companies &amp; individuals</div>
+        @for (result of searchResults(); track result.id) {
+          <button type="button" class="search-item d-flex align-items-center gap-2 w-100" (click)="selectResult(result)">
+            <span class="search-item-icon">
+              <app-icon [name]="result.type === 'Company' ? 'building' : 'user'" [size]="15" />
+            </span>
+            <span class="search-item-meta d-flex flex-column flex-grow-1">
+              <span class="search-item-name">{{ result.name }}</span>
+              <span class="search-item-detail">{{ result.detail }}</span>
+            </span>
+            <span class="search-item-type">{{ result.type }}</span>
+          </button>
+        } @empty {
+          <div class="search-empty text-center">No matches for “{{ searchQuery() }}”</div>
+        }
+        }
+      </div>
+    }
+  </div>
+
+  <div class="topbar-actions d-flex align-items-center ms-auto">
+    <button type="button" class="btn btn-soft upgrade rounded-pill">
+      <app-icon name="sparkles" [size]="15" />
+      <span>
+      Upgrade <span class="upgrade-option">options</span>
+      </span>
+    </button>
+
+    <!-- Compact upgrade button for tablet/mobile widths -->
+    <button type="button" class="icon-btn upgrade-compact " aria-label="Upgrade options">
+      <app-icon name="sparkles" [size]="17" />
+    </button>
+
+    <div class="utility-cluster d-flex align-items-center">
+      <!-- Appearance (Image 3) -->
+      <div class="anchor" (appClickOutside)="layoutUi.close('appearance')">
+        <button
+          type="button"
+          class="icon-btn"
+          aria-label="Appearance"
+          [class.open]="layoutUi.overlay() === 'appearance'"
+          (click)="layoutUi.toggle('appearance')"
+        >
+          <app-icon name="palette" [size]="18" />
+        </button>
+        @if (layoutUi.overlay() === 'appearance') {
+          <app-appearance-popover />
+        }
+      </div>
+
+      <!-- Draft payments (Image 4) -->
+      <button
+        type="button"
+        class="icon-btn"
+        aria-label="Draft payments"
+        [class.open]="layoutUi.overlay() === 'drafts'"
+        (click)="openDrafts()"
+      >
+        <app-icon name="file-invoice" [size]="18" />
+        @if (drafts.count() > 0) {
+          <span class="badge-dot">{{ drafts.count() }}</span>
+        }
+      </button>
+
+      <!-- Notifications (Image 5) -->
+      <div class="anchor" (appClickOutside)="layoutUi.close('notifications')">
+        <button
+          type="button"
+          class="icon-btn"
+          aria-label="Notifications"
+          [class.open]="layoutUi.overlay() === 'notifications'"
+          (click)="layoutUi.toggle('notifications')"
+        >
+          <app-icon name="bell" [size]="18" />
+          @if (notifications.unreadCount() > 0) {
+            <span class="badge-dot">{{ notifications.unreadCount() }}</span>
+          }
+        </button>
+        @if (layoutUi.overlay() === 'notifications') {
+          <app-notifications-popover />
+        }
+      </div>
+    </div>
+
+    <!-- Navigates to the User Profile page -->
+    <a class="profile d-flex align-items-center" routerLink="/profile" aria-label="User profile">
+      <app-avatar name="Jegan Raghavan" [size]="34" />
+      <span class="profile-meta d-flex flex-column">
+        <span class="profile-name text-truncate">Jegan Raghavan</span>
+        <span class="profile-email">jegan&#64;acme.com</span>
+      </span>
+      <app-icon name="chevron-right" [size]="15" class="profile-caret" />
+    </a>
+  </div>
+</header>

@@ -1,0 +1,27 @@
+    <div class="head">
+      <h1>Wallets</h1>
+      <button type="button" class="btn btn-primary">
+        <app-icon name="plus" [size]="15" /> Create wallet
+      </button>
+    </div>
+
+    <div class="grid">
+      @for (w of wallet.wallets(); track w.id) {
+        <article class="card wallet-card">
+          <div class="row">
+            <app-flag-icon [countryCode]="w.countryCode" [size]="30" />
+            <div class="meta">
+              <span class="name">{{ w.currency }} • {{ w.name }}</span>
+              <span class="id">Wallet ID {{ w.walletId }}</span>
+            </div>
+            @if (w.isDefault) {
+              <span class="default">Default</span>
+            }
+          </div>
+          <div class="balance">{{ w.balance | money: w.currency : 'symbol' }}</div>
+          <span class="status">{{ w.status }}</span>
+        </article>
+      } @empty {
+        <p class="text-muted">Loading wallets…</p>
+      }
+    </div>

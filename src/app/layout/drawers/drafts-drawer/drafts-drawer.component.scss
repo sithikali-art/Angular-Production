@@ -1,0 +1,188 @@
+    .tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding: 4px 0 14px;
+    }
+    .mine-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      font-size: 13.5px;
+      font-weight: 500;
+      padding: 2px 2px 16px;
+    }
+    .draft-list {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .draft-card {
+      padding: 16px 18px;
+      background: #f7f8fa;
+      border: none;
+      box-shadow: none;
+    }
+    .draft-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .draft-type {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--muted);
+    }
+    .draft-badge {
+      padding: 2px 8px;
+      border-radius: 999px;
+      // background: var(--warning-bg);
+      background: #f3e5d6;
+      // color: var(--warning-fg);
+      color: #de8c2d;
+      font-size: 10.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .draft-date {
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .draft-title {
+      margin: 10px 0 0;
+      font-size: 15.5px;
+      font-weight: 700;
+    }
+    .draft-subtitle {
+      margin: 2px 0 10px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+    .draft-meta {
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      div {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+      }
+      dt {
+        font-size: 13px;
+        // color: var(--muted);
+        color: #6b7280;
+        font-weight: normal;
+      }
+      dd {
+        margin: 0;
+        font-size: 13px;
+        font-weight: 600;
+        text-align: right;
+      }
+    }
+    .draft-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 14px;
+    }
+    .details-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 13px;
+      color: var(--muted);
+      &:hover {
+        color: var(--foreground);
+      }
+    }
+    .spacer {
+      flex: 1;
+    }
+    .btn-quiet {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--muted);
+      padding: 6px 8px;
+      border-radius: var(--radius-sm);
+      &:hover {
+        background: var(--surface-muted);
+        color: var(--foreground);
+      }
+      &.danger:hover {
+        color: var(--negative);
+      }
+    }
+    .continue {
+      height: 34px;
+    }
+    .draft-details {
+      margin-top: 12px;
+      padding: 12px 14px;
+      border-radius: var(--radius-sm);
+      background: var(--surface-muted);
+      font-size: 12.5px;
+      color: var(--muted);
+    }
+    .details-grid {
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      div {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+      }
+      dt {
+        font-weight: 500;
+        color: var(--muted);
+      }
+      dd {
+        margin: 0;
+        font-weight: 600;
+        color: var(--foreground);
+        text-align: right;
+      }
+    }
+    .details-note {
+      margin: 10px 0 0;
+      font-size: 12px;
+    }
+    .empty {
+      text-align: center;
+      color: var(--muted);
+      padding: 32px 0;
+    }
+    .foot {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 13px;
+    }
+    .view-all {
+      color: var(--primary);
+      font-weight: 600;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+
+  //  :host ::ng-deep .delete-draft  {
+  //     .modal-dialog {
+  //       max-width: 380px;
+  //      .modal-header  .btn-close {
+  //           display: none !important;
+  //         }
+  //       }
+  //   } 

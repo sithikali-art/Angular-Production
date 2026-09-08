@@ -1,0 +1,42 @@
+<footer class="footer">
+  <!-- Experience feedback with flanking borders -->
+  <div class="feedback d-flex align-items-center gap-3 mb-4">
+    <hr class="flex-grow-1 m-0" />
+    <span class="feedback-text">
+      What do you think about this experience?
+      <a href="#" (click)="$event.preventDefault()" class="text-nowrap">Give us feedback</a>
+    </span>
+    <hr class="flex-grow-1 m-0" />
+  </div>
+
+  <!-- Footer links: full width, equal columns via Bootstrap grid -->
+  <div class="footer-links w-100">
+    <div class="row g-4">
+      @for (col of footerCols; track col.title) {
+        <div class="col-6 col-md-3 footer-col">
+          <span class="overline">{{ col.title }}</span>
+          <ul class="list-unstyled d-flex flex-column mt-2 mb-0">
+            @for (link of col.links; track link) {
+              <li><a href="#" (click)="$event.preventDefault()">{{ link }}</a></li>
+            }
+          </ul>
+        </div>
+      }
+    </div>
+  </div>
+
+  <!-- Footer legal with horizontal divider -->
+  <div class="footer-legal">
+    <hr class="mt-4 mb-3" />
+    <div class="d-flex justify-content-xl-between justify-content-center flex-column flex-xl-row gap-3">
+      <span class="text-center text-xl-start">
+        <a href="#" (click)="$event.preventDefault()" class="brand-link">Xtrm © 2026</a>
+        · All rights reserved.
+      </span>
+      <span class="text-center text-xl-start">
+        <a class="fdic" href="#" (click)="$event.preventDefault()">FDIC-insured</a>
+        where eligible. Backed by the full faith and credit of the US Government.
+      </span>
+    </div>
+  </div>
+</footer>

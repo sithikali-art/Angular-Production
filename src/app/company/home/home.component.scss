@@ -1,0 +1,124 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  // gap: 26px;
+    gap: 3rem;
+}
+
+.page-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.company-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  h1 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: var(--primary);
+  }
+}
+
+.spn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 6px;
+  font-size: 12.5px;
+  color: var(--muted);
+  letter-spacing: 0.04em;
+
+  app-icon {
+    color: var(--muted-soft);
+    cursor: pointer;
+    &:hover {
+      color: var(--primary);
+    }
+  }
+}
+
+.approvals-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  height: 38px;
+  padding: 0 16px;
+  border-radius: 10px;
+  background: var(--primary-soft);
+  color: var(--primary);
+  font-size: 13px;
+  font-weight: 600;
+  transition: background-color 0.15s ease;
+
+  &:hover {
+    background: var(--primary-ring);
+  }
+
+  .count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 20px;
+    height: 20px;
+    padding: 0 6px;
+    border-radius: 999px;
+    background: var(--primary);
+    color: #fff;
+    font-size: 11.5px;
+    font-weight: 700;
+  }
+}
+
+:host-context(html[data-palette='newage']) .approvals-cta .count {
+  color: #121212;
+}
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: minmax(320px, 380px) minmax(0, 1fr);
+  gap: 32px;
+  align-items: start;
+
+  > * {
+    min-width: 0; /* let grid items shrink so inner text can ellipsize */
+  }
+}
+
+@media (max-width: 991.98px) {
+  .hero-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+}
+@media (min-width: 992px) and (max-width: 1023.98px) {
+  .hero-grid {
+       grid-template-columns: minmax(350px, 390px) minmax(0, 1fr);
+  }
+}
+@media (min-width: 1024px) and (max-width: 1279.98px) {
+  .hero-grid {
+       grid-template-columns: minmax(200px, 240px) minmax(0, 1fr);
+  }
+}
+
+
+@media (max-width: 760px) {
+  :host {
+    gap: 20px;
+  }
+  .company-row h1 {
+    font-size: 22px;
+  }
+  .approvals-cta {
+    // width: 100%;
+    justify-content: center;
+  }
+}

@@ -1,0 +1,10 @@
+    <button
+      type="button"
+      role="switch"
+      class="track"
+      [class.on]="checked()"
+      [attr.aria-checked]="checked()"
+      (click)="toggled.emit()"
+    >
+      <span class="thumb"></span>
+    </button>

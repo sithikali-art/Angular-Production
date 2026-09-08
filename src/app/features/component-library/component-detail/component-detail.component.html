@@ -1,0 +1,114 @@
+<a routerLink="/component-library" class="back-link d-inline-flex align-items-center gap-1">
+  <app-icon name="chevron-left" [size]="15" />
+  Back to Component Library
+</a>
+
+@if (entry(); as item) {
+  <header class="page-head d-flex align-items-center gap-3 flex-wrap">
+    <h1>{{ name() }}</h1>
+    <span class="lib-category">{{ item.category }}</span>
+    <code class="lib-selector">&lt;{{ meta().selector }}&gt;</code>
+  </header>
+  <p class="page-sub">{{ item.description }}</p>
+
+  <!-- Live preview -->
+  <section class="detail-section">
+    <h2 class="section-title">Live preview</h2>
+    <div class="preview-stage scrollbar-soft" [class.preview-stage-center]="item.overlay">
+      @if (item.overlay) {
+        <app-button
+          btnVariant="primary"
+          [btnText]="demoOpen() ? 'Close preview' : 'Open live preview'"
+          icon="click"
+          (click)="demoOpen.set(!demoOpen())"
+        />
+
+        @if (item.id === 'drawer' && demoOpen()) {
+          <app-drawer
+            title="Wallet details"
+            subtitle="Wallet ID 982734"
+            icon="wallet"
+            (closed)="demoOpen.set(false)"
+          >
+            <p class="demo-body-text">
+              Any content is projected into the drawer body — this is a live
+              interactive preview of the shared drawer shell.
+            </p>
+          </app-drawer>
+        }
+        @if (item.id === 'modal') {
+          <app-modal
+            [isOpen]="demoOpen()"
+            title="Modal preview"
+            size="md"
+            (closeModal)="demoOpen.set(false)"
+          >
+            <p class="demo-body-text">
+              Any content is projected into the modal body — Escape, the ×
+              button and the backdrop all close it.
+            </p>
+            <span modal-footer class="d-inline-flex gap-2">
+              <app-button btnVariant="cancel" btnText="Cancel" (click)="demoOpen.set(false)" />
+              <app-button btnVariant="primary" btnText="Confirm" icon="check" (click)="demoOpen.set(false)" />
+            </span>
+          </app-modal>
+        }
+      } @else {
+        <ng-container *ngComponentOutlet="item.component; inputs: item.sampleInputs ?? {}" />
+      }
+    </div>
+  </section>
+
+  <div class="row g-4">
+    <!-- Inputs / outputs -->
+    <div class="col-12 col-xl-5">
+      <section class="detail-section h-100">
+        <h2 class="section-title">API</h2>
+        <div class="card api-card">
+          <h3 class="api-heading">Inputs</h3>
+          @if (meta().inputs.length) {
+            <div class="d-flex flex-wrap gap-2">
+              @for (input of meta().inputs; track input) {
+                <code class="api-chip">[{{ input }}]</code>
+              }
+            </div>
+          } @else {
+            <p class="api-none">No inputs — reads app state from services.</p>
+          }
+
+          <h3 class="api-heading mt-4">Outputs</h3>
+          @if (meta().outputs.length) {
+            <div class="d-flex flex-wrap gap-2">
+              @for (output of meta().outputs; track output) {
+                <code class="api-chip api-chip-out">({{ output }})</code>
+              }
+            </div>
+          } @else {
+            <p class="api-none">No outputs.</p>
+          }
+        </div>
+      </section>
+    </div>
+
+    <!-- Example usage -->
+    <div class="col-12 col-xl-7">
+      <section class="detail-section h-100">
+        <div class="d-flex align-items-center justify-content-between gap-2">
+          <h2 class="section-title">Example usage</h2>
+          <app-button
+            btnVariant="soft"
+            [btnText]="copied() ? 'Copied!' : 'Copy code'"
+            [icon]="copied() ? 'check' : 'copy'"
+            (click)="copyExample()"
+          />
+        </div>
+        <pre class="code-block scrollbar-soft"><code>{{ item.example }}</code></pre>
+      </section>
+    </div>
+  </div>
+} @else {
+  <div class="not-found">
+    <p>Component not found.</p>
+    <a routerLink="/component-library" class="detail-link">Back to Component Library</a>
+  </div>
+}

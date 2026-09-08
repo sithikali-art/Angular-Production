@@ -1,0 +1,105 @@
+<section class="funding card-inset">
+  <!-- Funding bank account -->
+  <div class="row">
+
+
+
+     <div class="col-lg-7 col-md-12 col-12 mb-3 mb-lg-0">
+      <div class="row g-3 align-items-center">
+        <div class="col-md-6 col-lg-7 col-12">
+          <div class="cell grow">
+            <span class="cell-label">Your Funding Bank Account</span>
+            <div class="anchor" (appClickOutside)="layoutUi.close('funding-selector')">
+              <button type="button" class="select w-100" [attr.aria-expanded]="layoutUi.overlay() === 'funding-selector'"
+                (click)="layoutUi.toggle('funding-selector')">
+                <app-icon name="bank" [size]="15" />
+                @if (wallet.selectedFundingAccount(); as account) {
+                <span class="select-value  text-truncate">
+                  {{ account.currency }} — {{ account.accountType }} ••{{ account.maskedNumber }}
+                </span>
+                }
+                <app-icon name="chevron-down" [size]="14" class="caret" />
+              </button>
+
+              @if (layoutUi.overlay() === 'funding-selector') {
+              <div class="pop-panel menu">
+                @for (account of wallet.fundingAccounts(); track account.id) {
+                <button type="button" class="option" (click)="selectAccount(account.id)">
+                  <app-icon name="bank" [size]="15" class="icon" />
+                  <span class="option-meta">
+                    <span class="option-name">
+                      {{ account.currency }} — {{ account.accountType }} ••{{ account.maskedNumber }}
+                    </span>
+                    <!-- <span class="option-bank">{{ account.bankName }}</span> -->
+                  </span>
+                  @if (wallet.selectedFundingAccount()?.id === account.id) {
+                  <app-icon name="check" [size]="14" class="check" />
+                  }
+                </button>
+                }
+                <button type="button" class="option add">
+                  <!-- <app-icon name="plus" [size]="14" /> Link a new bank account -->
+                  <app-icon name="external-link" [size]="14" class="" /> View details
+                </button>
+              </div>
+              }
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-5 col-12">
+          <!-- Funding method -->
+          <div class="cell">
+            <span class="cell-label">Funding Method</span>
+            <div class="anchor" (appClickOutside)="layoutUi.close('funding-method')">
+              <button type="button" class="select w-100" (click)="layoutUi.toggle('funding-method')">
+                <span class="select-value">{{ wallet.fundingMethod() }}</span>
+                <app-icon name="chevron-down" [size]="14" class="caret" />
+              </button>
+              @if (layoutUi.overlay() === 'funding-method') {
+              <div class="pop-panel menu compact">
+                @for (method of wallet.fundingMethods; track method) {
+                <button type="button" class="option" (click)="selectMethod(method)">
+                  <span class="option-name">{{ method }}</span>
+                  @if (wallet.fundingMethod() === method) {
+                  <app-icon name="check" [size]="14" class="check" />
+                  }
+                </button>
+                }
+              </div>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-5 col-md-12 col-12">
+      <div class="row g-3 align-items-center">
+        <div class="col-md-6 col-lg-7 col-xl-6 col-12">
+          <!-- Account number -->
+          <div class="cell">
+            <span class="cell-label">Account Number</span>
+            <div class="value-row">
+              @if (wallet.selectedFundingAccount(); as account) {
+              <span class="value mono  text-truncate">
+                {{ wallet.accountNumberVisible() ? account.maskedNumber.padStart(10, '4') : account.accountNumberDisplay
+                }}
+              </span>
+              }
+              <button type="button" class="show-btn" (click)="wallet.toggleAccountNumber()">
+                {{ wallet.accountNumberVisible() ? 'Hide' : 'Show' }}
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-5 col-xl-6 col-12">
+          <!-- Routing -->
+          <div class="cell">
+            <span class="cell-label">Routing</span>
+            <span class="value mono">{{ wallet.selectedFundingAccount()?.routingNumber }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

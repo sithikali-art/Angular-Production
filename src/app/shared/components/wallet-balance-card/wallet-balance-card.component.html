@@ -1,0 +1,176 @@
+<section class="balance-card">
+  <!-- Globe background — rotates whenever a different wallet is selected -->
+  <div class="card-bg" aria-hidden="true">
+    <span
+          style="
+            position: absolute;
+            right: -4rem;
+            top: -4rem;
+            width: 12rem;
+            height: 12rem;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.15);
+            filter: blur(3rem);
+          "
+        ></span>
+
+        <span
+          style="
+            position: absolute;
+            right: -2rem;
+            bottom: 2rem;
+            width: 8rem;
+            height: 8rem;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+          "
+        ></span>
+
+        <span
+          style="
+            position: absolute;
+            left: -2.5rem;
+            bottom: -3rem;
+            width: 10rem;
+            height: 10rem;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+            filter: blur(2rem);
+          "
+        ></span>
+
+        <!-- Wireframe Globe -->
+        <svg
+          viewBox="-100 -100 200 200"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="0.8"
+          aria-hidden="true"
+          style="
+            position: absolute;
+            right: -7rem;
+            top: -4rem;
+            width: 15rem;
+            height: 15rem;
+            color: var(--background);
+            opacity: 0.8;
+            pointer-events: none;
+            transition: transform 900ms cubic-bezier(0.22, 1, 0.36, 1);
+          "
+          [style.transform]="'rotate(' + spin + 'deg)'"
+        >
+          <circle
+            cx="0"
+            cy="0"
+            r="80"
+            stroke-width="1"
+          />
+
+          <ellipse
+            cx="0"
+            cy="0"
+            rx="80"
+            ry="18"
+          />
+
+          <ellipse
+            cx="0"
+            cy="0"
+            rx="80"
+            ry="38"
+          />
+
+          <ellipse
+            cx="0"
+            cy="0"
+            rx="80"
+            ry="58"
+          />
+
+          <ellipse
+            cx="0"
+            cy="0"
+            rx="18"
+            ry="80"
+          />
+
+          <ellipse
+            cx="0"
+            cy="0"
+            rx="38"
+            ry="80"
+          />
+
+          <ellipse
+            cx="0"
+            cy="0"
+            rx="58"
+            ry="80"
+          />
+
+          <g transform="rotate(30)">
+            <ellipse
+              cx="0"
+              cy="0"
+              rx="80"
+              ry="30"
+            />
+          </g>
+
+          <g transform="rotate(-30)">
+            <ellipse
+              cx="0"
+              cy="0"
+              rx="80"
+              ry="30"
+            />
+          </g>
+
+          <g transform="rotate(60)">
+            <ellipse
+              cx="0"
+              cy="0"
+              rx="80"
+              ry="45"
+            />
+          </g>
+
+          <g transform="rotate(-60)">
+            <ellipse
+              cx="0"
+              cy="0"
+              rx="80"
+              ry="45"
+            />
+          </g>
+
+          <g transform="rotate(15)">
+            <ellipse
+              cx="0"
+              cy="0"
+              rx="80"
+              ry="55"
+            />
+          </g>
+
+          <g transform="rotate(-45)">
+            <ellipse
+              cx="0"
+              cy="0"
+              rx="80"
+              ry="20"
+            />
+          </g>
+        </svg>
+  </div>
+
+  <span class="overline label">Wallet balance</span>
+
+  @if (wallet.selectedWallet(); as selected) {
+    <div class="amount">{{ selected.balance | money: selected.currency : 'symbol' }}</div>
+  } @else {
+    <div class="amount skeleton">$—</div>
+  }
+
+  <app-wallet-selector />
+</section>
