@@ -1,0 +1,30 @@
+.segmented-tabs-wrapper {
+  background-color: #eaeef6; // Soft light grey/lavender background matching the screenshot
+  border-radius: 9999px;
+  gap: 4px;
+}
+
+.tab-pill-btn {
+  background: transparent;
+  color: #6c757d;
+  font-size: 0.9375rem;
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+
+  &:hover:not(.active) {
+    color: #212529;
+  }
+
+  &.active {
+    background-color: #fafbfc;
+    color: #1a1a24;
+    font-weight: 600;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+  }
+}
+
+.tab-count-badge {
+  font-size: 0.8125rem;
+  opacity: 0.8;
+}

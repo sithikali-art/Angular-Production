@@ -1,0 +1,57 @@
+.textarea-container {
+  width: 100%;
+}
+
+/* Styled uppercase label matching design */
+.custom-textarea-label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #8c98a9;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Pill-shaped rounded textarea */
+.custom-textarea-input {
+  padding: 0.875rem 1.25rem;
+  border-radius: 16px;
+  border: 1.5px solid #a5b4fc;
+  background-color: #f5f6f9;
+  font-size: 0.9375rem;
+  color: #1f2937;
+  resize: vertical;
+  transition: all 0.2s ease-in-out;
+}
+
+.custom-textarea-input::placeholder {
+  color: #8c98a9;
+  opacity: 0.85;
+}
+
+.custom-textarea-input:hover:not(:disabled) {
+  border-color: #818cf8;
+  background-color: #f1f3f7;
+}
+
+.custom-textarea-input:focus {
+  border-color: #6366f1;
+  background-color: #ffffff;
+  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.12);
+  outline: none;
+}
+
+.custom-textarea-input:disabled {
+  background-color: #f3f4f6;
+  border-color: #e5e7eb;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.custom-textarea-input.is-invalid {
+  border-color: #dc3545;
+}
+
+.custom-textarea-input.is-invalid:focus {
+  box-shadow: 0 0 0 4px rgba(220, 53, 69, 0.15);
+}

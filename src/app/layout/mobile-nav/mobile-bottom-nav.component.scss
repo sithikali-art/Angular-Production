@@ -1,0 +1,39 @@
+    .bottom-nav {
+      display: none;
+    }
+    @media (max-width: 1023.98px) {
+      .bottom-nav {
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 50;
+        display: flex;
+        justify-content: space-around;
+        align-items: stretch;
+        background: color-mix(in srgb, var(--surface) 92%, transparent);
+        backdrop-filter: blur(12px);
+        border-top: 1px solid var(--border-soft);
+        padding: 6px 8px calc(env(safe-area-inset-bottom, 0px) + 6px);
+      }
+    }
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      flex: 1;
+      padding: 6px 4px;
+      border-radius: var(--radius-md);
+      font-size: 11.5px;
+      font-weight: 600;
+      color: var(--muted);
+      transition: color 0.15s ease;
+
+      &:hover {
+        color: var(--foreground);
+      }
+      &.active {
+        color: var(--primary);
+      }
+    }

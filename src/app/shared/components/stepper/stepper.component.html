@@ -1,0 +1,90 @@
+<div class="stepper-wrapper d-flex flex-column h-100">
+  <!-- Stepper Navigation Header with Close Icon -->
+  <div class="stepper-header d-flex align-items-center justify-content-between gap-3 mb-2">
+    <nav aria-label="Progress" [class]="'stepper-container flex-grow-1 variant-' + variant()">
+      <ol class="stepper-list">
+        @for (step of steps(); track step.id; let i = $index) {
+          <li 
+            class="stepper-item"
+            [class.active]="activeStepIndex() === i"
+            [class.completed]="i < activeStepIndex()"
+            [class.disabled]="step.disabled"
+          >
+            <!-- Top line indicator for line variant -->
+            @if (variant() === 'line') {
+              <div class="step-top-line"></div>
+            }
+
+            <button
+              type="button"
+              class="stepper-button"
+              [disabled]="step.disabled"
+              (click)="selectStep(i)"
+            >
+              @if (variant() === 'pills') {
+                <span class="step-number">{{ i + 1 }}.</span>
+              }
+              <span class="step-label">{{ step.label }}</span>
+            </button>
+          </li>
+        }
+      </ol>
+    </nav>
+
+    <!-- Close Icon -->
+    <button
+      type="button"
+      class="btn-close stepper-close-btn"
+      aria-label="Reset to first step"
+      (click)="resetToFirstStep()"
+    ></button>
+  </div>
+
+  <!-- Step Content Body Slot -->
+  <div class="stepper-body flex-fill py-3">
+    <ng-content></ng-content>
+  </div>
+
+  <!-- Integrated Stepper Footer Bar -->
+  <div class="stepper-footer d-flex align-items-center justify-content-between pt-3 border-top mt-auto">
+    <!-- Left Side: Back Button -->
+    <div>
+      @if (!isFirstStep()) {
+        <button
+          type="button"
+          class="btn btn-link text-secondary text-decoration-none d-inline-flex align-items-center gap-1 p-0 fw-medium"
+          (click)="handleBack()"
+        >
+          &larr; {{ backLabel() }}
+        </button>
+      }
+    </div>
+
+    <!-- Right Side: Extra actions slot, Cancel, Next/Submit -->
+    <div class="d-flex align-items-center gap-2">
+      <ng-content select="[extra-actions]"></ng-content>
+
+      @if (showCancel()) {
+        <button
+          type="button"
+          class="btn btn-outline-secondary border-0 text-dark fw-medium"
+          (click)="cancel.emit()"
+        >
+          Cancel
+        </button>
+      }
+
+      <button
+        type="button"
+        class="btn btn-primary px-4 py-2 fw-medium d-inline-flex align-items-center gap-2"
+        [disabled]="nextDisabled() || loading()"
+        (click)="handleNext()"
+      >
+        @if (loading()) {
+          <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+        }
+        <span>{{ currentNextLabel() }}</span>
+      </button>
+    </div>
+  </div>
+</div>

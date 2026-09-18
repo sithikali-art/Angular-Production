@@ -1,0 +1,41 @@
+<div class="dropdown-wrapper position-relative">
+  @if (label()) {
+    <label class="form-label fs-7 fw-medium text-secondary mb-1">{{ label() }}</label>
+  }
+
+  <!-- Trigger Box using shared ButtonComponent with valid 'soft' variant -->
+  <app-button
+    [btnText]="selectedLabel()"
+    [icon]="isOpen() ? 'chevron-up' : 'chevron-down'"
+    iconPosition="right"
+    btnVariant="soft"
+    btnClass="dropdown-trigger dropdown-trigger-btn w-100 d-flex align-items-center justify-content-between rounded-3 px-3 py-2 bg-white border-light-subtle  fw-medium text-dark"
+    [class.is-open]="isOpen()"
+    (click)="toggleDropdown()"
+  />
+
+  <!-- Menu Container -->
+  @if (isOpen()) {
+    <ul class="dropdown-menu-custom position-absolute w-100 mt-1 p-2 bg-white rounded-3 border border-light-subtle  list-unstyled m-0 z-3">
+      @for (option of options(); track option.value) {
+        <li>
+          <button
+            type="button"
+            class="dropdown-item-custom w-100 d-flex align-items-center justify-content-between px-3 py-2 border-0 rounded-2 text-start"
+            [class.is-selected]="option.value === value()"
+            [class.disabled]="option.disabled"
+            [disabled]="option.disabled"
+            (click)="selectOption(option, $event)"
+          >
+            <span class="fw-medium text-truncate" [class.text-dark]="option.value === value()">
+              {{ option.label }}
+            </span>
+            @if (option.value === value()) {
+              <app-icon name="check" [size]="16" class="text-primary ms-2" />
+            }
+          </button>
+        </li>
+      }
+    </ul>
+  }
+</div>

@@ -1,0 +1,50 @@
+.otp-container {
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.otp-label {
+  font-size: 0.95rem;
+  color: #6c757d;
+  font-weight: 500;
+}
+
+.otp-box {
+  width: 52px;
+  height: 58px;
+  background-color: #f2f4f8;
+  border-radius: 14px;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1e293b;
+
+  &:focus {
+    background-color: #eaf0fb;
+    box-shadow: 0 0 0 2px #818cf8;
+    outline: none;
+  }
+}
+
+.resend-btn {
+  color: #6366f1;
+  font-weight: 600;
+  font-size: 0.95rem;
+
+  &:hover {
+    color: #4f46e5;
+  }
+}
+
+.verify-btn {
+  background-color: #c7d2fe;
+  color: #ffffff;
+  font-weight: 600;
+  border: none;
+
+  &:not(:disabled) {
+    background-color: #8b5cf6;
+    &:hover {
+      background-color: #7c3aed;
+    }
+  }
+}

@@ -1,0 +1,52 @@
+<!-- file-uploader.component.html -->
+<div
+  class="file-uploader d-flex flex-column align-items-center justify-content-center text-center p-4 rounded-4"
+  [class.is-dragging]="isDragging()"
+  (dragover)="onDragOver($event)"
+  (dragleave)="onDragLeave($event)"
+  (drop)="onDrop($event)"
+  (click)="triggerBrowse($event)"
+>
+  <!-- Stop click event bubbling here -->
+  <input
+    #fileInput
+    type="file"
+    class="d-none"
+    [accept]="accept()"
+    [multiple]="multiple()"
+    (click)="$event.stopPropagation()"
+    (change)="onFileChange($event)"
+  />
+
+  <!-- Top Icon Circle -->
+  <div class="file-uploader__icon-circle d-flex align-items-center justify-content-center mb-3">
+    <app-icon [name]="iconName()" [size]="22" />
+  </div>
+
+  <!-- Messaging -->
+  <h6 class="file-uploader__title fw-semibold mb-1">{{ title() }}</h6>
+  <p class="file-uploader__subtitle text-muted fs-7 mb-4">{{ subtitle() }}</p>
+
+  <!-- Buttons Container -->
+  <div class="d-flex align-items-center gap-3" (click)="$event.stopPropagation()">
+    <app-button
+      [btnText]="chooseBtnText()"
+      [icon]="chooseIcon()"
+      iconPosition="left"
+      btnVariant="soft"
+      btnClass="rounded-pill px-3 py-2 border border-light-subtle shadow-sm fs-7 fw-medium"
+      (click)="triggerBrowse($event)"
+    />
+
+    @if (showSample()) {
+      <app-button
+        [btnText]="sampleBtnText()"
+        [icon]="sampleIcon()"
+        iconPosition="left"
+        btnVariant="ghost"
+        btnClass="text-muted fs-7 p-0 fw-medium"
+        (click)="onSampleClick($event)"
+      />
+    }
+  </div>
+</div>

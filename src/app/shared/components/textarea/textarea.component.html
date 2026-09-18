@@ -1,0 +1,10 @@
+<textarea
+    [id]="elementId()"
+    class="form-control custom-textarea-input"
+    /* [class.is-invalid]="!!errorMessage()" */
+    [rows]="rows()"
+    [placeholder]="placeholder()"
+    [disabled]="disabled()"
+    [value]="value()"
+    (input)="onInput($event)"
+  ></textarea>

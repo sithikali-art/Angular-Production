@@ -1,0 +1,49 @@
+<div class="accordion-card">
+
+  <!-- Header -->
+  <button
+    type="button"
+    class="accordion-header"
+    [class.is-open]="isOpen"
+    (click)="toggle()"
+  >
+    <div class="accordion-header-content">
+
+      @if (icon) {
+        <div class="accordion-icon">
+          <app-icon
+            [name]="icon"
+            [size]="18"
+          />
+        </div>
+      }
+
+      <div class="accordion-title">
+        <div class="accordion-heading">
+          {{ title }}
+        </div>
+
+        @if (subtitle) {
+          <div class="accordion-subtitle">
+            {{ subtitle }}
+          </div>
+        }
+      </div>
+
+    </div>
+
+    <app-icon
+      [name]="isOpen ? 'chevron-up' : 'chevron-down'"
+      [size]="18"
+    />
+
+  </button>
+
+  <!-- Body -->
+  @if (isOpen) {
+    <div class="accordion-body">
+      <ng-content></ng-content>
+    </div>
+  }
+
+</div>

@@ -1,0 +1,132 @@
+$border-color: #e2e8f0;
+$primary-purple: #635bff;
+$text-dark: #1f2937;
+$text-muted: #6b7280;
+$border-radius: 12px;
+
+.tag-picker {
+  width: 100%;
+
+  &__trigger {
+    min-height: 48px;
+    padding: 6px 14px;
+    background-color: #ffffff;
+    border: 1px solid $border-color;
+    border-radius: $border-radius;
+    cursor: pointer;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+    .tag-icon {
+      color: $text-muted;
+    }
+
+    .chevron-icon {
+      color: $text-muted;
+      transition: transform 0.2s ease;
+    }
+
+    .tag-chip {
+      padding: 3px 10px;
+      font-size: 13px;
+      font-weight: 500;
+      max-width: 140px;
+
+      .tag-label {
+        max-width: 80px;
+      }
+
+      .tag-remove-btn {
+        background: none;
+        border: none;
+        color: inherit;
+        font-size: 14px;
+        line-height: 1;
+        padding: 0;
+        cursor: pointer;
+        opacity: 0.7;
+
+        &:hover {
+          opacity: 1;
+        }
+      }
+    }
+  }
+
+  &.is-open {
+    .tag-picker__trigger {
+      border-color: $primary-purple;
+      box-shadow: 0 0 0 3px rgba($primary-purple, 0.12);
+
+      .chevron-icon {
+        transform: rotate(180deg);
+      }
+    }
+  }
+
+  &__dropdown {
+    top: 100%;
+    left: 0;
+    z-index: 1050;
+    border: 1px solid $border-color;
+
+    .search-input {
+      font-size: 14px;
+      padding: 8px 12px;
+      background-color: #f8fafc;
+      border: 1px solid transparent;
+
+      &:focus {
+        background-color: #ffffff;
+        border-color: $primary-purple;
+        box-shadow: 0 0 0 2px rgba($primary-purple, 0.1);
+      }
+    }
+
+    .option-list {
+      max-height: 200px;
+      overflow-y: auto;
+
+      .option-item {
+        font-size: 14px;
+        color: $text-dark;
+        cursor: pointer;
+        transition: background-color 0.15s ease;
+
+        &:hover {
+          background-color: #f8fafc;
+        }
+
+        &.selected {
+          .check-icon {
+            color: $primary-purple;
+          }
+        }
+
+        &.create-item {
+          color: $primary-purple;
+          &:hover {
+            background-color: #f3f0ff;
+          }
+        }
+      }
+    }
+
+    .clear-btn {
+      color: $primary-purple;
+      font-size: 13px;
+      font-weight: 500;
+
+      &:hover {
+        color: darken($primary-purple, 10%);
+      }
+    }
+  }
+
+  .tag-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+    flex-shrink: 0;
+  }
+}

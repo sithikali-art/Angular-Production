@@ -1,0 +1,85 @@
+.spinner-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.xtrm-fancy-spinner {
+  position: relative;
+  display: inline-block;
+  /* Width and height are controlled via Angular inline style bindings */
+  box-sizing: border-box;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  overflow: visible;
+}
+
+.xtrm-fancy-spinner::before {
+  content: "";
+  position: absolute;
+  inset: 18%;
+
+  /* Uses the --primary variable injected by Angular */
+  background: color-mix(
+    in oklch,
+    var(--primary, #6366F1) 28%,
+    transparent
+  );
+
+  border: 3px solid var(--primary, #6366F1);
+
+  box-shadow:
+    0 0 18px color-mix(
+      in oklch,
+      var(--primary, #6366F1) 35%,
+      transparent
+    );
+
+  transform-origin: 50% 50%;
+
+  animation:
+    xtrm-spinner-14
+    2.4s
+    cubic-bezier(0.65, 0, 0.35, 1)
+    infinite;
+}
+
+.xtrm-fancy-spinner::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 3px;
+
+  transform: translateY(-50%);
+
+  background:
+    linear-gradient(
+      to right,
+      var(--primary, #6366F1) 0,
+      var(--primary, #6366F1) 22%,
+      transparent 22%,
+      transparent 78%,
+      var(--primary, #6366F1) 78%,
+      var(--primary, #6366F1) 100%
+    );
+
+  border-radius: 2px;
+}
+
+@keyframes xtrm-spinner-14 {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  50% {
+    transform: rotate(180deg) scale(0.9);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}

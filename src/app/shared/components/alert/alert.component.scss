@@ -1,0 +1,36 @@
+.toast-badge {
+  background-color: #5c56f6; // Matching solid purple/violet accent
+  min-width: 260px;
+  padding-top: 0.75rem !important;
+  padding-bottom: 0.75rem !important;
+
+  /* Floating badge close button at top-left boundary */
+  .toast-close-badge {
+    top: -8px;
+    left: -8px;
+    width: 22px;
+    height: 22px;
+    cursor: pointer;
+    transition: transform 0.15s ease-in-out;
+    z-index: 2;
+
+    &:hover {
+      transform: scale(1.1);
+    }
+  }
+
+  /* White circular badge for checkmark icon */
+  .toast-icon-circle {
+    width: 20px;
+    height: 20px;
+
+    .toast-check-icon {
+      color: #5c56f6; // Icon checkmark matches container background color
+    }
+  }
+
+  .toast-message {
+    color: #ffffff;
+    letter-spacing: -0.01em;
+  }
+}

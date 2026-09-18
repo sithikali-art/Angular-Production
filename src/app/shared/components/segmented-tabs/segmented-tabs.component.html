@@ -1,0 +1,15 @@
+<div class="segmented-tabs-wrapper d-inline-flex p-1 w-100">
+  @for (tab of tabs(); track tab.id) {
+    <button
+      type="button"
+      class="tab-pill-btn border-0 flex-fill py-2 px-4 fw-medium text-center"
+      [class.active]="activeTab() === tab.id"
+      (click)="selectTab(tab.id)"
+    >
+      {{ tab.label }}
+      @if (tab.count !== undefined) {
+        <span class="tab-count-badge ms-1.5">{{ tab.count }}</span>
+      }
+    </button>
+  }
+</div>

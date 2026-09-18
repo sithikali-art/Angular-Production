@@ -1,0 +1,115 @@
+:host {
+  display: block;
+}
+
+/* Wide tables scroll inside their own container — never the page. */
+.table-scroll {
+  overflow-x: auto;
+}
+
+.data-table {
+  width: 100%;
+  min-width: 640px;
+  border-collapse: collapse;
+
+  th {
+    padding: 10px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--border-soft, var(--border));
+    white-space: nowrap;
+  }
+
+  td {
+    padding: 14px;
+    font-size: 13.5px;
+    color: var(--foreground);
+    vertical-align: middle;
+  }
+
+  .align-right {
+    text-align: right;
+  }
+  .align-center {
+    text-align: center;
+  }
+}
+
+.data-row {
+  border-bottom: 1px solid var(--border-soft, var(--border));
+  transition: background-color 0.13s ease;
+
+  &:hover {
+    background: var(--surface-muted);
+  }
+  &.clickable {
+    cursor: pointer;
+  }
+  &.expanded {
+    background: var(--surface-muted);
+    border-bottom-color: transparent;
+  }
+}
+
+.actions-col {
+  width: 84px;
+}
+
+.actions-cell {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.row-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  color: var(--muted);
+  transition:
+    color 0.14s ease,
+    background-color 0.14s ease;
+
+  &:hover {
+    color: var(--primary);
+    background: var(--primary-softer, var(--primary-soft));
+  }
+}
+
+.chevron {
+  transition: transform 0.18s ease;
+  &.rotated {
+    transform: rotate(180deg);
+  }
+}
+
+.detail-row {
+  border-bottom: 1px solid var(--border-soft, var(--border));
+
+  > td {
+    padding: 0 14px 16px;
+    background: var(--surface-muted);
+  }
+}
+
+.detail-panel {
+  animation: detail-in 0.18s ease;
+}
+
+@keyframes detail-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.empty-cell {
+  padding: 26px 14px;
+  text-align: center;
+  color: var(--muted);
+}

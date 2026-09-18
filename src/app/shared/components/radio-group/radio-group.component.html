@@ -1,0 +1,25 @@
+<div class="radio-group-container d-flex flex-column gap-2" role="radiogroup">
+  @for (opt of options(); track opt.value) {
+    <label 
+      class="radio-tile d-flex align-items-center"
+      [class.active]="value() === opt.value"
+      [class.disabled]="opt.disabled"
+    >
+      <input
+        type="radio"
+        class="visually-hidden"
+        [name]="groupName()"
+        [value]="opt.value"
+        [checked]="value() === opt.value"
+        [disabled]="opt.disabled"
+        (change)="selectOption(opt.value)"
+      />
+      
+      <span class="custom-radio me-3" aria-hidden="true">
+        <span class="radio-dot"></span>
+      </span>
+
+      <span class="radio-label">{{ opt.label }}</span>
+    </label>
+  }
+</div>

@@ -1,0 +1,74 @@
+.app-input-container {
+  width: 100%;
+
+  .custom-input-wrapper {
+    transition: all 0.2s ease-in-out;
+
+    /* Standard Soft Pill Container (Default design) */
+    &.variant-standard {
+      background-color: #f8fafc;
+      border: 1px solid #f1f5f9;
+      border-radius: 12px;
+      padding: 0.75rem 1rem;
+      min-height: 46px;
+
+      &:focus-within {
+        background-color: #ffffff;
+        border-color: #5b50e5;
+        box-shadow: 0 0 0 3px rgba(91, 80, 229, 0.12);
+      }
+
+      input {
+        font-size: 0.9rem;
+        color: #1e293b;
+
+        &::placeholder {
+          color: #94a3b8;
+        }
+      }
+
+      .suffix-badge {
+        color: #64748b;
+        font-size: 0.85rem;
+      }
+    }
+
+    /* Outlined Style (Standard Form Fields) */
+    &.variant-outlined {
+      background-color: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 0.75rem 1rem;
+      min-height: 46px;
+
+      &:focus-within {
+        border-color: #5b50e5;
+        box-shadow: 0 0 0 3px rgba(91, 80, 229, 0.12);
+      }
+    }
+
+    /* Hero Input Style (Large currency inputs) */
+    &.variant-hero {
+      background: transparent;
+      padding: 0.5rem 0;
+
+      input {
+        font-size: 2.75rem;
+        font-weight: 700;
+        color: #94a3b8;
+
+        &:focus {
+          color: #0f172a;
+        }
+      }
+
+      .suffix-badge {
+        font-size: 1.1rem;
+        color: #475569;
+        margin-left: 0.25rem;
+        align-self: flex-end;
+        margin-bottom: 0.6rem;
+      }
+    }
+  }
+}

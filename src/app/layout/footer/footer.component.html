@@ -1,0 +1,29 @@
+<footer class="footer">
+  <!-- Feedback link (right aligned, per the reference design) -->
+  <div class="feedback d-flex justify-content-end mb-3">
+    <a href="#" (click)="$event.preventDefault()" class="feedback-link d-inline-flex align-items-center gap-2">
+      <app-icon name="message" [size]="15" />
+      Give us feedback
+    </a>
+  </div>
+
+  <!-- Legal strip: centered links row + FDIC line -->
+  <div class="footer-legal">
+    <hr class="mt-0 mb-3" />
+    <div class="legal-row d-flex flex-wrap align-items-center justify-content-center column-gap-3 row-gap-1">
+      <span>© 2026 Xtrm Inc.</span>
+      @for (link of legalLinks; track link.label) {
+        <a href="#" (click)="$event.preventDefault()" class="d-inline-flex align-items-center gap-1">
+          {{ link.label }}
+          @if (link.external) {
+            <app-icon name="external-link" [size]="12" />
+          }
+        </a>
+      }
+    </div>
+    <p class="fdic-line text-center mt-2 mb-0">
+      <a class="fdic" href="#" (click)="$event.preventDefault()">FDIC-insured</a>
+      where eligible. Backed by the full faith and credit of the US Government.
+    </p>
+  </div>
+</footer>

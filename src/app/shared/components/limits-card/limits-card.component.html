@@ -1,0 +1,33 @@
+<div class="limit-card">
+  <div class="limit-card__header">
+    <h3 class="limit-card__title">{{ title() }}</h3>
+    <a href="#" class="limit-card__action" (click)="onActionClick($event)">
+      {{ actionLabel() }}
+    </a>
+  </div>
+
+  <div class="limit-card__track">
+    <div
+      class="limit-card__bar"
+      [style.--progress.%]="progressPercentage()"
+    ></div>
+  </div>
+
+  <div class="limit-card__footer">
+    <div class="limit-card__stat">
+      <span class="limit-card__stat-current">
+        {{ currentAmount() | currency : currencyCode() : 'symbol' : '1.2-2' }}
+      </span>
+      <span class="limit-card__stat-total">
+        of {{ maxAmount() | currency : currencyCode() : 'symbol' : '1.2-2' }}
+      </span>
+    </div>
+
+    <div class="limit-card__stat">
+      <span class="limit-card__stat-current">{{ currentTransactions() }}</span>
+      <span class="limit-card__stat-total">
+        of {{ maxTransactions() }} transactions
+      </span>
+    </div>
+  </div>
+</div>

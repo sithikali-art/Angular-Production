@@ -1,0 +1,33 @@
+<div class="card border rounded-4 overflow-hidden shadow-none">
+  <!-- Dynamic Header -->
+  <div 
+    class="card-header border-bottom-0 py-3 px-4 d-flex align-items-center justify-content-between"
+    [style.background-color]="headerBg()"
+  >
+    <!-- Priority 1: Projected Custom Slot -->
+    <ng-content select="[card-header]">
+      <!-- Priority 2: Standard Input Layout -->
+      <div class="d-flex align-items-center justify-content-between w-100">
+        <div class="d-flex align-items-center gap-2">
+          @if (icon()) {
+            <app-icon [name]="icon()" [size]="iconSize()" class="text-primary d-inline-flex align-items-center" />
+          }
+          @if (title()) {
+            <h2 class="card-title-text m-0 text-uppercase fw-bold fs-6">{{ title() }}</h2>
+          }
+        </div>
+
+        @if (badgeText()) {
+          <span class="small fw-bold text-uppercase text-secondary tracking-wider">
+            {{ badgeText() }}
+          </span>
+        }
+      </div>
+    </ng-content>
+  </div>
+
+  <!-- Body Projection -->
+  <div class="card-body p-0">
+    <ng-content></ng-content>
+  </div>
+</div>

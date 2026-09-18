@@ -1,0 +1,11 @@
+@if (!imageFailed()) {
+  <img
+    class="flag-img"
+    [src]="flagUrl()"
+    [alt]="countryCode() + ' flag'"
+    loading="lazy"
+    (error)="imageFailed.set(true)"
+  />
+} @else {
+  <span class="flag-fallback" [style.font-size.px]="size() * 0.62">{{ emoji() }}</span>
+}

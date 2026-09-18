@@ -1,0 +1,125 @@
+    <app-drawer [ngClass]="viewAllDrafts?'view-all-draft':''" 
+      title="Draft payments"
+      subtitle="Continue incomplete payments and money movement actions."
+      icon="file-invoice"
+      (closed)="layoutUi.close('drafts')"
+    >
+      <div class="tabs">
+        @for (tab of tabs; track tab) {
+          <button
+            type="button"
+            class="chip"
+            [class.active]="drafts.activeTab() === tab"
+            (click)="drafts.setTab(tab)"
+          >
+            {{ tab }}
+          </button>
+        }
+      </div>
+
+      <label class="mine-row">
+        <span>Show only drafts created by me</span>
+        <app-toggle-switch [checked]="drafts.onlyMine()" (toggled)="drafts.toggleOnlyMine()" />
+      </label>
+
+      <div class="draft-list">
+        @for (draft of drafts.filtered(); track draft.id) {
+          <article class="draft-card card">
+            <div class="draft-head">
+              <span class="draft-type">
+                {{ draft.type }}
+                <span class="draft-badge">Draft</span>
+              </span>
+              <span class="draft-date">{{ draft.savedUtc | date: 'MMM dd, yyyy · HH:mm' }}</span>
+            </div>
+
+            <h3 class="draft-title">{{ draft.title }}</h3>
+            <p class="draft-subtitle">{{ draft.subtitle }}</p>
+
+            <dl class="draft-meta">
+              <div><dt>Created by</dt><dd>{{ draft.createdBy }}</dd></div>
+              <div><dt>Entity</dt><dd>{{ draft.entity }}</dd></div>
+              @if (draft.fundingWallet) {
+                <div><dt>Funding wallet</dt><dd>{{ draft.fundingWallet }}</dd></div>
+              }
+              @if (drafts.expandedId() === draft.id) {
+                <!-- View details: only Recipients, Amount and Current step -->
+                <div><dt>Recipients</dt><dd>{{ draft.recipients }}</dd></div>
+                <div><dt>Amount</dt><dd>{{ draft.amountLabel }}</dd></div>
+                <div><dt>Current step</dt><dd>{{ draft.currentStep }}</dd></div>
+              }
+            </dl>
+
+            <div class="draft-actions">
+              <button type="button" class="details-toggle" (click)="drafts.toggleDetails(draft.id)">
+                <app-icon name="eye" [size]="15" />
+                View details
+                <app-icon
+                  [name]="drafts.expandedId() === draft.id ? 'chevron-up' : 'chevron-down'"
+                  [size]="14"
+                />
+              </button>
+              <span class="spacer"></span>
+              <button type="button" class="btn-quiet danger" (click)="deleteDraft(draft.id)">
+                <app-icon name="trash" [size]="14" /> Delete
+              </button>
+              <button type="button" class="btn btn-primary continue">
+                Continue <app-icon name="arrow-right" [size]="14" />
+              </button>
+            </div>
+
+          </article>
+        } @empty {
+          <div class="empty">No drafts match this filter.</div>
+        }
+      </div>
+
+      <div drawer-footer class="foot">
+        <span class="text-muted">{{ drafts.filtered().length }} drafts</span>
+        <!-- <a class="view-all" href="#" (click)="$event.preventDefault()">View all drafts</a> -->
+         <a class="view-all" href="#" (click)="viewAllDraftExpand()">{{viewDraft}}</a>
+      </div>
+
+      <!-- reusable component -->
+      @if (deleteModal) {
+      <app-modal [isOpen]="deleteModal" title="Delete draft" size="md" class="delete-draft" (closeModal)="cancelDelete()" [showCloseButton]="false">
+        <p class="m-0">This draft will be removed permanently. This will not affect transactions or activity.</p>
+      
+        <div modal-footer  class="d-flex gap-2">
+          <button type="button" class="btn btn-light btn-cancel" (click)="cancelDelete()">Cancel</button>
+                <button type="button" class="btn btn-danger" (click)="confirmDelete()">Delete Draft</button>
+        </div>
+      </app-modal>
+      }
+
+      <!-- @if (deleteModal) {
+        <div class="modal-backdrop-custom" (click)="cancelDelete()"></div>
+ 
+        <div
+          class="modal fade show"
+          style="display: block;"
+          tabindex="-1"
+          role="dialog"
+          aria-labelledby="deleteModalLabel"
+          aria-modal="true"
+        >
+          <div class="modal-dialog modal-dialog-centered delete-modal">
+            <div class="modal-content">
+              <div class="modal-header border-bottom-0">
+                <h6 class="modal-title" id="deleteModalLabel">Delete draft</h6>
+                -- <button type="button" class="btn-close" aria-label="Close" (click)="cancelDelete()"></button> -
+              </div>
+ 
+              <div class="modal-body text-muted">
+               This draft will be removed permanently. This will not affect transactions or activity.
+              </div>
+ 
+              <div class="modal-footer border-top-0">
+                <button type="button" class="btn btn-light btn-cancel" (click)="cancelDelete()">Cancel</button>
+                <button type="button" class="btn btn-danger" (click)="confirmDelete()">Delete Draft</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      } -->
+    </app-drawer>

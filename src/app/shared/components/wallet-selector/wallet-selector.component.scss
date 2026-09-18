@@ -1,0 +1,129 @@
+    .selector {
+      position: relative;
+    }
+    .trigger {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      width: 100%;
+      background: var(--surface);
+      color: var(--foreground);
+      border-radius: var(--radius-md);
+      // padding: 9px 14px;
+      padding: 0.625rem;
+      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.12);
+      text-align: left;
+    }
+    .trigger-meta {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      line-height: 1.3;
+      gap: 0.3rem;
+    }
+    .trigger-name {
+      font-size: 13.5px;
+      font-weight: 500;
+    }
+    .trigger-id {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11.5px;
+      color: var(--muted);
+    }
+    .caret {
+      color: var(--muted);
+      transition: transform 0.18s ease;
+      &.rotated {
+        transform: rotate(180deg);
+      }
+    }
+    .menu {
+      top: calc(100% + 8px);
+      left: 0;
+      right: 0;
+      // padding: 8px;
+      transform-origin: top center;
+    }
+    .menu-label {
+      // padding: 6px 10px 8px;
+      padding: 0.625rem 0.75rem;
+    }
+    .option {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      width: 100%;
+      padding: 0.625rem 0.75rem;
+      border-radius: var(--radius-sm);
+      text-align: left;
+      transition: background-color 0.13s ease;
+      &:hover {
+        background: var(--surface-muted);
+      }
+    }
+    .option-meta {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      line-height: 1.3;
+      gap: 0.25rem;
+    }
+    .option-name {
+      font-size: 14px;
+      font-weight: 600;
+    }
+    .option-id {
+      font-size: 11.5px;
+      color: var(--muted);
+    }
+    .option-balance {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--foreground-soft);
+      white-space: nowrap;
+    }
+    .option-code {
+      // font-size: 11px;
+      font-weight: 600;
+      // color: var(--muted);
+    }
+    /* Border below the switch-wallet options */
+    .option-list {
+      border-top: 1px solid var(--border-soft);
+      border-bottom: 1px solid var(--border-soft);
+      padding-bottom: 6px;
+      margin-bottom: 4px;
+    }
+    /* View details row: border-top + eye icon */
+    .menu-details {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      width: 100%;
+      // padding: 10px 10px 6px;
+      padding: 0.625rem 0.75rem;
+      // border-top: 1px solid var(--border-soft);
+      font-size: 13px;
+      font-weight: 600;
+      // color: var(--primary);
+      color: #212529;
+      text-align: left;
+      transition: color 0.14s ease;
+      &:hover {
+        // color: var(--primary-strong);
+      }
+    }
+    .check {
+      color: var(--primary);
+    }
+
+/* Custom Classes */
+@media (min-width: 1024px) {
+    .menu {
+        width: 320px;
+    }
+}

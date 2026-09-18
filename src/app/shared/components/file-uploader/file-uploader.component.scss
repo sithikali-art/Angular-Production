@@ -1,0 +1,36 @@
+$uploader-bg: #fcfcfd;
+$uploader-border: #e5e7eb;
+$uploader-hover-border: #635bff;
+$icon-bg: #eef2ff;
+$icon-color: #635bff;
+
+.file-uploader {
+//   background-color: $uploader-bg;
+//   border: 2px dashed $uploader-border;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  min-height: 220px;
+
+  &:hover,
+  &.is-dragging {
+    border-color: $uploader-hover-border;
+    background-color: #f8fafc;
+  }
+
+  &__icon-circle {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background-color: $icon-bg;
+    color: $icon-color;
+  }
+
+  &__title {
+    color: #111827;
+    font-size: 16px;
+  }
+
+  &__subtitle {
+    color: #6b7280;
+  }
+}

@@ -1,0 +1,18 @@
+<button
+  [type]="btnType()"
+  [disabled]="disabled()"
+  class="btn"
+  [class]="'btn-' + btnVariant() + ' ' + btnClass()"
+>
+  @if (icon() && iconPosition() === 'left') {
+    <app-icon [name]="icon()" [size]="16" />
+  }
+
+  @if (btnText()) {
+    <span>{{ btnText() }}</span>
+  }
+
+  @if (icon() && iconPosition() === 'right') {
+    <app-icon [name]="icon()" [size]="16" />
+  }
+</button>

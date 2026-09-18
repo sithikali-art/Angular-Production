@@ -1,0 +1,39 @@
+@if (forceLoader() || wallet.loading()) {
+    <app-fancy-spinner />
+  } @else {
+  <div class="head">
+  <h1>Wallets</h1>
+  <button type="button" class="btn btn-primary">
+    <app-icon name="plus" [size]="15" /> Create wallet
+  </button>
+</div>
+
+<div class="row">
+  <div class="col-12 col-lg-8">
+    <app-search-input [(value)]="searchQuery" placeholder="Search by wallet name, ID, entity, or currency"
+      chipPrefix="Search" />
+  </div>
+</div>
+<div class="grid">
+
+  @for (w of wallet.wallets(); track w.id) {
+  <article class="card wallet-card">
+    <div class="row">
+      <app-flag-icon [countryCode]="w.countryCode" [size]="30" />
+      <div class="meta">
+        <span class="name">{{ w.currency }} • {{ w.name }}</span>
+        <span class="id">Wallet ID {{ w.walletId }}</span>
+      </div>
+      @if (w.isDefault) {
+      <span class="default">Default</span>
+      }
+    </div>
+    <div class="balance">{{ w.balance | money: w.currency : 'symbol' }}</div>
+    <span class="status">{{ w.status }}</span>
+  </article>
+  }
+   <!-- @empty {
+  <p class="text-muted">Loading wallets…</p>
+  } -->
+</div>
+  }

@@ -1,0 +1,88 @@
+.checkbox-group-container {
+  width: 100%;
+}
+
+/* Hide native checkbox input reliably */
+.native-checkbox {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  margin: 0;
+  pointer-events: none;
+}
+
+/* Outer Tile Styling */
+.checkbox-tile {
+  display: flex;
+  align-items: center;
+  padding: 0.675rem 1.25rem;
+  border-radius: 14px;
+//   border: 1.5px solid #e5e7eb;
+//   background-color: #ffffff;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.2s ease-in-out;
+}
+
+.checkbox-tile:hover:not(.disabled):not(.active) {
+  background-color: #f8fafc;
+  border-color: #cbd5e1;
+}
+
+.checkbox-tile.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Custom Square Checkbox Indicator */
+.custom-checkbox {
+  width: 20px;
+  height: 20px;
+  min-width: 20px;
+  border-radius: 0px;
+  border: 1px solid #d1d5db;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 0.75rem;
+  box-sizing: border-box;
+  background-color: #ffffff;
+  transition: all 0.2s ease-in-out;
+}
+
+/* SVG Checkmark Icon */
+.check-icon {
+  width: 16px;
+  height: 16px;
+  color: #ffffff;
+  opacity: 0;
+  transform: scale(0.5);
+  transition: transform 0.15s ease-in-out, opacity 0.15s ease-in-out;
+}
+
+.checkbox-label {
+  font-size: 0.9375rem;
+  color: #374151;
+}
+
+/* Active / Selected State */
+// .checkbox-tile.active {
+//   background-color: #f5f3ff;
+//   border-color: #6366f1;
+// }
+
+.checkbox-tile.active .custom-checkbox {
+  background-color: #6366f1;
+  border-color: #6366f1;
+}
+
+.checkbox-tile.active .check-icon {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.checkbox-tile.active .checkbox-label {
+  color: #111827;
+//   font-weight: 500;
+}

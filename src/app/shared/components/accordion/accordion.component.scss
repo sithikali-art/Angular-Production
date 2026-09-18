@@ -1,0 +1,65 @@
+.accordion-card {
+  border: 1px solid transparent;
+  border-radius: var(--radius-lg, 1rem);
+  overflow: hidden;
+  background: var(--surface-muted, #f3f4f7);
+  margin-bottom: 1rem;
+
+  &.is-open {
+    border-color: var(--primary-soft);
+  }
+
+  .accordion-header {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.25rem;
+    border: 0;
+    background: transparent;
+    text-align: left;
+    transition: background-color 0.15s ease;
+
+    &:hover {
+      background-color: var(--primary-softer, #edeef7);
+    }
+
+    .accordion-header-content {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .accordion-icon {
+      width: 2.5rem;
+      height: 2.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: var(--primary-soft, #e9eaff);
+      color: var(--primary);
+    }
+
+    .accordion-title {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+
+      .accordion-heading {
+        font-weight: 600;
+        color: var(--foreground);
+      }
+
+      .accordion-subtitle {
+        font-size: 0.875rem;
+        color: var(--muted, #6c757d);
+      }
+    }
+  }
+
+  .accordion-body {
+    padding: 1.25rem;
+    // border-top: 1px solid var(--border);
+  }
+}

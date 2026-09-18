@@ -1,0 +1,34 @@
+<div class="search-input-wrapper d-flex flex-column gap-2">
+  <!-- Search Input Field -->
+  <div class="position-relative d-flex align-items-center">
+    <app-icon
+      [name]="iconName()"
+      [size]="14"
+      class="position-absolute start-0 ms-3 text-muted pe-none d-flex align-items-center"
+    />
+    <input
+      type="text"
+      class="form-control rounded-pill border-0 ps-5 pe-3 "
+      [placeholder]="placeholder()"
+      [value]="value()"
+      (input)="onInput($event)"
+    />
+  </div>
+
+  <!-- Active Filter Chip Badge using shared ButtonComponent -->
+  @if (showChip() && value().trim()) {
+    <div class="d-flex align-items-center">
+      <span class="search-chip d-inline-flex align-items-center gap-1 rounded-pill px-3 py-1 fs-7">
+        <span class="text-secondary">{{ chipPrefix() }}:</span>
+        <span class="fw-semibold text-dark">{{ value() }}</span>
+        
+        <app-button
+          [icon]="clearIcon()"
+          btnVariant="ghost"
+          btnClass="p-0 border-0 bg-transparent text-muted ms-1 lh-1 d-inline-flex align-items-center"
+          (click)="clearSearch()"
+        />
+      </span>
+    </div>
+  }
+</div>

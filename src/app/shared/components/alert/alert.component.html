@@ -1,0 +1,25 @@
+@if (isVisible()) {
+  <div class="toast-badge position-relative d-inline-flex align-items-center gap-2 px-3 py-2 rounded-3 text-white shadow-sm">
+    <!-- Floating Top-Left Close Button -->
+    @if (dismissible()) {
+      <button
+        type="button"
+        class="toast-close-badge position-absolute d-flex align-items-center justify-content-center border-0 rounded-circle bg-white shadow-sm"
+        aria-label="Close notification"
+        (click)="dismiss()"
+      >
+        <app-icon name="x" [size]="12" class="text-dark" />
+      </button>
+    }
+
+    <!-- White Circle Check Icon Badge -->
+    <div class="toast-icon-circle rounded-circle bg-white d-flex align-items-center justify-content-center flex-shrink-0">
+      <app-icon [name]="icon()" [size]="12" class="toast-check-icon" />
+    </div>
+
+    <!-- Toast Message -->
+    <span class="toast-message fs-7 fw-semibold pe-3 text-truncate">
+      {{ message() }}
+    </span>
+  </div>
+}

@@ -1,0 +1,49 @@
+<section class="recent">
+  <header class="d-flex align-items-center justify-content-between">
+    <h2>Recent activity</h2>
+    <a href="#" (click)="$event.preventDefault()">View all</a>
+  </header>
+
+  <ul class="list-unstyled mb-0">
+    @for (txn of wallet.recentActivity(); track txn.id) {
+      <li class="d-flex align-items-center">
+        <span class="txn-badge">
+          @if (txn.avatarUrl) {
+            <!-- Provided DiceBear SVG shown at 40×40, kept circular -->
+            <img class="txn-avatar" [src]="txn.avatarUrl" [alt]="txn.counterparty" width="40" height="40" />
+            <span class="txn-direction" [class.credit]="txn.direction === 'Credit'">
+              <app-icon
+                [name]="txn.direction === 'Credit' ? 'arrow-down-left' : 'arrow-up-right'"
+                [size]="10"
+              />
+            </span>
+          } @else {
+            <!-- Transfer arrow centered in a 40×40 rounded badge -->
+            <span class="txn-tile" [class.credit]="txn.direction === 'Credit'">
+              <app-icon
+                [name]="txn.direction === 'Credit' ? 'arrow-down-left' : 'arrow-up-right'"
+                [size]="16"
+              />
+            </span>
+          }
+        </span>
+        <div class="txn-meta d-flex flex-column flex-grow-1">
+          <span class="txn-name text-truncate">{{ txn.counterparty }}</span>
+          <span class="txn-desc">
+            {{ txn.description }} · {{ txn.occurredUtc | date: 'MMM dd, yyyy' }}
+          </span>
+        </div>
+        <div class="txn-amounts d-flex flex-column align-items-end">
+          <span class="txn-amount" [class.credit]="txn.amount > 0">
+            {{ txn.amount | money: txn.currency : 'signed' }} <span class="currency-code">{{ txn.currency }}</span>
+          </span>
+          <span class="txn-balance">
+            Balance {{ txn.runningBalance | money: txn.currency }} {{ txn.currency }}
+          </span>
+        </div>
+      </li>
+    } @empty {
+      <li class="empty d-flex justify-content-center">No activity for this wallet yet.</li>
+    }
+  </ul>
+</section>

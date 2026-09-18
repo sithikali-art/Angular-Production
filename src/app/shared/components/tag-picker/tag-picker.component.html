@@ -1,0 +1,113 @@
+<div class="tag-picker position-relative" [class.is-open]="isOpen()" [class.disabled]="isDisabled()">
+  
+  <!-- Trigger Bar -->
+  <div 
+    class="tag-picker__trigger form-control d-flex align-items-center justify-content-between gap-2"
+    (click)="toggleDropdown()"
+  >
+    <div class="d-flex align-items-center gap-2 flex-wrap text-truncate">
+      <!-- Tabler Tag Icon -->
+      <app-icon name="tag" class="tag-icon flex-shrink-0" [size]="18" />
+
+      <!-- Selected Chips -->
+      @for (tag of visibleTags(); track tag.id) {
+        <span 
+          class="tag-chip d-inline-flex align-items-center gap-1 rounded-pill"
+          [style.backgroundColor]="tag.bgColor || '#eef2ff'"
+          [style.color]="tag.textColor || '#374151'"
+        >
+          <span class="tag-dot" [style.backgroundColor]="tag.color"></span>
+          <span class="tag-label text-truncate">{{ tag.label }}</span>
+          <button 
+            type="button" 
+            class="tag-remove-btn" 
+            (click)="removeTag(tag.id, $event)"
+            aria-label="Remove tag"
+          >&times;</button>
+        </span>
+      }
+
+      <!-- Overflow Counter (+1) -->
+      @if (overflowCount() > 0) {
+        <span class="overflow-badge text-muted fw-semibold fs-7">
+          +{{ overflowCount() }}
+        </span>
+      }
+
+      @if (selectedOptions().length === 0) {
+        <span class="text-muted fs-7">Select tags...</span>
+      }
+    </div>
+
+    <!-- Tabler Chevron Icon -->
+    <app-icon name="chevron-down" class="chevron-icon flex-shrink-0" [size]="16" />
+  </div>
+
+  <!-- Dropdown Menu -->
+  @if (isOpen()) {
+    <div class="tag-picker__dropdown shadow-lg rounded-4 p-2 bg-white position-absolute w-100 mt-2">
+      
+      <!-- Search Input -->
+      <div class="search-box p-1 mb-2">
+        <input
+          type="text"
+          class="form-control search-input rounded-3 border-0 bg-light"
+          [placeholder]="placeholder()"
+          [value]="searchTerm()"
+          (input)="searchTerm.set($any($event.target).value)"
+        />
+      </div>
+
+      <!-- Option List -->
+      <ul class="option-list list-unstyled m-0 p-0">
+        @for (option of filteredOptions(); track option.id) {
+          <li 
+            class="option-item d-flex align-items-center justify-content-between rounded-3 py-2 px-3"
+            [class.selected]="isSelected(option.id)"
+            (click)="toggleOption(option.id, $event)"
+          >
+            <div class="d-flex align-items-center gap-2">
+              <span class="tag-dot" [style.backgroundColor]="option.color"></span>
+              <span class="option-label fw-medium">{{ option.label }}</span>
+            </div>
+
+            @if (isSelected(option.id)) {
+              <app-icon name="check" class="check-icon" [size]="16" />
+            }
+          </li>
+        } @empty {
+          @if (!canCreate()) {
+            <li class="p-2 text-muted text-center fs-7">No labels found</li>
+          }
+        }
+
+        <!-- Dynamic Label Creation -->
+        @if (canCreate()) {
+          <li 
+            class="option-item create-item d-flex align-items-center gap-2 rounded-3 py-2 px-3 text-primary"
+            (click)="createNewOption()"
+          >
+            <span class="fw-medium">+ Create "{{ searchTerm() }}"</span>
+          </li>
+        }
+      </ul>
+
+      <!-- Footer Bar -->
+      @if (selectedIds().length > 0) {
+        <div class="tag-picker__footer d-flex align-items-center justify-content-between pt-2 px-2 mt-2 border-top">
+          <span class="text-muted fs-7">{{ selectedIds().length }} selected</span>
+          
+          <!-- Reusable Button Component for Clear Action -->
+          <app-button
+            btnText="Clear"
+            btnVariant="ghost"
+            btnClass="btn-sm p-0 fs-7 fw-medium"
+            (click)="clearAll($event)"
+          />
+        </div>
+      }
+
+    </div>
+  }
+
+</div>

@@ -1,0 +1,33 @@
+.search-input-wrapper {
+  .form-control {
+    background-color: #f6f6f9;
+    color: #1e293b;
+    font-size: 0.9rem;
+    transition: all 0.2s ease-in-out;
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+
+    &:focus {
+    //   background-color: #ffffff;
+    //   box-shadow: 0 0 0 2px rgba(99, 91, 255, 0.2);
+    // border: 1px solid var(--border-soft) !important;
+    box-shadow: 0 0 0 0.1rem #bcbef7;
+    }
+  }
+
+  .search-chip {
+    background-color: #eef2ff;
+    border: 1px solid #e0e7ff;
+    color: #374151;
+
+    .btn-close-chip {
+      font-size: 1.1rem;
+      line-height: 1;
+      cursor: pointer;
+
+      &:hover {
+        color: #111827;
+      }
+    }
+  }
+}

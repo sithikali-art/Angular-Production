@@ -1,0 +1,84 @@
+.radio-group-container {
+  width: 100%;
+}
+
+/* Hide native radio input reliably */
+.native-radio {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  margin: 0;
+  pointer-events: none;
+}
+
+/* Outer Tile Styling */
+.radio-tile {
+  display: flex;
+  align-items: center;
+  padding: 0.875rem 1.25rem;
+  border-radius: 14px;
+  border: 1.5px solid  var(--border-soft);
+//   background-color: #ffffff;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.2s ease-in-out;
+}
+
+.radio-tile:hover:not(.disabled):not(.active) {
+  background-color: #f8fafc;
+  border-color: #cbd5e1;
+}
+
+.radio-tile.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Custom Radio Circle */
+.custom-radio {
+  width: 22px;
+  height: 22px;
+  min-width: 22px;
+  border-radius: 50%;
+  border: 2px solid #d1d5db;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 0.75rem;
+  box-sizing: border-box;
+  transition: all 0.2s ease-in-out;
+}
+
+/* Inner Dot Indicator */
+.radio-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: transparent;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.radio-label {
+  font-size: 0.9375rem;
+  color: #374151;
+}
+
+/* Selected Active State */
+.radio-tile.active {
+  background-color: #f5f3ff;
+  border-color: #6366f1;
+}
+
+.radio-tile.active .custom-radio {
+  border-color: #6366f1;
+}
+
+.radio-tile.active .radio-dot {
+  background-color: #6366f1;
+}
+
+.radio-tile.active .radio-label {
+  color: #111827;
+//   font-weight: 500;
+}

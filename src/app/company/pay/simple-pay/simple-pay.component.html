@@ -1,0 +1,230 @@
+<app-stepper [steps]="[
+    { id: 'perm', label: 'Recipient' },
+    { id: 'entity', label: 'Amount' },
+    { id: 'wallet', label: 'Review' },
+    { id: 'bank', label: 'Confirm' },
+    { id: 'review', label: 'Pay' }
+  ]" [variant]="'line'" [(activeStepIndex)]="currentStep" finalNextLabel="Save Access Changes" (cancel)="closeDrawer()"
+  (finish)="onSavePermissions()" class="simple-stepper">
+  <!-- Main Step Body Content -->
+  @if (currentStep() === 0) {
+  <div>Step 1: Recipient Content
+    <div class="card my-3">
+      <div class="card-header bg-primary-soft">
+        Radio
+      </div>
+      <div class="card-body ">
+        <app-radio-group [options]="tradeOptions" [(value)]="selectedOption" />
+
+
+      </div>
+    </div>
+    <!-- Checkbox -->
+    <div class="card mb-3">
+      <div class="card-header bg-primary-soft">
+        Checkbox
+      </div>
+      <div class="card-body ">
+        <app-checkbox-group [options]="features" [(value)]="selectedFeatures" />
+      </div>
+    </div>
+    <!-- Textaea -->
+    <div class="card mb-3">
+      <div class="card-header bg-primary-soft">
+        Textarea
+      </div>
+      <div class="card-body ">
+        <app-textarea label="Additional Information" placeholder="Optional" [(value)]="infoText" />
+      </div>
+    </div>
+    <!-- OTP Input-->
+    <div class="card mb-3">
+      <div class="card-header bg-primary-soft">
+        OTP input
+      </div>
+      <div class="card-body ">
+        <app-otp-input [length]="6" (completed)="onVerifyOtp($event)" (resend)="onResendCode()"
+          (back)="onNavigateBack()" />
+      </div>
+    </div>
+
+    <!-- Reused for Daily Limits -->
+    <div class="card mb-3">
+      <div class="card-header bg-primary-soft">
+        Limits
+      </div>
+      <div class="card-body ">
+        <app-limits-card [title]="'Daily limits'" [currentAmount]="0" [maxAmount]="178" [currentTransactions]="0"
+          [maxTransactions]="50" />
+      </div>
+    </div>
+
+    <!-- Multiselect-->
+    <div class="card mb-3">
+      <div class="card-header bg-primary-soft">
+        Multiselect--Tag Picker
+      </div>
+      <div class="card-body ">
+        <app-tag-picker [options]="myOptions()" [(selectedIds)]="selectedTagIds" />
+      </div>
+    </div>
+
+    <!-- File Upload -->
+    <div class="card mb-3">
+      <div class="card-header bg-primary-soft">
+        File Upload
+      </div>
+      <div class="card-body ">
+        <!-- simple-pay.component.html -->
+        <!-- Correct parent template usage -->
+        <app-file-uploader title="Drag and drop your file here" subtitle="or click to browse from your computer"
+          chooseBtnText="Choose file" accept=".pdf, .png, .jpg" [showSample]="false" [multiple]="true"
+          (fileSelected)="handleVendorDocs($event)" (fileError)="handleFileError($event)" />
+      </div>
+    </div>
+
+    <!-- Dropdown -->
+    <div class="card mb-3">
+      <div class="card-header bg-primary-soft">
+        Dropdown
+      </div>
+      <div class="card-body ">
+        <!-- Template usage with two-way signal binding -->
+        <app-dropdown [options]="entityOptions" [(value)]="selectedEntity" />
+      </div>
+    </div>
+
+    <!-- Alert -->
+    <div class="card mb-3">
+      <div class="card-header bg-primary-soft">
+        Alert
+      </div>
+      <div class="card-body ">
+        <div class="card p-3 mb-4 shadow-sm">
+          <div class="d-flex gap-2 mb-3">
+            <div class="d-flex gap-2 mb-3">
+              <button class="btn btn-sm btn-success" (click)="triggerNewAlert('success')">
+                Test Success
+              </button>
+            </div>
+
+            @if (alertState().show) {
+            <app-alert [message]="alertState().message" (dismissed)="handleAlertDismissed()" />
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Input -->
+    <div class="card mb-3">
+      <div class="card-header bg-primary-soft">
+        Input Field
+      </div>
+      <div class="card-body ">
+        <div class="card p-3 mb-4 shadow-sm">
+          <!-- Required Text Input Field -->
+          <app-input [(value)]="requiredField" placeholder="Required" type="text" [className]="'mb-3'" />
+
+          <!-- Standard Optional Comment Input -->
+          <app-input [(value)]="commentText" placeholder="Add a comment (optional)" [className]="'mb-3'" />
+
+          <!-- Action Input with "Apply to all" Button -->
+          <app-input [(value)]="bulkAmount" placeholder="Apply same amount" suffix="SGD" actionText="Apply to all"
+            (actionClick)="onApplyToAll()" [className]="'mb-3'" />
+
+          <!-- Right-Aligned Amount Field -->
+          <app-input [(value)]="amount" placeholder="0.00" suffix="SGD" textAlign="right" [className]="'mb-3'" />
+        </div>
+      </div>
+    </div>
+
+    <!--Fancy Spinner  -->
+    <div class="card mb-3">
+      <div class="card-header bg-primary-soft">
+        Spinner
+      </div>
+      <div class="card-body ">
+        <div class="card p-3 mb-4 shadow-sm">
+          <app-fancy-spinner />
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Section Card -->
+    <div class="card mb-3">
+      <div class="card-header bg-primary-soft">
+        Section Card
+      </div>
+      <div class="card-body p-4">
+        <div class="mb-3" >
+        <app-section-card 
+  title="ACCOUNT DETAILS" 
+  headerBg="#ffffff"
+>
+  <ul class="list-group list-group-flush list-item-border">
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+      <span class="text-secondary">Account type</span>
+      <span class="fw-bold text-dark">Company</span>
+    </li>
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+      <span class="text-secondary">Current plan</span>
+      <div class="d-flex align-items-center gap-2">
+        <span class="badge bg-primary-subtle text-primary rounded-pill px-3 py-2">Pro</span>
+        <button class="btn btn-outline-secondary btn-sm rounded-pill px-3">Upgrade options</button>
+      </div>
+    </li>
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+      <span class="text-secondary">User ID</span>
+      <div class="d-flex align-items-center gap-2">
+        <span class="fw-bold text-dark">SPA2239547</span>
+        <button class="btn btn-link p-0 text-secondary d-flex align-items-center">
+          <app-icon name="copy" [size]="16" />
+        </button>
+      </div>
+    </li>
+  </ul>
+</app-section-card>
+</div>
+
+        <app-section-card 
+  title="June 15, 2026" 
+  badgeText="2 ACTIVITIES" 
+  icon="calendar" 
+  [iconSize]="18"
+  headerBg="#f1f3fb"
+>
+  <ul class="list-group list-group-flush">
+    <li class="list-group-item d-flex align-items-center justify-content-between">
+      <div class="d-flex align-items-center gap-4">
+        <span class="text-secondary small">04:25 AM</span>
+        <div>
+          <span class="fw-bold">Ravichandran Sithan</span>
+          <span class="text-secondary"> edited </span>
+          <span class="fw-bold">Cambridge API Documentation v1.8</span>
+          <span class="text-secondary"> in Team Workspace</span>
+        </div>
+      </div>
+      <a href="#" class="text-primary text-decoration-none fw-semibold d-inline-flex align-items-center gap-1">
+        View <app-icon name="external-link" [size]="14" />
+      </a>
+    </li>
+  </ul>
+</app-section-card>
+      </div>
+    </div>
+
+  </div>
+  } @else if (currentStep() === 1) {
+  <div>Step 2: Amount Content</div>
+  }
+  @else if (currentStep() === 2) {
+  <div>Step 3: Review Content</div>
+  }
+
+  <!-- Optional Custom Action inside Footer -->
+  <button extra-actions type="button" class="btn btn-link text-secondary">
+    Save Draft
+  </button>
+</app-stepper>

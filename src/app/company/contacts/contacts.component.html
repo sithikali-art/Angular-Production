@@ -1,0 +1,22 @@
+<!-- Render the Segmented Control -->
+ <app-page-header
+  title="Contacts"
+  subtitle="Manage the people and companies you send to."
+/>
+<div class="mb-4">
+  <app-segmented-tabs
+    [tabs]="contactTabs"
+    [(activeTab)]="selectedTab"
+  />
+</div>
+
+<!-- Conditionally display content based on active tab -->
+@if (selectedTab() === 'individuals') {
+  <div class="individuals-view">
+    <p>Showing Individual Contacts</p>
+  </div>
+} @else if (selectedTab() === 'companies') {
+  <div class="companies-view">
+    <p>Showing Company Contacts</p>
+  </div>
+}

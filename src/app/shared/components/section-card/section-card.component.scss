@@ -1,0 +1,19 @@
+.card-title-text {
+  letter-spacing: 0.05em;
+  color: #1e293b;
+  font-size: 0.875rem;
+}
+
+.tracking-wider {
+  letter-spacing: 0.06em;
+}
+
+:host ::ng-deep {
+  .list-group-item {
+    padding: 1rem 1.5rem;
+    
+    &:last-child {
+      border-bottom: none !important;
+    }
+  }
+}
