@@ -1,7 +1,6 @@
 # app-customer-web-Build-pipelines
 
-trigger:
-  - Dev
+trigger: none
         
 
 pool:
