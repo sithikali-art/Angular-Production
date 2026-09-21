@@ -1,0 +1,73 @@
+# app-customer-web-Build-pipelines
+
+trigger:
+  - Dev
+        
+
+pool:
+  vmImage: windows-latest
+
+# pool:
+#   name: Windows 11_Devrg01
+#   demands:
+#     - Agent.Name -equals Agent-40.78.177.228
+
+
+
+stages:
+- stage: Build
+  displayName: "Build Node.js"
+  jobs:
+  - job: Build
+    displayName: "Install node"
+    steps:
+
+
+
+    - task: UseNode@1
+      displayName: 'Install Node.js'
+      inputs:
+        version: '22.x'
+
+    - script: npm ci
+      displayName: 'Install npm ci dependencies'
+
+    - task: SnykSecurityScan@1
+      displayName: snyk test app scan
+      inputs:
+        serviceConnectionEndpoint: 'uc9-synk-sc-accesstoken-UC10'
+        testType: 'app'
+        monitorWhen: 'never'
+        failOnIssues: false
+        organization: 'xtrm-inc.-default'
+        failOnThreshold: 'high'
+
+    - task: SnykSecurityScan@1
+      displayName: snyk test code scan
+      inputs:
+        serviceConnectionEndpoint: 'uc9-synk-sc-accesstoken-UC10'
+        testType: 'code'
+        failOnIssues: false
+        organization: 'xtrm-inc.-default'
+        failOnThreshold: 'medium'
+
+
+    - task: Npm@1
+      inputs:
+        command: 'custom'
+        workingDir: '$(System.DefaultWorkingDirectory)'
+        customCommand: 'run build'
+
+    # - task: CopyFiles@2
+    #   inputs:
+    #     SourceFolder: '$(System.DefaultWorkingDirectory)/out'
+    #     Contents: '**'
+    #     TargetFolder: '$(Build.ArtifactStagingDirectory)'
+
+    # - task: PublishBuildArtifacts@1
+    #   inputs:
+    #     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    #     ArtifactName: 'drop'
+    #     publishLocation: 'Container'
+
+    
