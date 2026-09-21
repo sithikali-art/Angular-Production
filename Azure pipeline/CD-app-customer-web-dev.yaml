@@ -1,0 +1,12 @@
+# app-customer-web-Build-pipelines
+
+trigger: none
+        
+
+pool:
+  vmImage: windows-latest
+
+# pool:
+#   name: Windows 11_Devrg01
+#   demands:
+#     - Agent.Name -equals Agent-40.78.177.228
