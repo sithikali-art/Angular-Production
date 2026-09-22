@@ -118,7 +118,7 @@ stages:
       displayName: 'Publish Snyk Reports'
       condition: always()
       inputs:
-        PathtoPublish: '$(Build.ArtifactStagingDirectory)\app-customer-web\snyk-reports'
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)\snyk-reports'
         ArtifactName: 'snyk-reports'
         publishLocation: 'Container'
 
@@ -137,7 +137,7 @@ stages:
 
     - task: PublishBuildArtifacts@1
       inputs:
-        PathtoPublish: '$(Build.ArtifactStagingDirectory)\app-customer-web'
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
         ArtifactName: 'drop'
         publishLocation: 'Container'
 
