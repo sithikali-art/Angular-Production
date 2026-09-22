@@ -1,119 +1,300 @@
+# # app-customer-web-Build-pipelines
+
+# trigger:
+#   - dev
+        
+
+# pool:
+#   vmImage: windows-latest
+
+# # pool:
+# #   name: Windows 11_Devrg01
+# #   demands:
+# #     - Agent.Name -equals Agent-40.78.177.228
+
+
+
+# stages:
+# - stage: Build
+#   displayName: "Build Node.js"
+#   jobs:
+#   - job: Build
+#     displayName: "Install node"
+#     steps:
+
+
+
+#     - task: UseNode@1
+#       displayName: 'Install Node.js'
+#       inputs:
+#         version: '22.x'
+
+#     - script: npm ci
+#       displayName: 'Install npm ci dependencies'
+
+#     - task: SnykSecurityScan@1
+#       displayName: snyk test app scan
+#       inputs:
+#         serviceConnectionEndpoint: 'uc9-synk-sc-accesstoken-UC10'
+#         testType: 'app'
+#         monitorWhen: 'always'
+#         failOnIssues: false
+#         organization: 'xtrm-inc.-default'
+#         failOnThreshold: 'high'
+        
+
+#     - task: SnykSecurityScan@1
+#       displayName: snyk test code scan
+#       inputs:
+#         serviceConnectionEndpoint: 'uc9-synk-sc-accesstoken-UC10'
+#         testType: 'code'
+#         monitorWhen: 'always'
+#         failOnIssues: true
+#         organization: 'xtrm-inc.-default'
+#         failOnThreshold: 'high'
+
+#     - powershell: |
+#         npm install -g snyk snyk-to-html
+#       displayName: 'Install Snyk CLI and Report Tool'
+#       condition: always()
+
+
+#     - powershell: |
+#         $reportDir = "$(Build.ArtifactStagingDirectory)\snyk-reports"
+
+#         New-Item -ItemType Directory -Force -Path $reportDir
+
+#         Write-Host "Snyk report directory:"
+#         Write-Host $reportDir
+#       displayName: 'Create Snyk Report Directory'
+#       condition: always()
+
+
+#     - powershell: |
+#         $reportDir = "$(Build.ArtifactStagingDirectory)\snyk-reports"
+
+#         snyk test `
+#           --severity-threshold=high `
+#           --json-file-output="$reportDir\snyk-app-report.json"
+
+#         $exitCode = $LASTEXITCODE
+
+#         Write-Host "Snyk App Scan Exit Code: $exitCode"
+
+#         if (Test-Path "$reportDir\snyk-app-report.json") {
+#           snyk-to-html `
+#             -i "$reportDir\snyk-app-report.json" `
+#             -o "$reportDir\snyk-app-report.html"
+#         }
+
+#         exit 0
+#       displayName: 'Generate Snyk App Report'
+#       condition: always()
+
+
+#     - powershell: |
+#         $reportDir = "$(Build.ArtifactStagingDirectory)\snyk-reports"
+
+#         snyk code test `
+#           --severity-threshold=high `
+#           --json-file-output="$reportDir\snyk-code-report.json"
+
+#         $exitCode = $LASTEXITCODE
+
+#         Write-Host "Snyk Code Scan Exit Code: $exitCode"
+
+#         if (Test-Path "$reportDir\snyk-code-report.json") {
+#           snyk-to-html `
+#             -i "$reportDir\snyk-code-report.json" `
+#             -o "$reportDir\snyk-code-report.html"
+#         }
+
+#         exit 0
+#       displayName: 'Generate Snyk Code Report'
+#       condition: always()
+
+
+#     - task: PublishBuildArtifacts@1
+#       displayName: 'Publish Snyk Reports'
+#       condition: always()
+#       inputs:
+#         PathtoPublish: '$(Build.ArtifactStagingDirectory)\snyk-reports'
+#         ArtifactName: 'snyk-reports'
+#         publishLocation: 'Container'
+
+
+#     - task: Npm@1
+#       inputs:
+#         command: 'custom'
+#         workingDir: '$(System.DefaultWorkingDirectory)'
+#         customCommand: 'run build'
+
+#     - task: CopyFiles@2
+#       inputs:
+#         SourceFolder: '$(System.DefaultWorkingDirectory)/dist/xtrm-dashboard'
+#         Contents: '**'
+#         TargetFolder: '$(Build.ArtifactStagingDirectory)'
+
+#     - task: PublishBuildArtifacts@1
+#       inputs:
+#         PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+#         ArtifactName: 'drop'
+#         publishLocation: 'Container'
+
 # app-customer-web-Build-pipelines
 
 trigger:
   - dev
-        
 
 pool:
   vmImage: windows-latest
 
-# pool:
-#   name: Windows 11_Devrg01
-#   demands:
-#     - Agent.Name -equals Agent-40.78.177.228
-
-
-
 stages:
 - stage: Build
   displayName: "Build Node.js"
+
   jobs:
   - job: Build
     displayName: "Install node"
+
     steps:
 
-
-
+    # ==========================================
+    # INSTALL NODE.JS
+    # ==========================================
     - task: UseNode@1
       displayName: 'Install Node.js'
       inputs:
         version: '22.x'
 
+
+    # ==========================================
+    # INSTALL NPM DEPENDENCIES
+    # ==========================================
     - script: npm ci
       displayName: 'Install npm ci dependencies'
 
+
+    # ==========================================
+    # CREATE SNYK REPORT DIRECTORY
+    # ==========================================
+    - powershell: |
+        $reportDir = "$(Build.ArtifactStagingDirectory)\snyk-reports"
+
+        New-Item -ItemType Directory -Force -Path $reportDir | Out-Null
+
+        Write-Host "Snyk report directory created:"
+        Write-Host $reportDir
+      displayName: 'Create Snyk Report Directory'
+
+
+    # ==========================================
+    # SNYK APP / OPEN SOURCE SCAN
+    # ==========================================
     - task: SnykSecurityScan@1
-      displayName: snyk test app scan
+      displayName: 'Snyk App Scan'
       inputs:
         serviceConnectionEndpoint: 'uc9-synk-sc-accesstoken-UC10'
         testType: 'app'
-        monitorWhen: 'always'
-        failOnIssues: false
-        organization: 'xtrm-inc.-default'
-        failOnThreshold: 'high'
-        
 
+        # Update Snyk website for every run
+        monitorWhen: 'always'
+
+        # Report all vulnerabilities
+        severityThreshold: 'low'
+
+        # Fail pipeline only for High and above
+        failOnIssues: false
+        failOnThreshold: 'high'
+
+        organization: 'xtrm-inc.-default'
+
+        # Save Snyk result as JSON
+        additionalArguments: '--json-file-output=$(Build.ArtifactStagingDirectory)\snyk-reports\snyk-app-report.json'
+
+
+    # ==========================================
+    # SNYK CODE SCAN
+    # ==========================================
     - task: SnykSecurityScan@1
-      displayName: snyk test code scan
+      displayName: 'Snyk Code Scan'
       inputs:
         serviceConnectionEndpoint: 'uc9-synk-sc-accesstoken-UC10'
         testType: 'code'
-        monitorWhen: 'always'
+
+        # Report High and above
+        codeSeverityThreshold: 'high'
+
+        # Fail pipeline when High issues are found
         failOnIssues: true
-        organization: 'xtrm-inc.-default'
         failOnThreshold: 'high'
 
+        organization: 'xtrm-inc.-default'
+
+        # Save Snyk Code result as JSON
+        additionalArguments: '--json-file-output=$(Build.ArtifactStagingDirectory)\snyk-reports\snyk-code-report.json'
+
+
+    # ==========================================
+    # INSTALL SNYK-TO-HTML
+    # ==========================================
     - powershell: |
-        npm install -g snyk snyk-to-html
-      displayName: 'Install Snyk CLI and Report Tool'
+        npm install -g snyk-to-html
+      displayName: 'Install Snyk HTML Report Tool'
       condition: always()
 
 
+    # ==========================================
+    # CONVERT APP JSON REPORT TO HTML
+    # ==========================================
     - powershell: |
         $reportDir = "$(Build.ArtifactStagingDirectory)\snyk-reports"
+        $jsonFile = "$reportDir\snyk-app-report.json"
+        $htmlFile = "$reportDir\snyk-app-report.html"
 
-        New-Item -ItemType Directory -Force -Path $reportDir
+        if (Test-Path $jsonFile) {
 
-        Write-Host "Snyk report directory:"
-        Write-Host $reportDir
-      displayName: 'Create Snyk Report Directory'
-      condition: always()
+          Write-Host "Generating Snyk App HTML report..."
 
-
-    - powershell: |
-        $reportDir = "$(Build.ArtifactStagingDirectory)\snyk-reports"
-
-        snyk test `
-          --severity-threshold=high `
-          --json-file-output="$reportDir\snyk-app-report.json"
-
-        $exitCode = $LASTEXITCODE
-
-        Write-Host "Snyk App Scan Exit Code: $exitCode"
-
-        if (Test-Path "$reportDir\snyk-app-report.json") {
           snyk-to-html `
-            -i "$reportDir\snyk-app-report.json" `
-            -o "$reportDir\snyk-app-report.html"
-        }
+            -i $jsonFile `
+            -o $htmlFile
 
-        exit 0
-      displayName: 'Generate Snyk App Report'
+        }
+        else {
+          Write-Host "Snyk App JSON report was not found."
+        }
+      displayName: 'Generate Snyk App HTML Report'
       condition: always()
 
 
+    # ==========================================
+    # CONVERT CODE JSON REPORT TO HTML
+    # ==========================================
     - powershell: |
         $reportDir = "$(Build.ArtifactStagingDirectory)\snyk-reports"
+        $jsonFile = "$reportDir\snyk-code-report.json"
+        $htmlFile = "$reportDir\snyk-code-report.html"
 
-        snyk code test `
-          --severity-threshold=high `
-          --json-file-output="$reportDir\snyk-code-report.json"
+        if (Test-Path $jsonFile) {
 
-        $exitCode = $LASTEXITCODE
+          Write-Host "Generating Snyk Code HTML report..."
 
-        Write-Host "Snyk Code Scan Exit Code: $exitCode"
-
-        if (Test-Path "$reportDir\snyk-code-report.json") {
           snyk-to-html `
-            -i "$reportDir\snyk-code-report.json" `
-            -o "$reportDir\snyk-code-report.html"
-        }
+            -i $jsonFile `
+            -o $htmlFile
 
-        exit 0
-      displayName: 'Generate Snyk Code Report'
+        }
+        else {
+          Write-Host "Snyk Code JSON report was not found."
+        }
+      displayName: 'Generate Snyk Code HTML Report'
       condition: always()
 
 
+    # ==========================================
+    # PUBLISH SNYK REPORTS
+    # ==========================================
     - task: PublishBuildArtifacts@1
       displayName: 'Publish Snyk Reports'
       condition: always()
@@ -123,21 +304,35 @@ stages:
         publishLocation: 'Container'
 
 
+    # ==========================================
+    # BUILD APPLICATION
+    # ==========================================
     - task: Npm@1
+      displayName: 'Build application'
       inputs:
         command: 'custom'
         workingDir: '$(System.DefaultWorkingDirectory)'
         customCommand: 'run build'
 
+
+    # ==========================================
+    # COPY APPLICATION FILES
+    # ==========================================
     - task: CopyFiles@2
+      displayName: 'Copy application files'
       inputs:
         SourceFolder: '$(System.DefaultWorkingDirectory)/dist/xtrm-dashboard'
         Contents: '**'
-        TargetFolder: '$(Build.ArtifactStagingDirectory)'
+        TargetFolder: '$(Build.ArtifactStagingDirectory)/application'
 
+
+    # ==========================================
+    # PUBLISH APPLICATION ARTIFACT
+    # ==========================================
     - task: PublishBuildArtifacts@1
+      displayName: 'Publish Application Artifact'
       inputs:
-        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)/application'
         ArtifactName: 'drop'
         publishLocation: 'Container'
 
