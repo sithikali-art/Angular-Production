@@ -38,7 +38,7 @@ stages:
         serviceConnectionEndpoint: 'uc9-synk-sc-accesstoken-UC10'
         testType: 'app'
         monitorWhen: 'never'
-        failOnIssues: false
+        failOnIssues: true
         organization: 'xtrm-inc.-default'
         failOnThreshold: 'high'
 
@@ -47,7 +47,7 @@ stages:
       inputs:
         serviceConnectionEndpoint: 'uc9-synk-sc-accesstoken-UC10'
         testType: 'code'
-        failOnIssues: false
+        failOnIssues: true
         organization: 'xtrm-inc.-default'
         failOnThreshold: 'medium'
 
