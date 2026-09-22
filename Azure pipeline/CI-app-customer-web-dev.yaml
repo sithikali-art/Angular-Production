@@ -53,12 +53,6 @@ stages:
         organization: 'xtrm-inc.-default'
         failOnThreshold: 'high'
 
-    
- 
-
-
-  
-
     - powershell: |
         npm install -g snyk snyk-to-html
       displayName: 'Install Snyk CLI and Report Tool'
@@ -124,7 +118,7 @@ stages:
       displayName: 'Publish Snyk Reports'
       condition: always()
       inputs:
-        PathtoPublish: '$(Build.ArtifactStagingDirectory)\snyk-reports'
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)\app-customer-web\snyk-reports'
         ArtifactName: 'snyk-reports'
         publishLocation: 'Container'
 
@@ -143,7 +137,7 @@ stages:
 
     - task: PublishBuildArtifacts@1
       inputs:
-        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)\app-customer-web'
         ArtifactName: 'drop'
         publishLocation: 'Container'
 
