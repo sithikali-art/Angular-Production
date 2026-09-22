@@ -53,6 +53,81 @@ stages:
         organization: 'xtrm-inc.-default'
         failOnThreshold: 'high'
 
+    
+ 
+
+
+  
+
+    - powershell: |
+        npm install -g snyk snyk-to-html
+      displayName: 'Install Snyk CLI and Report Tool'
+      condition: always()
+
+
+    - powershell: |
+        $reportDir = "$(Build.ArtifactStagingDirectory)\snyk-reports"
+
+        New-Item -ItemType Directory -Force -Path $reportDir
+
+        Write-Host "Snyk report directory:"
+        Write-Host $reportDir
+      displayName: 'Create Snyk Report Directory'
+      condition: always()
+
+
+    - powershell: |
+        $reportDir = "$(Build.ArtifactStagingDirectory)\snyk-reports"
+
+        snyk test `
+          --severity-threshold=high `
+          --json-file-output="$reportDir\snyk-app-report.json"
+
+        $exitCode = $LASTEXITCODE
+
+        Write-Host "Snyk App Scan Exit Code: $exitCode"
+
+        if (Test-Path "$reportDir\snyk-app-report.json") {
+          snyk-to-html `
+            -i "$reportDir\snyk-app-report.json" `
+            -o "$reportDir\snyk-app-report.html"
+        }
+
+        exit 0
+      displayName: 'Generate Snyk App Report'
+      condition: always()
+
+
+    - powershell: |
+        $reportDir = "$(Build.ArtifactStagingDirectory)\snyk-reports"
+
+        snyk code test `
+          --severity-threshold=high `
+          --json-file-output="$reportDir\snyk-code-report.json"
+
+        $exitCode = $LASTEXITCODE
+
+        Write-Host "Snyk Code Scan Exit Code: $exitCode"
+
+        if (Test-Path "$reportDir\snyk-code-report.json") {
+          snyk-to-html `
+            -i "$reportDir\snyk-code-report.json" `
+            -o "$reportDir\snyk-code-report.html"
+        }
+
+        exit 0
+      displayName: 'Generate Snyk Code Report'
+      condition: always()
+
+
+    - task: PublishBuildArtifacts@1
+      displayName: 'Publish Snyk Reports'
+      condition: always()
+      inputs:
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)\snyk-reports'
+        ArtifactName: 'snyk-reports'
+        publishLocation: 'Container'
+
 
     - task: Npm@1
       inputs:
