@@ -37,16 +37,18 @@ stages:
       inputs:
         serviceConnectionEndpoint: 'uc9-synk-sc-accesstoken-UC10'
         testType: 'app'
-        monitorWhen: 'never'
+        monitorWhen: 'always'
         failOnIssues: false
         organization: 'xtrm-inc.-default'
         failOnThreshold: 'high'
+        
 
     - task: SnykSecurityScan@1
       displayName: snyk test code scan
       inputs:
         serviceConnectionEndpoint: 'uc9-synk-sc-accesstoken-UC10'
         testType: 'code'
+        monitorWhen: 'always'
         failOnIssues: true
         organization: 'xtrm-inc.-default'
         failOnThreshold: 'high'
