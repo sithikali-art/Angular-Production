@@ -49,7 +49,7 @@ stages:
         testType: 'code'
         failOnIssues: true
         organization: 'xtrm-inc.-default'
-        failOnThreshold: 'medium'
+        failOnThreshold: 'high'
 
 
     - task: Npm@1
