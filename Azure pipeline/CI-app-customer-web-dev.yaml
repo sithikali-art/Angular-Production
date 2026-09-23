@@ -120,14 +120,21 @@ stages:
           Write-Host "Build output validation successful."
 
 
+    # - task: CopyFiles@2
+    #   displayName: 'Prepare Deployment Artifact'
+    #   inputs:
+    #     SourceFolder: '$(buildOutputDirectory)'
+    #     Contents: '**'
+    #     TargetFolder: '$(Build.ArtifactStagingDirectory)\$(artifactName)'
+    #     CleanTargetFolder: true
+    #     OverWrite: true
+
     - task: CopyFiles@2
-      displayName: 'Prepare Deployment Artifact'
+      displayName: 'Prepare Angular browser files'
       inputs:
-        SourceFolder: '$(buildOutputDirectory)'
+        SourceFolder: '$(System.DefaultWorkingDirectory)/dist/xtrm-dashboard/browser'
         Contents: '**'
-        TargetFolder: '$(Build.ArtifactStagingDirectory)\$(artifactName)'
-        CleanTargetFolder: true
-        OverWrite: true
+        TargetFolder: '$(Build.ArtifactStagingDirectory)'
 
     - task: PublishPipelineArtifact@1
       displayName: 'Publish Deployment Artifact'
