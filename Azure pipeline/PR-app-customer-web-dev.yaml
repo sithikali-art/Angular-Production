@@ -57,17 +57,6 @@ stages:
         workingDir: '$(System.DefaultWorkingDirectory)'
         customCommand: 'run build'
 
-    - task: CopyFiles@2
-      inputs:
-        SourceFolder: '$(System.DefaultWorkingDirectory)/dist/xtrm-dashboard'
-        Contents: '**'
-        TargetFolder: '$(Build.ArtifactStagingDirectory)'
         
-
-    - task: PublishBuildArtifacts@1
-      inputs:
-        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-        ArtifactName: 'drop'
-        publishLocation: 'Container'
 
     
