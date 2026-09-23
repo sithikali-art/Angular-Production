@@ -159,25 +159,18 @@ stages:
 
     steps:
 
-    # ==========================================
-    # INSTALL NODE.JS
-    # ==========================================
+    
     - task: UseNode@1
       displayName: 'Install Node.js'
       inputs:
         version: '22.x'
 
 
-    # ==========================================
-    # INSTALL NPM DEPENDENCIES
-    # ==========================================
+  
     - script: npm ci
       displayName: 'Install npm ci dependencies'
 
 
-    # ==========================================
-    # CREATE SNYK REPORT DIRECTORY
-    # ==========================================
     - powershell: |
         $reportDir = "$(Build.ArtifactStagingDirectory)\snyk-reports"
 
@@ -188,65 +181,38 @@ stages:
       displayName: 'Create Snyk Report Directory'
 
 
-    # ==========================================
-    # SNYK APP / OPEN SOURCE SCAN
-    # ==========================================
+  
     - task: SnykSecurityScan@1
       displayName: 'Snyk App Scan'
       inputs:
         serviceConnectionEndpoint: 'uc9-synk-sc-accesstoken-UC10'
         testType: 'app'
-
-        # Update Snyk website for every run
-        monitorWhen: 'always'
-
-        # Report all vulnerabilities
+        # monitorWhen: 'always'
         severityThreshold: 'low'
-
-        # Fail pipeline only for High and above
         failOnIssues: false
         failOnThreshold: 'high'
-
         organization: 'xtrm-inc.-default'
-
-        # Save Snyk result as JSON
         additionalArguments: '--json-file-output=$(Build.ArtifactStagingDirectory)\snyk-reports\snyk-app-report.json'
 
-
-    # ==========================================
-    # SNYK CODE SCAN
-    # ==========================================
     - task: SnykSecurityScan@1
       displayName: 'Snyk Code Scan'
       inputs:
         serviceConnectionEndpoint: 'uc9-synk-sc-accesstoken-UC10'
         testType: 'code'
-
-        # Report High and above
         codeSeverityThreshold: 'high'
-
-        # Fail pipeline when High issues are found
         failOnIssues: true
         failOnThreshold: 'high'
-
         organization: 'xtrm-inc.-default'
-
-        # Save Snyk Code result as JSON
         additionalArguments: '--json-file-output=$(Build.ArtifactStagingDirectory)\snyk-reports\snyk-code-report.json'
 
 
-    # ==========================================
-    # INSTALL SNYK-TO-HTML
-    # ==========================================
+  
     - powershell: |
         npm install -g snyk-to-html
       displayName: 'Install Snyk HTML Report Tool'
       condition: always()
 
 
-    # ==========================================
-    # CONVERT APP JSON REPORT TO HTML
-    # ==========================================
     - powershell: |
         $reportDir = "$(Build.ArtifactStagingDirectory)\snyk-reports"
         $jsonFile = "$reportDir\snyk-app-report.json"
@@ -268,9 +234,7 @@ stages:
       condition: always()
 
 
-    # ==========================================
-    # CONVERT CODE JSON REPORT TO HTML
-    # ==========================================
+   
     - powershell: |
         $reportDir = "$(Build.ArtifactStagingDirectory)\snyk-reports"
         $jsonFile = "$reportDir\snyk-code-report.json"
@@ -292,9 +256,7 @@ stages:
       condition: always()
 
 
-    # ==========================================
-    # PUBLISH SNYK REPORTS
-    # ==========================================
+   
     - task: PublishBuildArtifacts@1
       displayName: 'Publish Snyk Reports'
       condition: always()
@@ -304,9 +266,7 @@ stages:
         publishLocation: 'Container'
 
 
-    # ==========================================
-    # BUILD APPLICATION
-    # ==========================================
+  
     - task: Npm@1
       displayName: 'Build application'
       inputs:
@@ -315,9 +275,7 @@ stages:
         customCommand: 'run build'
 
 
-    # ==========================================
-    # COPY APPLICATION FILES
-    # ==========================================
+ 
     - task: CopyFiles@2
       displayName: 'Copy application files'
       inputs:
@@ -326,9 +284,7 @@ stages:
         TargetFolder: '$(Build.ArtifactStagingDirectory)/application'
 
 
-    # ==========================================
-    # PUBLISH APPLICATION ARTIFACT
-    # ==========================================
+   
     - task: PublishBuildArtifacts@1
       displayName: 'Publish Application Artifact'
       inputs:
