@@ -12,7 +12,8 @@ pool:
 variables:
  nodeVersion: '22.22.3'
  workingDirectory: '$(System.DefaultWorkingDirectory)'
- buildOutputDirectory: '$(System.DefaultWorkingDirectory)\dist\xtrm-dashboard'
+#  buildOutputDirectory: '$(System.DefaultWorkingDirectory)\dist\xtrm-dashboard'
+ buildOutputDirectory: '$(System.DefaultWorkingDirectory)/dist/xtrm-dashboard/browser'
  artifactName: 'drop'
 
 stages:
@@ -120,21 +121,21 @@ stages:
           Write-Host "Build output validation successful."
 
 
-    # - task: CopyFiles@2
-    #   displayName: 'Prepare Deployment Artifact'
-    #   inputs:
-    #     SourceFolder: '$(buildOutputDirectory)'
-    #     Contents: '**'
-    #     TargetFolder: '$(Build.ArtifactStagingDirectory)\$(artifactName)'
-    #     CleanTargetFolder: true
-    #     OverWrite: true
-
     - task: CopyFiles@2
-      displayName: 'Prepare Angular browser files'
+      displayName: 'Prepare Deployment Artifact'
       inputs:
-        SourceFolder: '$(System.DefaultWorkingDirectory)/dist/xtrm-dashboard/browser'
+        SourceFolder: '$(buildOutputDirectory)'
         Contents: '**'
-        TargetFolder: '$(Build.ArtifactStagingDirectory)'
+        TargetFolder: '$(Build.ArtifactStagingDirectory)\$(artifactName)'
+        CleanTargetFolder: true
+        OverWrite: true
+
+    # - task: CopyFiles@2
+    #   displayName: 'Prepare Angular browser files'
+    #   inputs:
+    #     SourceFolder: '$(System.DefaultWorkingDirectory)/dist/xtrm-dashboard/browser'
+    #     Contents: '**'
+    #     TargetFolder: '$(Build.ArtifactStagingDirectory)'
 
     - task: PublishPipelineArtifact@1
       displayName: 'Publish Deployment Artifact'
