@@ -62,11 +62,11 @@ stages:
             inputs:
               source: 'specific'
               project: '$(System.TeamProject)'
-              definition: '$(resources.pipeline.customerWebCI.pipelineID)'
+              definition: '$(resources.pipeline.CI-app-customer-web.pipelineID)'
               buildVersionToDownload: 'specific'
-              pipelineId: '$(resources.pipeline.customerWebCI.runID)'
+              pipelineId: '$(resources.pipeline.CI-app-customer-web.runID)'
               artifactName: 'drop'
-              targetPath: '$(Pipeline.Workspace)\customerWebCI\drop'
+              targetPath: '$(Pipeline.Workspace)\CI-app-customer-web\drop'
 
           # 2. Display downloaded file
           - task: PowerShell@2
