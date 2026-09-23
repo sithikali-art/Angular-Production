@@ -1,69 +1,44 @@
-# ============================================================
-# CD - CUSTOMER WEB - DEV
 # Deploy CI artifact to Azure App Service
-# ============================================================
 
 trigger: none
 
 pr: none
 
 
-# ============================================================
-# CI PIPELINE RESOURCE
-# Automatically trigger this CD after CI completes
-# ============================================================
 
 resources:
   pipelines:
-    - pipeline: customerWebCI
+    - pipeline: CI-app-customer-web
       source: CI-app-customer-web-dev
       trigger: true
-
-
-# ============================================================
-# AGENT
-# ============================================================
 
 pool:
   vmImage: windows-latest
 
 
-# ============================================================
-# VARIABLES
-# ============================================================
-
 variables:
 
-  # Azure service connection
   azureServiceConnection: 'uc10-dev-qa-serviceconnection'
-
-  # Azure App Service
   resourceGroupName: 'rg-uc10-dev'
   appServiceName: 'app-uc10-customerweb-dev'
-
-  # CI artifact
   artifactName: 'drop'
 
-
-# ============================================================
-# STAGE - DEPLOY TO DEV
-# ============================================================
 
 stages:
 
 - stage: Deploy_DEV
-  displayName: 'Deploy Customer Web to DEV'
+  displayName: 'Deploy app-customer-web to DEV'
 
   condition: succeeded()
 
   jobs:
 
-  # ==========================================================
+  
   # DEPLOYMENT JOB
-  # ==========================================================
+ 
 
-  - deployment: DeployCustomerWeb
-    displayName: 'Deploy Customer Web to DEV App Service'
+  - deployment: Deploy app-customer-web
+    displayName: 'Deploy app-customer-web to DEV App Service'
 
     environment: 'DEV'
 
@@ -73,17 +48,12 @@ stages:
 
           steps:
 
-          # --------------------------------------------------
           # 1. Download artifact from CI pipeline
-          # --------------------------------------------------
 
-          - download: customerWebCI
+          - download: CI-app-customer-web
             artifact: $(artifactName)
 
-          # --------------------------------------------------
-          # 2. Display downloaded files
-          # --------------------------------------------------
-
+          # 2. Display downloaded file
           - task: PowerShell@2
             displayName: 'Verify CI Artifact'
             inputs:
@@ -95,23 +65,23 @@ stages:
                 Write-Host "=========================================="
 
                 Write-Host "Pipeline Name:"
-                Write-Host "$(resources.pipeline.customerWebCI.pipelineName)"
+                Write-Host "$(resources.pipeline.CI-app-customer-web.pipelineName)"
 
                 Write-Host "CI Run ID:"
-                Write-Host "$(resources.pipeline.customerWebCI.runID)"
+                Write-Host "$(resources.pipeline.CI-app-customer-web.runID)"
 
                 Write-Host "Source Branch:"
-                Write-Host "$(resources.pipeline.customerWebCI.sourceBranch)"
+                Write-Host "$(resources.pipeline.CI-app-customer-web.sourceBranch)"
 
                 Write-Host "Source Commit:"
-                Write-Host "$(resources.pipeline.customerWebCI.sourceCommit)"
+                Write-Host "$(resources.pipeline.CI-app-customer-web.sourceCommit)"
 
                 Write-Host ""
                 Write-Host "=========================================="
                 Write-Host "Downloaded Artifact"
                 Write-Host "=========================================="
 
-                $artifactPath = "$(Pipeline.Workspace)\customerWebCI\$(artifactName)"
+                $artifactPath = "$(Pipeline.Workspace)\CI-app-customer-web\$(artifactName)"
 
                 Write-Host "Artifact Path:"
                 Write-Host $artifactPath
@@ -140,7 +110,7 @@ stages:
           # --------------------------------------------------
 
           - task: AzureRmWebAppDeployment@5
-            displayName: 'Deploy Customer Web Files to App Service'
+            displayName: 'Deploy CI-app-customer-web Files to App Service'
             inputs:
 
               ConnectionType: 'AzureRM'
@@ -156,7 +126,7 @@ stages:
               # IMPORTANT:
               # This is the extracted artifact folder.
               # No Docker image / ACR deployment.
-              Package: '$(Pipeline.Workspace)\customerWebCI\$(artifactName)'
+              Package: '$(Pipeline.Workspace)\CI-app-customer-web\$(artifactName)'
 
               # Use Web Deploy for Windows App Service
               enableCustomDeployment: true
@@ -211,14 +181,12 @@ stages:
 
                 Write-Host "App Service : $(appServiceName)"
                 Write-Host "Resource RG : $(resourceGroupName)"
-                Write-Host "CI Pipeline : $(resources.pipeline.customerWebCI.pipelineName)"
-                Write-Host "CI Run ID   : $(resources.pipeline.customerWebCI.runID)"
+                Write-Host "CI Pipeline : $(resources.pipeline.CI-app-customer-web.pipelineName)"
+                Write-Host "CI Run ID   : $(resources.pipeline.CI-app-customer-web.runID)"
                 Write-Host "State       : $state"
 
-          # --------------------------------------------------
+        
           # 5. Deployment summary
-          # --------------------------------------------------
-
           - task: PowerShell@2
             displayName: 'Deployment Summary'
             inputs:
@@ -233,7 +201,7 @@ stages:
                 Write-Host "Application : $(appServiceName)"
                 Write-Host "Environment : DEV"
                 Write-Host "Artifact    : $(artifactName)"
-                Write-Host "CI Run ID   : $(resources.pipeline.customerWebCI.runID)"
+                Write-Host "CI Run ID   : $(resources.pipeline.CI-app-customer-web.runID)"
 
                 Write-Host ""
                 Write-Host "Deployment completed."
