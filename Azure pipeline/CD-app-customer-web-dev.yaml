@@ -48,10 +48,25 @@ stages:
 
           steps:
 
-          # 1. Download artifact from CI pipeline
+          # # 1. Download artifact from CI pipeline
 
-          - download: CI-app-customer-web
-            artifact: $(artifactName)
+          # - download: CI-app-customer-web
+          #   artifact: $(artifactName)
+
+          # ==================================================
+          # 1. DOWNLOAD CI ARTIFACT
+          # ==================================================
+
+          - task: DownloadPipelineArtifact@2
+            displayName: 'Download CI Artifact'
+            inputs:
+              source: 'specific'
+              project: '$(System.TeamProject)'
+              definition: '$(resources.pipeline.customerWebCI.pipelineID)'
+              buildVersionToDownload: 'specific'
+              pipelineId: '$(resources.pipeline.customerWebCI.runID)'
+              artifactName: 'drop'
+              targetPath: '$(Pipeline.Workspace)\customerWebCI\drop'
 
           # 2. Display downloaded file
           - task: PowerShell@2
