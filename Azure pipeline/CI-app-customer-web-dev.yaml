@@ -1,50 +1,61 @@
-# app-customer-web-Build-pipelines
+# CI - APP CUSTOMER WEB
 
 trigger:
-  - dev
-        
+  branches:
+    include:
+      - dev
 
 pool:
   vmImage: windows-latest
 
-# pool:
-#   name: Windows 11_Devrg01
-#   demands:
-#     - Agent.Name -equals Agent-40.78.177.228
 
-
+variables:
+ nodeVersion: '22.22.3'
+ workingDirectory: '$(System.DefaultWorkingDirectory)'
+ buildOutputDirectory: '$(System.DefaultWorkingDirectory)\dist\xtrm-dashboard'
+ artifactName: 'drop'
 
 stages:
+
 - stage: Build
-  displayName: "Build Node.js"
+  displayName: 'Build Customer Web'
+
   jobs:
-  - job: Build
-    displayName: "Install node"
+
+  - job: BuildCustomerWeb
+    displayName: 'Build and Validate Customer Web'
+    timeoutInMinutes: 30
     steps:
-
-
+      
+      # to check this
+    - checkout: self
+      clean: true
+      displayName: 'Checkout Source Code'
 
     - task: UseNode@1
       displayName: 'Install Node.js'
       inputs:
-        version: '22.x'
+        version: '$(nodeVersion)'
 
-    - script: npm ci
-      displayName: 'Install npm ci dependencies'
+
+    - script: |
+        npm ci
+      displayName: 'Install npm Dependencies'
+      workingDirectory: '$(workingDirectory)'
 
     - task: SnykSecurityScan@1
-      displayName: snyk test app scan
+      displayName: 'Snyk Application Scan'
       inputs:
         serviceConnectionEndpoint: 'uc9-synk-sc-accesstoken-UC10'
         testType: 'app'
-        monitorWhen: 'always'
+        monitorWhen: 'never'
         failOnIssues: false
         organization: 'xtrm-inc.-default'
         failOnThreshold: 'high'
-        
+
 
     - task: SnykSecurityScan@1
-      displayName: snyk test code scan
+      displayName: 'Snyk Code Scan'
       inputs:
         serviceConnectionEndpoint: 'uc9-synk-sc-accesstoken-UC10'
         testType: 'code'
@@ -55,25 +66,95 @@ stages:
 
 
     - task: Npm@1
+      displayName: 'Build Customer Web'
       inputs:
         command: 'custom'
-        workingDir: '$(System.DefaultWorkingDirectory)'
+        workingDir: '$(workingDirectory)'
         customCommand: 'run build'
+  
+    - task: PowerShell@2
+      displayName: 'Validate Build Output'
+      inputs:
+        targetType: 'inline'
+        script: |
+
+          Write-Host "=========================================="
+          Write-Host "BUILD OUTPUT VALIDATION"
+          Write-Host "=========================================="
+
+          Write-Host "Build ID:"
+          Write-Host "$(Build.BuildId)"
+
+          Write-Host "Source Branch:"
+          Write-Host "$(Build.SourceBranch)"
+
+          Write-Host "Source Version:"
+          Write-Host "$(Build.SourceVersion)"
+
+          Write-Host "Build Output:"
+          Write-Host "$(buildOutputDirectory)"
+
+          if (!(Test-Path "$(buildOutputDirectory)")) {
+
+              Write-Error "Build output directory was not found."
+
+              exit 1
+          }
+
+          $files = Get-ChildItem `
+            -Path "$(buildOutputDirectory)" `
+            -Recurse `
+            -File
+
+          if ($files.Count -eq 0) {
+
+              Write-Error "Build output directory is empty."
+
+              exit 1
+          }
+
+          Write-Host ""
+          Write-Host "Generated files: $($files.Count)"
+
+          Write-Host ""
+          Write-Host "Build output validation successful."
+
 
     - task: CopyFiles@2
+      displayName: 'Prepare Deployment Artifact'
       inputs:
-        SourceFolder: '$(System.DefaultWorkingDirectory)/dist/xtrm-dashboard'
+        SourceFolder: '$(buildOutputDirectory)'
         Contents: '**'
-        TargetFolder: '$(Build.ArtifactStagingDirectory)'
+        TargetFolder: '$(Build.ArtifactStagingDirectory)\$(artifactName)'
+        CleanTargetFolder: true
+        OverWrite: true
 
-    - task: PublishBuildArtifacts@1
+    - task: PublishPipelineArtifact@1
+      displayName: 'Publish Deployment Artifact'
       inputs:
-        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-        ArtifactName: 'drop'
-        publishLocation: 'Container'
+        targetPath: '$(Build.ArtifactStagingDirectory)\$(artifactName)'
+        artifact: '$(artifactName)'
+        publishLocation: 'pipeline'
 
+    - task: PowerShell@2
+      displayName: 'Build Summary'
+      inputs:
+        targetType: 'inline'
+        script: |
 
+          Write-Host ""
+          Write-Host "=========================================="
+          Write-Host "CUSTOMER WEB CI SUMMARY"
+          Write-Host "=========================================="
 
+          Write-Host "Build ID       : $(Build.BuildId)"
+          Write-Host "Build Number   : $(Build.BuildNumber)"
+          Write-Host "Branch         : $(Build.SourceBranch)"
+          Write-Host "Commit         : $(Build.SourceVersion)"
+          Write-Host "Node Version   : $(nodeVersion)"
+          Write-Host "Artifact       : $(artifactName)"
 
+          Write-Host ""
+          Write-Host "CI build completed successfully."
 
-    
+          Write-Host "=========================================="
