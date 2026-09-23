@@ -1,12 +1,239 @@
-# app-customer-web-Build-pipelines
+# ============================================================
+# CD - CUSTOMER WEB - DEV
+# Deploy CI artifact to Azure App Service
+# ============================================================
 
 trigger: none
-        
+
+pr: none
+
+
+# ============================================================
+# CI PIPELINE RESOURCE
+# Automatically trigger this CD after CI completes
+# ============================================================
+
+resources:
+  pipelines:
+    - pipeline: customerWebCI
+      source: CI-app-customer-web-dev
+      trigger: true
+
+
+# ============================================================
+# AGENT
+# ============================================================
 
 pool:
   vmImage: windows-latest
 
-# pool:
-#   name: Windows 11_Devrg01
-#   demands:
-#     - Agent.Name -equals Agent-40.78.177.228
+
+# ============================================================
+# VARIABLES
+# ============================================================
+
+variables:
+
+  # Azure service connection
+  azureServiceConnection: 'uc10-dev-qa-serviceconnection'
+
+  # Azure App Service
+  resourceGroupName: 'rg-uc10-dev'
+  appServiceName: 'app-uc10-customerweb-dev'
+
+  # CI artifact
+  artifactName: 'drop'
+
+
+# ============================================================
+# STAGE - DEPLOY TO DEV
+# ============================================================
+
+stages:
+
+- stage: Deploy_DEV
+  displayName: 'Deploy Customer Web to DEV'
+
+  condition: succeeded()
+
+  jobs:
+
+  # ==========================================================
+  # DEPLOYMENT JOB
+  # ==========================================================
+
+  - deployment: DeployCustomerWeb
+    displayName: 'Deploy Customer Web to DEV App Service'
+
+    environment: 'DEV'
+
+    strategy:
+      runOnce:
+        deploy:
+
+          steps:
+
+          # --------------------------------------------------
+          # 1. Download artifact from CI pipeline
+          # --------------------------------------------------
+
+          - download: customerWebCI
+            artifact: $(artifactName)
+
+          # --------------------------------------------------
+          # 2. Display downloaded files
+          # --------------------------------------------------
+
+          - task: PowerShell@2
+            displayName: 'Verify CI Artifact'
+            inputs:
+              targetType: 'inline'
+              script: |
+
+                Write-Host "=========================================="
+                Write-Host "CI Pipeline"
+                Write-Host "=========================================="
+
+                Write-Host "Pipeline Name:"
+                Write-Host "$(resources.pipeline.customerWebCI.pipelineName)"
+
+                Write-Host "CI Run ID:"
+                Write-Host "$(resources.pipeline.customerWebCI.runID)"
+
+                Write-Host "Source Branch:"
+                Write-Host "$(resources.pipeline.customerWebCI.sourceBranch)"
+
+                Write-Host "Source Commit:"
+                Write-Host "$(resources.pipeline.customerWebCI.sourceCommit)"
+
+                Write-Host ""
+                Write-Host "=========================================="
+                Write-Host "Downloaded Artifact"
+                Write-Host "=========================================="
+
+                $artifactPath = "$(Pipeline.Workspace)\customerWebCI\$(artifactName)"
+
+                Write-Host "Artifact Path:"
+                Write-Host $artifactPath
+
+                if (!(Test-Path $artifactPath)) {
+                    Write-Error "Artifact directory does not exist."
+                    exit 1
+                }
+
+                Get-ChildItem `
+                    -Path $artifactPath `
+                    -Recurse |
+                    Select-Object FullName
+
+          # --------------------------------------------------
+          # 3. Deploy folder to Windows App Service
+          #
+          # Web Deploy synchronizes the files/folders.
+          #
+          # TakeAppOfflineFlag:
+          #   1. Creates app_offline.htm
+          #   2. Stops application from serving requests
+          #   3. Deploys files
+          #   4. Removes app_offline.htm
+          #   5. Application starts again
+          # --------------------------------------------------
+
+          - task: AzureRmWebAppDeployment@5
+            displayName: 'Deploy Customer Web Files to App Service'
+            inputs:
+
+              ConnectionType: 'AzureRM'
+
+              azureSubscription: '$(azureServiceConnection)'
+
+              appType: 'webApp'
+
+              WebAppName: '$(appServiceName)'
+
+              ResourceGroupName: '$(resourceGroupName)'
+
+              # IMPORTANT:
+              # This is the extracted artifact folder.
+              # No Docker image / ACR deployment.
+              Package: '$(Pipeline.Workspace)\customerWebCI\$(artifactName)'
+
+              # Use Web Deploy for Windows App Service
+              enableCustomDeployment: true
+              DeploymentType: 'webDeploy'
+
+              # Take application offline during deployment
+              TakeAppOfflineFlag: true
+
+              # Do not delete files that are not part of this deployment
+              RemoveAdditionalFilesFlag: false
+
+              # Don't modify App_Data
+              ExcludeFilesFromAppDataFlag: true
+
+          # --------------------------------------------------
+          # 4. Verify App Service is running
+          # --------------------------------------------------
+
+          - task: AzureCLI@2
+            displayName: 'Verify App Service Status'
+            inputs:
+
+              azureSubscription: '$(azureServiceConnection)'
+
+              scriptType: 'ps'
+
+              scriptLocation: 'inlineScript'
+
+              inlineScript: |
+
+                Write-Host "Checking App Service status..."
+
+                $state = az webapp show `
+                  --resource-group "$(resourceGroupName)" `
+                  --name "$(appServiceName)" `
+                  --query "state" `
+                  --output tsv
+
+                Write-Host "App Service State: $state"
+
+                if ($state -ne "Running") {
+
+                    Write-Error "App Service is not running."
+
+                    exit 1
+                }
+
+                Write-Host ""
+                Write-Host "=========================================="
+                Write-Host "Deployment completed successfully"
+                Write-Host "=========================================="
+
+                Write-Host "App Service : $(appServiceName)"
+                Write-Host "Resource RG : $(resourceGroupName)"
+                Write-Host "CI Pipeline : $(resources.pipeline.customerWebCI.pipelineName)"
+                Write-Host "CI Run ID   : $(resources.pipeline.customerWebCI.runID)"
+                Write-Host "State       : $state"
+
+          # --------------------------------------------------
+          # 5. Deployment summary
+          # --------------------------------------------------
+
+          - task: PowerShell@2
+            displayName: 'Deployment Summary'
+            inputs:
+              targetType: 'inline'
+              script: |
+
+                Write-Host ""
+                Write-Host "=========================================="
+                Write-Host " CUSTOMER WEB DEV DEPLOYMENT"
+                Write-Host "=========================================="
+
+                Write-Host "Application : $(appServiceName)"
+                Write-Host "Environment : DEV"
+                Write-Host "Artifact    : $(artifactName)"
+                Write-Host "CI Run ID   : $(resources.pipeline.customerWebCI.runID)"
+
+                Write-Host ""
+                Write-Host "Deployment completed."
