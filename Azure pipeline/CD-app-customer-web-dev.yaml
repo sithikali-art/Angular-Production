@@ -27,7 +27,7 @@ variables:
 stages:
 
 - stage: Deploy_DEV
-  displayName: 'Deploy app-customer-web to DEV'
+  displayName: 'DeployAppCustomerWeb to DEV'
 
   condition: succeeded()
 
@@ -37,8 +37,8 @@ stages:
   # DEPLOYMENT JOB
  
 
-  - deployment: Deploy app-customer-web
-    displayName: 'Deploy app-customer-web to DEV App Service'
+  - deployment: DeployAppCustomerWeb
+    displayName: 'Deploy appcustomerweb to DEV App Service'
 
     environment: 'DEV'
 
