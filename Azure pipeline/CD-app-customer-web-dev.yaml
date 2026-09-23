@@ -151,7 +151,8 @@ stages:
               TakeAppOfflineFlag: true
 
               # Do not delete files that are not part of this deployment
-              RemoveAdditionalFilesFlag: false
+              # RemoveAdditionalFilesFlag: false
+              RemoveAdditionalFilesFlag: true
 
               # Don't modify App_Data
               ExcludeFilesFromAppDataFlag: true
