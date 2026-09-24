@@ -1,38 +1,50 @@
-# app-customer-web-Build-pipelines
+# app-customer-web-PR-pipelines
 
 trigger: none
         
+pr: none
 
 pool:
   vmImage: windows-latest
 
-# pool:
-#   name: Windows 11_Devrg01
-#   demands:
-#     - Agent.Name -equals Agent-40.78.177.228
 
-
+variables:
+ nodeVersion: '22.22.3'
+ workingDirectory: '$(System.DefaultWorkingDirectory)'
+#  buildOutputDirectory: '$(System.DefaultWorkingDirectory)\dist\xtrm-dashboard'
+ buildOutputDirectory: '$(System.DefaultWorkingDirectory)/dist/xtrm-dashboard/browser'
+ artifactName: 'drop'
 
 stages:
+
 - stage: Build
-  displayName: "Build Node.js"
+  displayName: 'Build Customer Web'
+
   jobs:
-  - job: Build
-    displayName: "Install node"
+
+  - job: BuildCustomerWeb
+    displayName: 'Build and Validate Customer Web'
+    timeoutInMinutes: 30
     steps:
-
-
+      
+     
+    - checkout: self
+      # clean: true
+      displayName: 'Checkout Source Code'
 
     - task: UseNode@1
       displayName: 'Install Node.js'
       inputs:
-        version: '22.x'
+        version: '$(nodeVersion)'
 
-    - script: npm ci
-      displayName: 'Install npm ci dependencies'
+
+    - script: |
+        npm ci
+      displayName: 'Install npm Dependencies'
+      workingDirectory: '$(workingDirectory)'
 
     - task: SnykSecurityScan@1
-      displayName: snyk test app scan
+      displayName: 'Snyk Application Scan'
       inputs:
         serviceConnectionEndpoint: 'uc9-synk-sc-accesstoken-UC10'
         testType: 'app'
@@ -41,20 +53,23 @@ stages:
         organization: 'xtrm-inc.-default'
         failOnThreshold: 'high'
 
+
     - task: SnykSecurityScan@1
-      displayName: snyk test code scan
+      displayName: 'Snyk Code Scan'
       inputs:
         serviceConnectionEndpoint: 'uc9-synk-sc-accesstoken-UC10'
         testType: 'code'
-        failOnIssues: false
+        monitorWhen: 'always'
+        failOnIssues: true
         organization: 'xtrm-inc.-default'
-        failOnThreshold: 'medium'
+        failOnThreshold: 'high'
 
 
     - task: Npm@1
+      displayName: 'Build Customer Web'
       inputs:
         command: 'custom'
-        workingDir: '$(System.DefaultWorkingDirectory)'
+        workingDir: '$(workingDirectory)'
         customCommand: 'run build'
 
         
