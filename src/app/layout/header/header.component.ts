@@ -12,8 +12,7 @@ import { LayoutUiStateService } from '../../core/state/layout-ui-state.service';
 import { NotificationsStateService } from '../../core/state/notifications-state.service';
 import { ClickOutsideDirective } from '../../shared/directives/click-outside.directive';
 import { IconComponent } from '../../shared/components/icon/icon.component';
-import { AvatarComponent } from '../../shared/components/avatar/avatar.component';
-import { AppearancePopoverComponent } from './appearance-popover.component';
+import { ProfileAvatarComponent } from '../../shared/components/profile-avatar/profile-avatar.component';
 import { NotificationsPopoverComponent } from './notifications-popover.component';
 
 /**
@@ -28,8 +27,9 @@ import { NotificationsPopoverComponent } from './notifications-popover.component
     RouterLink,
     ClickOutsideDirective,
     IconComponent,
-    AvatarComponent,
-    AppearancePopoverComponent,
+    ProfileAvatarComponent,
+    // AppearancePopoverComponent — re-add when the palette switcher block
+    // in header.component.html is uncommented.
     NotificationsPopoverComponent,
   ],
   templateUrl: './header.component.html',

@@ -18,11 +18,12 @@
   gap: 10px;
   height: 42px;
   padding: 0 16px;
-  border-radius: var(--radius-md);
-  background: var(--surface-muted);
+  border-radius: 3.40282e38px;
+  background: #ffffff;
   color: var(--muted-soft);
   cursor: text;
   transition: box-shadow 0.15s ease;
+  border: 1px solid var(--border);
 
   /* Focus keeps the same background — only the focus ring is added. */
   &:focus-within {
@@ -126,7 +127,7 @@
   gap: 2px;
   padding: 2px;
   border-radius: var(--radius-xl);
-  background: var(--surface-muted);
+  // background: var(--surface-muted);
 }
 
 .anchor {

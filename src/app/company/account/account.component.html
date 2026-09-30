@@ -1,0 +1,295 @@
+<app-page-header
+  title="Account"
+  subtitle="Manage your profile, company, security and more."
+/>
+
+<div class="account-grid">
+  <!-- Left: profile card + section menu -->
+  <aside class="account-side">
+    <div class="profile-card">
+      <app-profile-avatar [size]="96" [editable]="true" (edit)="openAvatar()" />
+      <div class="profile-id">
+        <span class="profile-name">{{ account.profile().fullName }}</span>
+        <span class="profile-email">{{ account.profile().email }}</span>
+      </div>
+      <app-icon name="chevron-right" [size]="16" class="profile-card-caret" />
+    </div>
+
+    <nav class="account-menu scrollbar-soft" aria-label="Account sections">
+      @for (item of menu; track item.id) {
+        <button
+          type="button"
+          class="menu-item"
+          [class.active]="section() === item.id"
+          (click)="selectSection(item.id, $event.currentTarget)"
+        >
+          <span class="menu-icon"><app-icon [name]="item.icon" [size]="17" /></span>
+          <span class="menu-meta">
+            <span class="menu-label">{{ item.label }}</span>
+            <span class="menu-desc">{{ item.description }}</span>
+          </span>
+          <app-icon name="chevron-right" [size]="15" class="menu-caret" />
+        </button>
+      }
+
+      <!-- <div class="menu-sep" aria-hidden="true"></div> -->
+
+      <button type="button" class="menu-item menu-logout">
+        <span class="menu-icon"><app-icon name="logout" [size]="17" /></span>
+        <span class="menu-meta">
+          <span class="menu-label">Log out</span>
+        </span>
+      </button>
+    </nav>
+
+    
+  </aside>
+
+  <!-- Right: selected section -->
+  <section class="account-panel">
+    @switch (section()) {
+      @case ('account') {
+        <div class="panel-head mb-3">
+  <h2>My Account</h2>
+  @if (!editing()) {
+    <app-button
+      btnVariant="primary"
+      btnText="Edit"
+      icon="chevron-right"
+      iconPosition="right"
+      (click)="startEdit()"
+    />
+  }
+  <p class="panel-sub mb-0">Your profile and account information.</p>
+</div>
+       
+
+        @if (!editing()) {
+          <div class="detail-card">
+            <div class="detail-row">
+              <span class="detail-label">Full name</span>
+              <span class="detail-value">{{ account.profile().fullName }}</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Country</span>
+              <span class="detail-value">{{ account.profile().country }}</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Timezone</span>
+              <span class="detail-value">{{ account.profile().timezone }}</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Role</span>
+              <span class="detail-value">{{ account.profile().role }}</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Job position</span>
+              <span class="detail-value">
+                {{ account.profile().jobPosition }}
+                <app-info-tooltip text="This is not required to increase your profile completeness. It may be asked for in certain situations.">
+                <app-icon  name="help-circle" [size]="14" class="info-hint" />
+                </app-info-tooltip>
+                
+                
+              </span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">SSN / Tax ID</span>
+              <span class="detail-value">
+                {{ account.profile().ssnMasked }}
+                <app-info-tooltip text="This is not required to increase your profile completeness. It may be asked for in certain situations.">
+                <app-icon name="help-circle" [size]="14" class="info-hint" />
+                </app-info-tooltip>
+              </span>
+            </div>
+          </div>
+        } @else {
+          <div class="edit-card">
+            <div class="field-row">
+              <span class="detail-label">Full name</span>
+              <div class="field-control">
+                <app-input [(value)]="editFullName" placeholder="Full name" />
+              </div>
+            </div>
+            <div class="field-row">
+              <span class="detail-label">Country</span>
+              <div class="field-control">
+                <app-dropdown [options]="countryOptions" [(value)]="editCountry" />
+              </div>
+            </div>
+            <div class="field-row">
+              <span class="detail-label">Timezone</span>
+              <div class="field-control">
+                <app-dropdown [options]="timezoneOptions" [(value)]="editTimezone" />
+              </div>
+            </div>
+            <div class="field-row">
+              <span class="detail-label">Job position</span>
+              <div class="field-control">
+                <app-input [(value)]="editJobPosition" placeholder="Job position" />
+              </div>
+              <span class="optional-hint">
+                Optional
+                <app-info-tooltip text="This is not required to increase your profile completeness. It may be asked for in certain situations.">
+                <app-icon name="help-circle" [size]="14"/>
+                </app-info-tooltip>
+              </span>
+            </div>
+            <div class="field-row">
+              <span class="detail-label">SSN / Tax ID</span>
+              <div class="field-control">
+                <app-input [(value)]="editSsn" placeholder="SSN / Tax ID" />
+              </div>
+              <span class="optional-hint">
+                Optional
+                <app-info-tooltip text="This is not required to increase your profile completeness. It may be asked for in certain situations.">
+                <app-icon name="help-circle" [size]="14" />
+                </app-info-tooltip>
+              </span>
+            </div>
+
+            <div class="edit-actions">
+              <div class="border-sep d-flex align-items-end gap-3 justify-content-end">
+              <app-button btnVariant="cancel" btnText="Cancel" (click)="cancelEdit()" />
+              <app-button btnVariant="primary" btnText="Save changes" [disabled]="!editFullName.trim()" (click)="saveEdit()" />
+            </div>
+            </div>
+          </div>
+        }
+      }
+
+      @case ('company') {
+        <div class="panel-head"><h2>Company Profile</h2></div>
+        <p class="panel-sub">Manage company and organization details.</p>
+        <div class="detail-card">
+          <div class="detail-row">
+            <span class="detail-label">Company name</span>
+            <span class="detail-value">{{ company.name }}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">SPN</span>
+            <span class="detail-value">{{ company.spn }}</span>
+          </div>
+          @for (item of company.statusItems; track item.key) {
+            <div class="detail-row">
+              <span class="detail-label">{{ item.label }}</span>
+              <span class="detail-value">{{ item.value }}</span>
+            </div>
+          }
+        </div>
+      }
+
+      @case ('security') {
+        <div class="panel-head"><h2>Security and Privacy</h2></div>
+        <p class="panel-sub">Manage password, 2FA, and privacy settings.</p>
+        <div class="detail-card">
+          <div class="detail-row">
+            <span class="detail-label">Two-factor authentication</span>
+            <span class="detail-value"><app-toggle-switch [checked]="true" /></span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Password</span>
+            <span class="detail-value">
+              <app-button btnVariant="soft" btnText="Change password" icon="lock" />
+            </span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Login alerts</span>
+            <span class="detail-value"><app-toggle-switch [checked]="true" /></span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Share usage analytics</span>
+            <span class="detail-value"><app-toggle-switch [checked]="false" /></span>
+          </div>
+        </div>
+      }
+
+      @case ('limits') {
+        <div class="panel-head"><h2>Limits</h2></div>
+        <p class="panel-sub">Manage your transfer limits, card limits, and related controls.</p>
+        <div class="limits-grid">
+          <app-limits-card
+            title="Daily transfer limit"
+            [currentAmount]="6435"
+            [maxAmount]="25000"
+            [currentTransactions]="4"
+            [maxTransactions]="20"
+          />
+          <app-limits-card
+            title="Monthly transfer limit"
+            [currentAmount]="48210"
+            [maxAmount]="250000"
+            [currentTransactions]="31"
+            [maxTransactions]="200"
+          />
+        </div>
+      }
+
+      @case ('activity') {
+        <div class="panel-head"><h2>Activity Log</h2></div>
+        <p class="panel-sub">Review account activity, history, and recent actions.</p>
+        <div class="detail-card">
+          @for (entry of activityLog; track entry.text) {
+            <div class="detail-row activity-row">
+              <span class="activity-icon"><app-icon [name]="entry.icon" [size]="16" /></span>
+              <span class="activity-text">{{ entry.text }}</span>
+              <span class="activity-when">{{ entry.when }}</span>
+            </div>
+          }
+        </div>
+      }
+    }
+  </section>
+  <p class="menu-foot">
+      Cannot find what you need?
+      <a routerLink="/settings">Explore Full Settings</a>
+    </p>
+</div>
+
+<!-- Customize avatar (Edit profile picture) -->
+<app-modal [isOpen]="avatarOpen()" title="Customize avatar" subtitle="Choose a generated style using your current theme, or upload a photo." 
+  size="md" (closeModal)="closeAvatar()" class="avatar-popup">
+  <!-- <p class="avatar-sub"></p> -->
+
+  <div class="overline avatar-overline">Generated styles</div>
+  <div class="avatar-styles">
+  @for (style of avatarStyles; track style) {
+    <button
+      type="button"
+      class="style-option"
+      [class.selected]="isPendingStyle(style)"
+      [attr.aria-label]="'Avatar style ' + style"
+      [attr.aria-pressed]="isPendingStyle(style)"
+      (click)="pickStyle(style)"
+    >
+      <app-profile-avatar [size]="65" [previewStyle]="style" />
+      @if (isPendingStyle(style)) {
+        <span class="style-check" aria-hidden="true">
+          <app-icon name="check" [size]="11" />
+        </span>
+      }
+    </button>
+  }
+</div>
+
+  <div class="overline avatar-overline">Upload photo</div>
+  <label class="upload-zone">
+    <input type="file" accept="image/png,image/jpeg,image/webp" (change)="onPhotoSelected($event)" hidden />
+    @if (pendingPhotoUrl(); as photoUrl) {
+      <img class="upload-preview" [src]="photoUrl" alt="Uploaded photo preview" />
+      <span class="upload-title">Photo selected — click to replace</span>
+    } @else {
+      <app-icon name="upload" [size]="20" />
+      <span class="upload-title">Upload an image</span>
+    }
+    <span class="upload-hint">PNG, JPG or WEBP · up to 5MB.</span>
+    @if (uploadError()) {
+      <span class="upload-error">{{ uploadError() }}</span>
+    }
+  </label>
+
+  <span modal-footer class="d-inline-flex gap-2">
+    <app-button btnVariant="cancel" btnText="Cancel" (click)="closeAvatar()" />
+    <app-button btnVariant="primary" btnText="Save" (click)="saveAvatar()" />
+  </span>
+</app-modal>

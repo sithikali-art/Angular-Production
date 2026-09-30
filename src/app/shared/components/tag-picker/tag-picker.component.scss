@@ -1,3 +1,5 @@
+@use 'sass:color';
+
 $border-color: #e2e8f0;
 $primary-purple: #635bff;
 $text-dark: #1f2937;
@@ -117,7 +119,7 @@ $border-radius: 12px;
       font-weight: 500;
 
       &:hover {
-        color: darken($primary-purple, 10%);
+        color: color.adjust($primary-purple, $lightness: -10%);
       }
     }
   }

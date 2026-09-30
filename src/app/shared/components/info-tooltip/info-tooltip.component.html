@@ -1,0 +1,38 @@
+<button
+  #trigger
+  type="button"
+  class="btn tip-trigger d-inline-flex align-items-center"
+  [attr.aria-describedby]="visible() ? id : null"
+  [attr.aria-expanded]="visible()"
+  (mouseenter)="show()"
+  (mouseleave)="hide()"
+  (focus)="show()"
+  (blur)="hide()"
+  (click)="toggle()"
+>
+  @if (label()) {
+    <span class="tip-label">{{ label() }}</span>
+  }
+
+  <ng-content></ng-content>
+
+  @if (!hasProjected()) {
+    <span class="tip-icon" aria-hidden="true">i</span>
+  }
+</button>
+
+@if (visible()) {
+  <div
+    #tip
+    role="tooltip"
+    [id]="id"
+    class="tooltip show"
+    [class.bs-tooltip-top]="resolvedPlacement() === 'top'"
+    [class.bs-tooltip-bottom]="resolvedPlacement() === 'bottom'"
+    [style.top.px]="coords().top"
+    [style.left.px]="coords().left"
+    [style.--tip-max-width]="maxWidth() + 'px'"
+  >
+    <div class="tooltip-inner">{{ text() }}</div>
+  </div>
+}

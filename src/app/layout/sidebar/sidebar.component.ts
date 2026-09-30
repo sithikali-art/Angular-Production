@@ -5,7 +5,7 @@ import { DraftsStateService } from '../../core/state/drafts-state.service';
 import { LayoutUiStateService } from '../../core/state/layout-ui-state.service';
 import { NotificationsStateService } from '../../core/state/notifications-state.service';
 import { ClickOutsideDirective } from '../../shared/directives/click-outside.directive';
-import { AvatarComponent } from '../../shared/components/avatar/avatar.component';
+import { ProfileAvatarComponent } from '../../shared/components/profile-avatar/profile-avatar.component';
 import { IconComponent } from '../../shared/components/icon/icon.component';
 import { AppearancePopoverComponent } from '../header/appearance-popover.component';
 import { NotificationsPopoverComponent } from '../header/notifications-popover.component';
@@ -63,7 +63,7 @@ export const NAV_ITEMS: NavItem[] = [
     RouterLink,
     RouterLinkActive,
     IconComponent,
-    AvatarComponent,
+    ProfileAvatarComponent,
     ClickOutsideDirective,
     AppearancePopoverComponent,
     NotificationsPopoverComponent,

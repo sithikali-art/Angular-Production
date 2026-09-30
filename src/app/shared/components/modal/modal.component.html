@@ -12,19 +12,23 @@
       <div class="modal-content">
         
         @if (title()) {
-          <div class="modal-header">
-            <h5 class="modal-title">{{ title() }}</h5>
-            <!-- Conditional Close Button -->
-            @if (showCloseButton()) {
-              <button 
-                type="button" 
-                class="btn-close" 
-                aria-label="Close" 
-                (click)="closeModal.emit()"
-              ></button>
-            }
-          </div>
-        }
+  <div class="modal-header">
+    <div class="modal-heading">
+      <h5 class="modal-title">{{ title() }}</h5>
+      @if (subtitle()) {
+        <p class="modal-subtitle">{{ subtitle() }}</p>
+      }
+    </div>
+    @if (showCloseButton()) {
+      <button
+        type="button"
+        class="btn-close"
+        aria-label="Close"
+        (click)="closeModal.emit()"
+      ></button>
+    }
+  </div>
+}
 
         <div class="modal-body">
           <ng-content></ng-content>

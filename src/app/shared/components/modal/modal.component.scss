@@ -2,9 +2,31 @@
     .modal-content {
         background: #fafbfc;
         border-radius: 1rem;
+
         .modal-header {
+            align-items: flex-start;
             border-bottom: none;
+
+            .modal-heading {
+                display: flex;
+                flex-direction: column;
+                gap: 4px;
+                min-width: 0;
+
+                .modal-title {
+                    font-size: 1.125rem;
+                    font-weight: 600;
+                }
+
+                .modal-subtitle {
+                    margin: 0;
+                    font-size: 13.5px;
+                    color: var(--muted);
+                }
+            }
+
         }
+
         .modal-footer {
             border-top: none;
         }

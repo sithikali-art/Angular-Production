@@ -1,0 +1,79 @@
+:host {
+  position: relative;
+  display: inline-flex;
+  line-height: 0;
+}
+
+.pa {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  overflow: hidden;
+  flex: none;
+
+  svg {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.pa-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Generated styles (Customize avatar dialog) */
+.style-smiley {
+  background: var(--primary);
+}
+.style-sphere {
+  background: radial-gradient(circle at 32% 30%, #a5b4fc, var(--primary) 72%);
+}
+.style-horizon {
+  background: linear-gradient(180deg, #a5b4fc 0%, var(--primary) 60%, var(--primary-strong) 100%);
+}
+.style-split {
+  background: linear-gradient(135deg, #c7d2fe 0 49.5%, #fff 49.5% 50.5%, var(--primary) 50.5% 100%);
+}
+.style-ring {
+  background: radial-gradient(
+    circle,
+    var(--primary-strong) 0 34%,
+    #eef2ff 34% 46%,
+    var(--primary) 46% 72%,
+    #c7d2fe 72% 100%
+  );
+}
+.style-pixels {
+  background:
+    conic-gradient(from 0deg at 50% 50%, var(--primary) 0 25%, #c7d2fe 0 50%, var(--primary-strong) 0 75%, #eef2ff 0 100%),
+    var(--primary);
+  background-size: 34% 34%;
+}
+
+.edit-badge {
+  position: absolute;
+  right: -2%;
+  bottom: -2%;
+  width: 34%;
+  min-width: 18px;
+  max-width: 30px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--primary);
+  color: #fff;
+  border: 2px solid var(--surface);
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+
+  &:hover {
+    background: var(--primary);
+    
+  border: 2px solid var(--surface-muted);
+  }
+}

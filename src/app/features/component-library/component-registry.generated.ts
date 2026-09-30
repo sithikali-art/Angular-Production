@@ -25,23 +25,25 @@ import { FileUploaderComponent as Cmp12 } from '../../shared/components/file-upl
 import { FlagIconComponent as Cmp13 } from '../../shared/components/flag-icon/flag-icon.component';
 import { FundingBarComponent as Cmp14 } from '../../shared/components/funding-bar/funding-bar.component';
 import { IconComponent as Cmp15 } from '../../shared/components/icon/icon.component';
-import { InputComponent as Cmp16 } from '../../shared/components/input/input.component';
-import { LimitsCardComponent as Cmp17 } from '../../shared/components/limits-card/limits-card.component';
-import { ModalComponent as Cmp18 } from '../../shared/components/modal/modal.component';
-import { OtpInputComponent as Cmp19 } from '../../shared/components/otp-input/otp-input.component';
-import { PageHeaderComponent as Cmp20 } from '../../shared/components/page-header/page-header.component';
-import { RadioGroupComponent as Cmp21 } from '../../shared/components/radio-group/radio-group.component';
-import { RecentActivityComponent as Cmp22 } from '../../shared/components/recent-activity/recent-activity.component';
-import { SearchInputComponent as Cmp23 } from '../../shared/components/search-input/search-input.component';
-import { SectionCardComponent as Cmp24 } from '../../shared/components/section-card/section-card.component';
-import { SegmentedTabsComponent as Cmp25 } from '../../shared/components/segmented-tabs/segmented-tabs.component';
-import { StatusPopoverComponent as Cmp26 } from '../../shared/components/status-popover/status-popover.component';
-import { StepperComponent as Cmp27 } from '../../shared/components/stepper/stepper.component';
-import { TagPickerComponent as Cmp28 } from '../../shared/components/tag-picker/tag-picker.component';
-import { TextareaComponent as Cmp29 } from '../../shared/components/textarea/textarea.component';
-import { ToggleSwitchComponent as Cmp30 } from '../../shared/components/toggle-switch/toggle-switch.component';
-import { WalletBalanceCardComponent as Cmp31 } from '../../shared/components/wallet-balance-card/wallet-balance-card.component';
-import { WalletSelectorComponent as Cmp32 } from '../../shared/components/wallet-selector/wallet-selector.component';
+import { InfoTooltipComponent as Cmp16 } from '../../shared/components/info-tooltip/info-tooltip.component';
+import { InputComponent as Cmp17 } from '../../shared/components/input/input.component';
+import { LimitsCardComponent as Cmp18 } from '../../shared/components/limits-card/limits-card.component';
+import { ModalComponent as Cmp19 } from '../../shared/components/modal/modal.component';
+import { OtpInputComponent as Cmp20 } from '../../shared/components/otp-input/otp-input.component';
+import { PageHeaderComponent as Cmp21 } from '../../shared/components/page-header/page-header.component';
+import { ProfileAvatarComponent as Cmp22 } from '../../shared/components/profile-avatar/profile-avatar.component';
+import { RadioGroupComponent as Cmp23 } from '../../shared/components/radio-group/radio-group.component';
+import { RecentActivityComponent as Cmp24 } from '../../shared/components/recent-activity/recent-activity.component';
+import { SearchInputComponent as Cmp25 } from '../../shared/components/search-input/search-input.component';
+import { SectionCardComponent as Cmp26 } from '../../shared/components/section-card/section-card.component';
+import { SegmentedTabsComponent as Cmp27 } from '../../shared/components/segmented-tabs/segmented-tabs.component';
+import { StatusPopoverComponent as Cmp28 } from '../../shared/components/status-popover/status-popover.component';
+import { StepperComponent as Cmp29 } from '../../shared/components/stepper/stepper.component';
+import { TagPickerComponent as Cmp30 } from '../../shared/components/tag-picker/tag-picker.component';
+import { TextareaComponent as Cmp31 } from '../../shared/components/textarea/textarea.component';
+import { ToggleSwitchComponent as Cmp32 } from '../../shared/components/toggle-switch/toggle-switch.component';
+import { WalletBalanceCardComponent as Cmp33 } from '../../shared/components/wallet-balance-card/wallet-balance-card.component';
+import { WalletSelectorComponent as Cmp34 } from '../../shared/components/wallet-selector/wallet-selector.component';
 
 export interface GeneratedLibraryEntry {
   /** Slug of the folder name under shared/components — also the detail-page URL id. */
@@ -71,21 +73,23 @@ export const GENERATED_COMPONENT_LIBRARY: GeneratedLibraryEntry[] = [
   { id: 'flag-icon', component: Cmp13, description: "Circular country-flag image (20×20 by default, object-fit: cover). Falls back to the emoji flag when the image cannot load (offline).", requiredInputs: true },
   { id: 'funding-bar', component: Cmp14, description: "Image 10 — the lavender funding strip: bank account selector, funding method selector, maskable account number and routing.", requiredInputs: false },
   { id: 'icon', component: Cmp15, description: "Tabler Icons (webfont) wrapper. Renders `<i class=\"ti ti-...\">` so every icon in the app is a genuine Tabler icon and inherits `currentColor`. Legacy internal names are mapped to Tabler classes.", requiredInputs: true },
-  { id: 'input', component: Cmp16, description: "Shared input component.", requiredInputs: false },
-  { id: 'limits-card', component: Cmp17, description: "Shared limits card component.", requiredInputs: false },
-  { id: 'modal', component: Cmp18, description: "Shared modal component.", requiredInputs: false },
-  { id: 'otp-input', component: Cmp19, description: "Shared otp input component.", requiredInputs: false },
-  { id: 'page-header', component: Cmp20, description: "Shared page header component.", requiredInputs: true },
-  { id: 'radio-group', component: Cmp21, description: "Shared radio group component.", requiredInputs: true },
-  { id: 'recent-activity', component: Cmp22, description: "\"Recent activity\" list next to the balance card.", requiredInputs: false },
-  { id: 'search-input', component: Cmp23, description: "Shared search input component.", requiredInputs: false },
-  { id: 'section-card', component: Cmp24, description: "Shared section card component.", requiredInputs: false },
-  { id: 'segmented-tabs', component: Cmp25, description: "Shared segmented tabs component.", requiredInputs: true },
-  { id: 'status-popover', component: Cmp26, description: "\"Company status\" popover on the Status badge — opens on hover or click and lists identity level, payment approvals and connected services with their current state.", requiredInputs: false },
-  { id: 'stepper', component: Cmp27, description: "Shared stepper component.", requiredInputs: true },
-  { id: 'tag-picker', component: Cmp28, description: "Shared tag picker component.", requiredInputs: false },
-  { id: 'textarea', component: Cmp29, description: "Shared textarea component.", requiredInputs: false },
-  { id: 'toggle-switch', component: Cmp30, description: "iOS-style toggle used by \"Show only drafts created by me\".", requiredInputs: false },
-  { id: 'wallet-balance-card', component: Cmp31, description: "The gradient \"Wallet Balance\" hero card. The wireframe globe fills the card background and rotates each time a different wallet is selected; the Wallet Details drawer opens from the wallet dropdown.", requiredInputs: false },
-  { id: 'wallet-selector', component: Cmp32, description: "Image 9 — the currency dropdown inside the Wallet Balance card. Switching a wallet re-queries activity + transactions via the store.", requiredInputs: false },
+  { id: 'info-tooltip', component: Cmp16, description: "Shared info tooltip component.", requiredInputs: true },
+  { id: 'input', component: Cmp17, description: "Shared input component.", requiredInputs: false },
+  { id: 'limits-card', component: Cmp18, description: "Shared limits card component.", requiredInputs: false },
+  { id: 'modal', component: Cmp19, description: "Shared modal component.", requiredInputs: false },
+  { id: 'otp-input', component: Cmp20, description: "Shared otp input component.", requiredInputs: false },
+  { id: 'page-header', component: Cmp21, description: "Shared page header component.", requiredInputs: true },
+  { id: 'profile-avatar', component: Cmp22, description: "The signed-in user's avatar (generated style or uploaded photo) from AccountStateService, at any size; optionally shows an edit (pencil) badge that emits when clicked. Used in the header profile chip and on the Account page.", requiredInputs: false },
+  { id: 'radio-group', component: Cmp23, description: "Shared radio group component.", requiredInputs: true },
+  { id: 'recent-activity', component: Cmp24, description: "\"Recent activity\" list next to the balance card.", requiredInputs: false },
+  { id: 'search-input', component: Cmp25, description: "Shared search input component.", requiredInputs: false },
+  { id: 'section-card', component: Cmp26, description: "Shared section card component.", requiredInputs: false },
+  { id: 'segmented-tabs', component: Cmp27, description: "Shared segmented tabs component.", requiredInputs: true },
+  { id: 'status-popover', component: Cmp28, description: "\"Company status\" popover on the Status badge — opens on hover or click and lists identity level, payment approvals and connected services with their current state.", requiredInputs: false },
+  { id: 'stepper', component: Cmp29, description: "Shared stepper component.", requiredInputs: true },
+  { id: 'tag-picker', component: Cmp30, description: "Shared tag picker component.", requiredInputs: false },
+  { id: 'textarea', component: Cmp31, description: "Shared textarea component.", requiredInputs: false },
+  { id: 'toggle-switch', component: Cmp32, description: "iOS-style toggle used by \"Show only drafts created by me\".", requiredInputs: false },
+  { id: 'wallet-balance-card', component: Cmp33, description: "The gradient \"Wallet Balance\" hero card. The wireframe globe fills the card background and rotates each time a different wallet is selected; the Wallet Details drawer opens from the wallet dropdown.", requiredInputs: false },
+  { id: 'wallet-selector', component: Cmp34, description: "Image 9 — the currency dropdown inside the Wallet Balance card. Switching a wallet re-queries activity + transactions via the store.", requiredInputs: false },
 ];

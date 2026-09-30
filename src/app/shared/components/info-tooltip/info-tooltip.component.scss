@@ -1,0 +1,69 @@
+:host,
+.tip-trigger {
+  cursor: pointer !important;
+}
+
+.tip-trigger {
+  --bs-btn-padding-x: 0.25rem;
+  --bs-btn-padding-y: 0;
+  --bs-btn-font-size: 0.875rem;
+  --bs-btn-color: var(--bs-secondary-color);
+  --bs-btn-hover-color: var(--bs-body-color);
+  --bs-btn-active-color: var(--bs-body-color);
+  --bs-btn-border-width: 0;
+  gap: 0.35rem;
+  padding: 5px;
+
+  &:focus-visible {
+    outline: 2px solid var(--tip-bg);
+    outline-offset: 2px;
+    border-radius: 0.25rem;
+  }
+
+  /* CSS Safeguard: Hide default icon if any custom node exists */
+  &:has(> :not(.tip-icon)) .tip-icon {
+    display: none !important;
+  }
+}
+
+.tip-icon {
+  width: 1.05em;
+  height: 1.05em;
+  border: 1.5px solid currentColor;
+  border-radius: 50%;
+  display: inline-grid;
+  place-items: center;
+  font-size: 0.8em;
+  line-height: 1;
+  font-weight: 600;
+}
+
+/* Bootstrap tooltip reskinned */
+.tooltip {
+  --tip-bg: #5b5cf6;
+  --bs-tooltip-bg: var(--tip-bg);
+  --bs-tooltip-color: #fff;
+  --bs-tooltip-opacity: 1;
+  --bs-tooltip-border-radius: 0.625rem;
+  --bs-tooltip-padding-x: 0.875rem;
+  --bs-tooltip-padding-y: 0.625rem;
+  --bs-tooltip-font-size: 0.8125rem;
+  --bs-tooltip-max-width: var(--tip-max-width, 265px);
+  position: fixed;
+  z-index: 1080;
+  pointer-events: none;
+  transition: opacity 0.12s ease;
+
+  .tooltip-inner {
+    font-weight: 600;
+    line-height: 1.35;
+    text-align: left;
+    box-shadow: 0 8px 24px rgba(91, 92, 246, 0.28);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tooltip {
+    transition: none;
+  }
+}

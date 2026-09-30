@@ -8,8 +8,8 @@
     [btnText]="selectedLabel()"
     [icon]="isOpen() ? 'chevron-up' : 'chevron-down'"
     iconPosition="right"
-    btnVariant="soft"
-    btnClass="dropdown-trigger dropdown-trigger-btn w-100 d-flex align-items-center justify-content-between rounded-3 px-3 py-2 bg-white border-light-subtle  fw-medium text-dark"
+    btnVariant="dropdown"
+    btnClass="dropdown-trigger dropdown-trigger-btn w-100 d-flex align-items-center justify-content-between rounded-3 px-3  bg-white border-light-subtle  fw-normal text-dark"
     [class.is-open]="isOpen()"
     (click)="toggleDropdown()"
   />

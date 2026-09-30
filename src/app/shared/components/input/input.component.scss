@@ -6,21 +6,26 @@
 
     /* Standard Soft Pill Container (Default design) */
     &.variant-standard {
-      background-color: #f8fafc;
-      border: 1px solid #f1f5f9;
-      border-radius: 12px;
+      background-color: #ffffff;
+      border: 1px solid var(--bs-light-border-subtle);
+      border-radius: 50rem;
       padding: 0.75rem 1rem;
       min-height: 46px;
 
+      &:hover {
+        background-color: #ffffff;
+        border-color: var(--primary-ring);
+      }
       &:focus-within {
         background-color: #ffffff;
-        border-color: #5b50e5;
-        box-shadow: 0 0 0 3px rgba(91, 80, 229, 0.12);
+        border-color: var(--primary-soft);
+        box-shadow: 0 0 0 2px rgba(205, 206, 248);
       }
 
       input {
         font-size: 0.9rem;
         color: #1e293b;
+        border-radius: 50rem;
 
         &::placeholder {
           color: #94a3b8;

@@ -12,14 +12,15 @@ export class ModalComponent {
   // Inputs
   isOpen = input<boolean>(false);
   title = input<string>('');
+  subtitle = input<string>('');        // new
   size = input<BootstrapModalSize>('md');
   centered = input<boolean>(true);
   scrollable = input<boolean>(false);
   closeOnBackdrop = input<boolean>(true);
   showCloseButton = input<boolean>(true);
 
-  // Outputs
   closeModal = output<void>();
+  // …rest unchanged
 
   // Compute dynamic size classes
   dialogClasses = computed(() => {

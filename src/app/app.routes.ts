@@ -32,6 +32,12 @@ export const routes: Routes = [
         title: 'Wallets · Xtrm',
       },
       {
+        path: 'account',
+        loadComponent: () =>
+          import('./company/account/account.component').then((m) => m.AccountComponent),
+        title: 'Account · Xtrm',
+      },
+      {
         path: 'profile',
         loadComponent: () =>
           import('./features/profile/profile.component').then((m) => m.ProfileComponent),

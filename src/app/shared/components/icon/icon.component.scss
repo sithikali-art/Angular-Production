@@ -4,6 +4,9 @@
   justify-content: center;
   flex: none;
   line-height: 1;
+  &.info-hint {
+    cursor: pointer !important;
+  }
 }
 
 i {
@@ -12,6 +15,8 @@ i {
   align-items: center;
   justify-content: center;
 }
+
+
 
 @media (min-width: 1024px) and (max-width: 1199.98px) {
   .search-icon {
